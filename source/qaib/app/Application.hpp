@@ -2,14 +2,14 @@
 #include <memory>
 
 namespace sf {
-	class Window;
+	class RenderWindow;
 }
 
 namespace qaib {
 
 	class Application {
 	private:
-		std::shared_ptr<sf::Window> window;
+		std::shared_ptr<sf::RenderWindow> window;
 	public:
 		int exec();
 	};
