@@ -3,6 +3,7 @@
 
 #include <qaib/scene/Sprite.hpp>
 #include <qaib/graphics/SceneRenderer.hpp>
+#include <qaib/scene/Camera.hpp>
 
 namespace qaib {
 
@@ -12,7 +13,13 @@ namespace qaib {
 		sf::Texture texture;
 		texture.loadFromFile("../data/apple.jpg");
 		
-		auto scene = std::make_shared<Sprite>(texture);
+		auto scene = std::make_shared<SceneNode>();
+
+		auto sprite = std::make_shared<Sprite>(texture);
+		scene->addChild(sprite);
+
+		auto cam = std::make_shared<Camera>();
+		scene->addChild(cam);
 
 		SceneRenderer renderer;
 
@@ -25,11 +32,11 @@ namespace qaib {
 
 			window->clear(sf::Color(0, 0, 255, 255));
 
-			renderer.drawScene(window, scene);
+			renderer.drawScene(window, scene, cam);
 
 			window->display();
 
-			scene->setPosition(scene->getPosition() + sf::Vector2f(0.01f, 0.01f));
+			cam->setPosition(cam->getPosition() + sf::Vector2f(-0.01f, -0.01f));
 		}
 
 		return 0;

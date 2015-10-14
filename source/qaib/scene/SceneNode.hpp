@@ -8,7 +8,7 @@ namespace qaib {
 
 	class SceneRenderer;
 
-	class SceneNode : std::enable_shared_from_this<SceneNode> {
+	class SceneNode : public std::enable_shared_from_this<SceneNode> {
 	private:
 		sf::Vector2f position;
 		float rotation;
