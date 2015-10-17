@@ -50,9 +50,8 @@ set(QAIB_LIBS ${QAIB_LIBS} ${SFML_LIBRARIES})
 
 
 
-
-
 add_executable(qaib ${QAIB_SOURCE})
+target_compile_features(qaib PRIVATE cxx_range_for)
 
 if(QAIB_LIBS)
 	target_link_libraries(qaib ${QAIB_LIBS})

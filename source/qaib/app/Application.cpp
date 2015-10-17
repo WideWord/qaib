@@ -7,6 +7,7 @@
 
 namespace qaib {
 
+    
 	int Application::exec() {
 		window = std::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(800, 600), "Window"));
 
@@ -27,7 +28,7 @@ namespace qaib {
 			sf::Event event;
 			while (window->pollEvent(event)) {
 				if (event.type == sf::Event::Closed)
-					window->close();
+                    closeButtonClicked.fire();
 			}
 
 			window->clear(sf::Color(0, 0, 255, 255));
@@ -42,4 +43,8 @@ namespace qaib {
 		return 0;
 	}
 
+    void Application::quit() {
+        window->close();
+    }
+    
 }
