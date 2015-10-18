@@ -8,9 +8,9 @@ namespace sf {
 
 namespace qaib {
 
-    class Application : public EventHandler {
+    class Application {
 	private:
-		std::shared_ptr<sf::RenderWindow> window;
+		sf::RenderWindow* window;
 	public:
 		int exec();
         void quit();

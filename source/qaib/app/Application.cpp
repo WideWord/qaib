@@ -9,18 +9,18 @@ namespace qaib {
 
     
 	int Application::exec() {
-		window = std::shared_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(800, 600), "Window"));
+		window = new sf::RenderWindow(sf::VideoMode(800, 600), "Window");
 
 		sf::Texture texture;
 		texture.loadFromFile("../data/apple.jpg");
 		
-		auto scene = std::make_shared<SceneNode>();
+		SceneNode scene;
 
-		auto sprite = std::make_shared<Sprite>(texture);
-		scene->addChild(sprite);
+		auto sprite = new Sprite(texture);
+		scene.addChild(sprite);
 
-		auto cam = std::make_shared<Camera>();
-		scene->addChild(cam);
+		auto cam = new Camera();
+		scene.addChild(cam);
 
 		SceneRenderer renderer;
 
@@ -33,7 +33,7 @@ namespace qaib {
 
 			window->clear(sf::Color(0, 0, 255, 255));
 
-			renderer.drawScene(window, scene, cam);
+			renderer.drawScene(window, &scene, cam);
 
 			window->display();
 

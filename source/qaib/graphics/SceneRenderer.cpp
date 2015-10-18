@@ -5,9 +5,9 @@
 namespace qaib {
 
 	void SceneRenderer::drawScene(
-		const std::shared_ptr<sf::RenderTarget>& target,
-		const std::shared_ptr<SceneNode>& rootSceneNode,
-		const std::shared_ptr<Camera>& camera) {
+		sf::RenderTarget* target,
+		SceneNode* rootSceneNode,
+		Camera* camera) {
 
 		rootSceneNode->flushTransform();
 
@@ -15,21 +15,21 @@ namespace qaib {
 	}
 
 	void SceneRenderer::drawSceneNode(
-		const std::shared_ptr<sf::RenderTarget>& target,
-		const std::shared_ptr<SceneNode>& sceneNode,
-		const std::shared_ptr<Camera>& camera) {
+		sf::RenderTarget* target,
+		SceneNode* sceneNode,
+		Camera* camera) {
 
 		if (sceneNode->hasAttachedDrawable()) {
-			std::shared_ptr<sf::Drawable> drawable = sceneNode->getAttachedDrawable().lock();
+			auto drawable = sceneNode->getAttachedDrawable();
 			
-			sf::Transform transform = sceneNode->getAbsoluteTransform();
+			auto transform = sceneNode->getAbsoluteTransform();
 
 			transform = transform.combine(camera->getAbsoluteTransform().getInverse());
 
 			target->draw(*drawable, sf::RenderStates(transform));
 		}
 
-		for (auto& childSceneNode : sceneNode->getChildSceneNodes()) {
+		for (auto childSceneNode : sceneNode->getChildSceneNodes()) {
 			drawSceneNode(target, childSceneNode, camera);
 		}
 	}

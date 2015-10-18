@@ -4,10 +4,10 @@ using namespace qaib;
 
 int main()
 {
-    auto app = std::make_shared<Application>();
+    auto app = Application();
     
-    app->closeButtonClicked.subscribe(app, [app]{
-        app->quit();
+    app.closeButtonClicked.subscribe(&app, [&app]{
+        app.quit();
     });
-    return app->exec();
+    return app.exec();
 }

@@ -14,12 +14,13 @@ namespace qaib {
 
 	class Sprite : public SceneNode {
 	private:
-		std::shared_ptr<sf::Sprite> sfSprite;
+		sf::Sprite* sfSprite;
 	protected:
 		virtual bool hasAttachedDrawable() const override;
-		virtual std::weak_ptr<sf::Drawable> getAttachedDrawable() override;
+		virtual sf::Drawable* getAttachedDrawable() override;
 	public:
 		Sprite(const sf::Texture& texture);
+		virtual ~Sprite();
 
 	};
 
