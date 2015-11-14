@@ -12,7 +12,7 @@ namespace qaib {
             value = connection.weight * connection.neuron->evaluate();
         }
         
-        value = activationFn(value);
+        value = activationFn.activationFn(value);
         
         evaluated = true;
         return value;

@@ -9,13 +9,13 @@ namespace qaib {
         }
     }
     
-    void NeuronNetwork::resetEvaluatedNetwork() {
+    void NeuronNetwork::resetEvaluationState() {
         for (auto neuron: neurons) {
             neuron->evaluated = false;
         }
     }
     
-    Neuron* NeuronNetwork::createNeuron(std::function<float(float)> activationFn) {
+    Neuron* NeuronNetwork::createNeuron(ActivationFunction activationFn) {
         auto neuron = new Neuron(activationFn);
         neurons.push_back(neuron);
         return neuron;

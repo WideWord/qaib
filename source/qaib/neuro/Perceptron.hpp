@@ -12,7 +12,7 @@ namespace qaib {
         std::vector<Neuron*> inputNeurons;
         Neuron* outputNeuron;
     public:
-        Perceptron(std::vector<int> config, ActivationFunction activationFn = ActivationFunctions::sigmoid);
+        Perceptron(std::vector<int> config, ActivationFunction activationFn = ActivationFunction::sigmoid);
         virtual ~Perceptron();
         
         float evaluate(std::vector<float> input);

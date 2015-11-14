@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <functional>
+#include <qaib/neuro/ActivationFunction.hpp>
 
 namespace qaib {
     
@@ -17,15 +18,13 @@ namespace qaib {
         };
     private:
         std::vector<Connection> connections;
-        std::function<float(float)> activationFn;
+        ActivationFunction activationFn;
     protected:
         friend class NeuronNetwork;
         bool evaluated;
         float value;
         
-        inline Neuron(std::function<float(float)> _activationFn) {
-            activationFn = _activationFn;
-        }
+        inline Neuron(ActivationFunction _activationFn) : activationFn(_activationFn) {}
     public:
         inline void connectTo(Neuron * neuron, float weight) {
             connections.push_back(Connection(neuron, weight));

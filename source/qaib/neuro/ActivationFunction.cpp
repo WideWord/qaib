@@ -11,12 +11,12 @@
 
 namespace qaib {
     
-    namespace ActivationFunctions {
-        
-        float sigmoid(float x) {
-            return 1.0f / (1.0f - exp(-x));
-        }
-        
-    }
+    ActivationFunction ActivationFunction::sigmoid(
+    [](float x) {
+        return 1.0f / (1.0f + exp(x));
+    },
+    [](float x) {
+        return (1.0f / (1.0f + exp(x))) * (1.0f - 1.0f / (1.0f + exp(x)));
+    });
     
 }

@@ -2,11 +2,10 @@
 
 #include <vector>
 #include <functional>
+#include <qaib/neuro/ActivationFunction.hpp>
 
 namespace qaib {
-    
-    typedef std::function<float(float)> ActivationFunction;
-    
+        
     class Neuron;
     
     class NeuronNetwork {
@@ -14,7 +13,8 @@ namespace qaib {
         std::vector<Neuron*> neurons;
     public:
         Neuron* createNeuron(ActivationFunction activationFn);
-        void resetEvaluatedNetwork();
+        void resetEvaluationState();
+        
         virtual ~NeuronNetwork();
     };
     
