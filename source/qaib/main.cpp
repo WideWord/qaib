@@ -5,8 +5,8 @@ using namespace qaib;
 int main()
 {
     auto app = Application();
-    
-    app.closeButtonClicked.subscribe(&app, [&app]{
+    DisposableBag bag;
+    app.closeButtonClicked.subscribe(bag, [&app]{
         app.quit();
     });
     return app.exec();
