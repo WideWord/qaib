@@ -5,23 +5,17 @@
 
 namespace qaib {
     
+    typedef std::function<float(float)> ActivationFunction;
+    
     class Neuron;
     
     class NeuronNetwork {
     private:
         std::vector<Neuron*> neurons;
     public:
-        Neuron* createNeuron(std::function<float(float)> activationFn);
-        
-        void setNotEvaluated();
-        
+        Neuron* createNeuron(ActivationFunction activationFn);
+        void resetEvaluatedNetwork();
         virtual ~NeuronNetwork();
-    };
-    
-    class Perceptron : private NeuronNetwork {
-    public:
-        Perceptron(std::vector<int> config);
-        float evaluate(std::vector<float> input);
     };
     
 }

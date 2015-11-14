@@ -31,6 +31,10 @@ namespace qaib {
             connections.push_back(Connection(neuron, weight));
         }
         float evaluate();
+        inline void setValue(float _value) {
+            evaluated = true;
+            value = _value;
+        }
     };
     
 }

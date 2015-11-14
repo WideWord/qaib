@@ -9,7 +9,7 @@ namespace qaib {
         }
     }
     
-    void NeuronNetwork::setNotEvaluated() {
+    void NeuronNetwork::resetEvaluatedNetwork() {
         for (auto neuron: neurons) {
             neuron->evaluated = false;
         }
