@@ -6,12 +6,12 @@
 //
 //
 
-#include <qaib/util/Disposable.h>
+#include <qaib/util/Disposable.hpp>
 
 namespace qaib {
     
     DisposableBag::~DisposableBag() {
-        for(auto disposable : disposableList) {
+        for (auto disposable : disposableList) {
             disposable->dispose();
             delete disposable;
         }

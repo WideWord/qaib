@@ -4,7 +4,7 @@
 #include <list>
 #include <algorithm>
 
-#include <qaib/util/Disposable.h>
+#include <qaib/util/Disposable.hpp>
 
 namespace qaib {
         
