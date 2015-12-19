@@ -2,10 +2,9 @@
 
 namespace qaib {
 
-	class Player {
+	class GameWorld {
 	private:
-	public:
-		Player();
+
 	};
 
 }

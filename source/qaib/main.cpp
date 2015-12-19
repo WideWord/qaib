@@ -1,13 +1,13 @@
 #include <qaib/app/Application.hpp>
+#include <qaib/game/GameObject.hpp>
+
+#include <iostream>
 
 using namespace qaib;
 
 int main()
 {
-    auto app = Application();
-    DisposableBag bag;
-    app.closeButtonClicked.subscribe(bag, [&app]{
-        app.quit();
-    });
-    return app.exec();
+
+
+	return 0;
 }
