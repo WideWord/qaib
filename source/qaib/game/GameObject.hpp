@@ -2,10 +2,37 @@
 
 #include <qaib/util/Exception.hpp>
 
-#include <SFML/System.hpp>
+#include <glm/vec2.hpp>
+#include <glm/mat3x3.hpp>
 #include <list>
 
 namespace qaib {
+
+	class GameObject {
+	private:
+		glm::vec2 _position;
+		float _rotation;
+		std::list<GameObject*> _childs;
+		GameObject* _parent;
+
+
+	public:
+		GameObject();
+
+		void attachChild(GameObject* child);
+		void detachChild(GameObject* child);
+
+		inline auto position() { return _position; }
+		inline void setPosition(const glm::vec2& pos) { _position = pos; }
+
+		inline auto rotation() { return _rotation; }
+		inline auto setRotation(float rot) { _rotation = rot; }
+
+		glm::mat3 absoluteTransform();
+
+		virtual ~GameObject();
+	};
+
 
 	qaibExceptionDecl(GameObjectException, "", Exception);
 
@@ -19,18 +46,5 @@ namespace qaib {
 		"GameObject is not a child of this GameObject",
 		GameObjectException
 		);
-
-	class GameObject {
-	private:
-		sf::Vector2f position;
-		float rotation;
-		std::list<GameObject*> childs;
-		GameObject* parent;
-	public:
-		void attachChild(GameObject* child);
-		void detachChild(GameObject* child);
-
-		virtual ~GameObject();
-	};
 
 }

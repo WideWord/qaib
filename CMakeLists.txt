@@ -47,7 +47,9 @@ find_package(SFML 2 COMPONENTS graphics window system)
 include_directories(${SFML_INCLUDE_DIR})
 set(QAIB_LIBS ${QAIB_LIBS} ${SFML_LIBRARIES})
 
-
+# GLM
+find_package(GLM)
+include_directories(${GLM_INCLUDE_DIRS})
 
 
 add_executable(qaib ${QAIB_SOURCE})
