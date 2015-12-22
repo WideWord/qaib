@@ -31,6 +31,7 @@ namespace qaib {
 		glm::mat3 absoluteTransform();
 
 		virtual ~GameObject();
+
 	};
 
 
