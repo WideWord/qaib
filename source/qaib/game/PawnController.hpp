@@ -16,6 +16,9 @@ namespace qaib {
 
 		virtual glm::vec2 movementDirection() = 0;
 		virtual float turningToAngle() = 0;
+		virtual bool shouldDropWeapon() = 0;
+		virtual bool shouldTakeWeapon() = 0;
+		virtual bool shouldAttack() = 0;
 
 		virtual ~PawnController();
 	};
