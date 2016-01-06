@@ -1,19 +1,20 @@
 #pragma once
 
+#include <list>
+
 namespace qaib {
 
-	class GameObject;
+	class Pawn;
 
 	class GameWorld {
 	private:
-		GameObject* _rootGameObject;
+		std::list<Pawn*> pawns;
 	public:
-		GameWorld();
-		~GameWorld();
+		
+		void addPawn(Pawn* pawn); // takes own
+		void doTick(float deltaTime);
 
-		inline GameObject* rootGameObject() { return _rootGameObject; }
-	
-	
+		virtual ~GameWorld();
 	};
 
 }

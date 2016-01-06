@@ -1,15 +1,22 @@
 #include <qaib/game/GameWorld.hpp>
-#include <qaib/game/GameObject.hpp>
+#include <qaib/game/Pawn.hpp>
 
 namespace qaib {
 
-	GameWorld::GameWorld() {
-		_rootGameObject = new GameObject();
+	void GameWorld::addPawn(Pawn* pawn) {
+		pawns.push_back(pawn);
+		pawn->movedToGameWorld(this);
+	}
+
+
+	void GameWorld::doTick(float deltaTime) {
+
 	}
 
 	GameWorld::~GameWorld() {
-		delete _rootGameObject;
+		for (auto pawn : pawns) {
+			delete pawn;
+		}
 	}
-
 
 }
