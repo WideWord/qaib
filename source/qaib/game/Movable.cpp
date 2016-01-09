@@ -5,7 +5,15 @@
 namespace qaib {
 
 	Movable::Movable() {
-		_rotation = 0;
+		rotation = 0;
+	}
+
+	sf::Transform Movable::getSFTransform()
+	{
+		sf::Transform transform;
+		transform = transform.translate(position.x, position.y);
+		transform = transform.rotate(rotation);
+		return transform;
 	}
 
 }

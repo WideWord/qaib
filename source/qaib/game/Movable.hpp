@@ -6,20 +6,24 @@
 #include <glm/mat3x3.hpp>
 #include <list>
 
+#include <SFML/Graphics/Transform.hpp>
+
 namespace qaib {
 
 	class Movable {
 	private:
-		glm::vec2 _position;
-		float _rotation;
+		glm::vec2 position;
+		float rotation;
 	public:
 		Movable();
 
-		inline auto position() { return _position; }
-		inline void setPosition(const glm::vec2& pos) { _position = pos; }
+		inline glm::vec2 getPosition() { return position; }
+		inline void setPosition(const glm::vec2& pos) { position = pos; }
 
-		inline auto rotation() { return _rotation; }
-		inline auto setRotation(float rot) { _rotation = rot; }
+		inline float getRotation() { return rotation; }
+		inline void setRotation(float rot) { rotation = rot; }
+
+		sf::Transform getSFTransform();
 	};
 
 

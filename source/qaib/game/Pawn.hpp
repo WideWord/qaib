@@ -15,6 +15,8 @@ namespace qaib {
 		void setController(PawnController* controller);	// takes own
 		inline PawnController* controller() { return _controller; } // borrow
 		
+		void applyPawnControl();
+
 		virtual ~Pawn();
 	};
 

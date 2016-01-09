@@ -1,13 +1,7 @@
-#include <qaib/app/Application.hpp>
-#include <qaib/game/GameObject.hpp>
-
-#include <iostream>
+#include <qaib/app/PlayingGameApplication.hpp>
 
 using namespace qaib;
 
-int main()
-{
-
-
-	return 0;
+int main() {
+	return PlayingGameApplication().exec();
 }

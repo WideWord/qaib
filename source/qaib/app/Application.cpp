@@ -12,9 +12,15 @@ namespace qaib {
 			sf::Event event;
 			while (window->pollEvent(event)) {
 				if (event.type == sf::Event::Closed)
-                    closeButtonClicked.fire();
+					closeButtonClicked();
 			}
+
+			doFrame();
+
+			window->display();
 		}
+
+		
 
 		return 0;
 	}
@@ -23,4 +29,9 @@ namespace qaib {
         window->close();
     }
     
+	void Application::doFrame() {}
+
+	void Application::closeButtonClicked(){
+		quit();
+	}
 }

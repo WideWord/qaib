@@ -10,7 +10,7 @@ namespace qaib {
 	private:
 		Pawn* _pawn;
 	public:
-		PawnController(Pawn* pawn);
+		PawnController();
 
 		inline Pawn* pawn() { return _pawn; }
 

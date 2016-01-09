@@ -43,13 +43,19 @@ include_directories(source)
 # LIBRARIES
 
 # SFML
-find_package(SFML 2 COMPONENTS graphics window system)
+find_package(SFML 2 COMPONENTS system window graphics)
 include_directories(${SFML_INCLUDE_DIR})
 set(QAIB_LIBS ${QAIB_LIBS} ${SFML_LIBRARIES})
 
 # GLM
 find_package(GLM)
 include_directories(${GLM_INCLUDE_DIRS})
+
+
+# Box2D
+find_package(Box2D)
+include_directories(${BOX2D_INCLUDE_DIR})
+set(QAIB_LIBS ${QAIB_LIBS} ${BOX2D_LIBRARIES})
 
 
 add_executable(qaib ${QAIB_SOURCE})

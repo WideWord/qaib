@@ -3,18 +3,22 @@
 
 namespace qaib {
 
+	GameWorld::GameWorld() {}
+
 	void GameWorld::addPawn(Pawn* pawn) {
-		pawns.push_back(pawn);
+		_pawns.push_back(pawn);
 		pawn->movedToGameWorld(this);
 	}
 
 
 	void GameWorld::doTick(float deltaTime) {
-
+		for (auto pawn : _pawns) {
+			pawn->applyPawnControl();
+		}
 	}
 
 	GameWorld::~GameWorld() {
-		for (auto pawn : pawns) {
+		for (auto pawn : _pawns) {
 			delete pawn;
 		}
 	}
