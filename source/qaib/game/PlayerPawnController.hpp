@@ -5,12 +5,17 @@
 
 namespace qaib {
 
-	class PlayerPawnController: public PawnController {
-	public:
+	class GameRenderer;
 
+	class PlayerPawnController: public PawnController {
+	private:
+		GameRenderer& gameRenderer;
+		sf::Window& window;
+	public:
+		PlayerPawnController(GameRenderer& gameRenderer, sf::Window& window);
 
 		glm::vec2 movementDirection() override;
-		float turningToAngle() override;
+		glm::vec2 turningTo() override;
 		bool shouldDropWeapon() override;
 		bool shouldTakeWeapon() override;
 		bool shouldAttack() override;

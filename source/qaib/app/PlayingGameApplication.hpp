@@ -12,7 +12,7 @@ namespace qaib {
 		GameWorld gameWorld;
 		GameRenderer gameRenderer;
 	protected:
-		virtual void doFrame() override;
+		virtual void doFrame(float deltaTime) override;
 	public:
 		PlayingGameApplication();
 	};

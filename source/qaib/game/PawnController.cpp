@@ -3,7 +3,7 @@
 namespace qaib {
 
 	PawnController::PawnController() {
-		_pawn = nullptr;
+		pawn = nullptr;
 	}
 
 	PawnController::~PawnController() {}

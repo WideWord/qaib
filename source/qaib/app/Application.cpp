@@ -1,23 +1,28 @@
 #include <qaib/app/Application.hpp>
-#include <SFML/Graphics.hpp>
+
 
 
 namespace qaib {
 
-    
-	int Application::exec() {
-		window = new sf::RenderWindow(sf::VideoMode(800, 600), "Window");
+	Application::Application(): window(sf::VideoMode(800, 600), "Window") {
 
-		while (window->isOpen()) {
+	}
+
+	int Application::exec() {
+
+		sf::Clock clock;
+
+		while (window.isOpen()) {
 			sf::Event event;
-			while (window->pollEvent(event)) {
+			while (window.pollEvent(event)) {
 				if (event.type == sf::Event::Closed)
 					closeButtonClicked();
 			}
 
-			doFrame();
+			doFrame(clock.getElapsedTime().asSeconds());
+			clock.restart();
 
-			window->display();
+			window.display();
 		}
 
 		
@@ -26,10 +31,10 @@ namespace qaib {
 	}
 
     void Application::quit() {
-        window->close();
+        window.close();
     }
     
-	void Application::doFrame() {}
+	void Application::doFrame(float deltaTime) {}
 
 	void Application::closeButtonClicked(){
 		quit();

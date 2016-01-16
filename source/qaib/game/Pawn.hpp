@@ -10,12 +10,15 @@ namespace qaib {
 
 	class Pawn: public Movable, public KeptInGameWorld {
 	private:
-		PawnController* _controller;
+		PawnController* controller;
+		float moveSpeed;
 	public:
+		Pawn();
+
 		void setController(PawnController* controller);	// takes own
-		inline PawnController* controller() { return _controller; } // borrow
+		inline PawnController* getController() { return controller; } // borrow
 		
-		void applyPawnControl();
+		void applyPawnControl(float deltaTime);
 
 		virtual ~Pawn();
 	};

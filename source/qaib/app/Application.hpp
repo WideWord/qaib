@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include <qaib/util/Event.hpp>
+#include <SFML/Graphics.hpp>
 
 namespace sf {
 	class RenderWindow;
@@ -10,15 +10,17 @@ namespace qaib {
 
     class Application {
 	private:
-		sf::RenderWindow* window;
+		sf::RenderWindow window;
 	protected:
-		virtual void doFrame();
+		virtual void doFrame(float deltaTime);
 		virtual void closeButtonClicked();
 	public:
+		Application();
+
 		int exec();
         void quit();
 
-		inline sf::RenderWindow* getMainTarget() {
+		inline sf::RenderWindow& getMainTarget() {
 			return window;
 		}
         

@@ -4,23 +4,49 @@
 #include <qaib/game/Pawn.hpp>
 
 namespace qaib {
-
+	
 	GameRenderer::GameRenderer() {
 		pawnTexture.loadFromFile("data/kek.png");
 		pawnSprite.setTexture(pawnTexture);
+		pawnSprite.setOrigin(103.5f, 103.5f);
+
+		dotsPerGameMeter = 100;
 	}
 
-	void GameRenderer::drawFrame(sf::RenderTarget* target) {
+	void GameRenderer::drawFrame(sf::RenderTarget& target) {
 
-		target->clear();
-		
-		auto& pawns = gameWorld->pawns();
+		target.clear();
+
+		setupView(target);
+
+		auto& pawns = gameWorld->getPawns();
 		for (auto pawn : pawns) {
 			sf::RenderStates states;
 			states.transform = pawn->getSFTransform();
-			target->draw(pawnSprite, states);
+			states.transform = states.transform.scale(1.0f / 200.0f, 1.0f / 200.0f);
+			target.draw(pawnSprite, states);
 		}
 
+	}
+
+	glm::vec2 GameRenderer::screenToWorldPosition(glm::vec2 screenPos) {
+
+		glm::vec2 screenPosInMeters = screenPos / dotsPerGameMeter;
+		glm::vec2 center = glm::vec2(lastUsedView.getCenter().x, lastUsedView.getCenter().y);
+		glm::vec2 size = glm::vec2(lastUsedView.getSize().x, lastUsedView.getSize().y);
+		return screenPosInMeters - (size / 2.0f) - center;
+	}
+
+	void GameRenderer::setupView(sf::RenderTarget& target) {
+		sf::Vector2u targetSize = target.getSize();
+		glm::vec2 targetSizeInMeters = glm::vec2(targetSize.x, targetSize.y) / dotsPerGameMeter;
+
+		sf::View view;
+		view.setSize(targetSizeInMeters.x, targetSizeInMeters.y);
+		view.setCenter(0, 0);
+		target.setView(view);
+
+		lastUsedView = view;
 	}
 
 }
