@@ -2,6 +2,7 @@
 
 #include <qaib/game/GameWorld.hpp>
 #include <qaib/game/Pawn.hpp>
+#include <qaib/game/StaticObject.hpp>
 
 namespace qaib {
 	
@@ -10,7 +11,7 @@ namespace qaib {
 		pawnSprite.setTexture(pawnTexture);
 		pawnSprite.setOrigin(103.5f, 103.5f);
 
-		dotsPerGameMeter = 100;
+		dotsPerGameMeter = 75;
 	}
 
 	void GameRenderer::drawFrame(sf::RenderTarget& target) {
@@ -25,6 +26,15 @@ namespace qaib {
 			states.transform = pawn->getSFTransform();
 			states.transform = states.transform.scale(1.0f / 200.0f, 1.0f / 200.0f);
 			target.draw(pawnSprite, states);
+		}
+
+		auto& staticObjects = gameWorld->getStaticObjects();
+		for (auto object : staticObjects) {
+			auto sprite = object->getSprite();
+			if (sprite == nullptr) continue;
+			sf::RenderStates states;
+			states.transform = object->getSFTransform();
+			target.draw(*sprite, states);
 		}
 
 	}

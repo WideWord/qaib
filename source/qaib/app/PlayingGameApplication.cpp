@@ -1,6 +1,7 @@
 #include <qaib/app/PlayingGameApplication.hpp>
 #include <qaib/game/Pawn.hpp>
 #include <qaib/game/PlayerPawnController.hpp>
+#include <qaib/game/StaticVehicle.hpp>
 
 namespace qaib {
 
@@ -11,6 +12,8 @@ namespace qaib {
 		gameWorld.addPawn(pawn);
 
 		pawn->setController(new PlayerPawnController(gameRenderer, getMainTarget()));
+
+		gameWorld.addStaticObject(new StaticVehicle());
 	}
 
 	void PlayingGameApplication::doFrame(float deltaTime) {
