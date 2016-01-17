@@ -8,16 +8,19 @@ namespace qaib {
 	PlayingGameApplication::PlayingGameApplication() {
 		gameRenderer.setGameWorld(&gameWorld);
 
-		Pawn* pawn = new Pawn();
-		gameWorld.addPawn(pawn);
+		playerPawn = new Pawn();
+		gameWorld.addPawn(playerPawn);
 
-		pawn->setController(new PlayerPawnController(gameRenderer, getMainTarget()));
+		playerPawn->setController(new PlayerPawnController(gameRenderer, getMainTarget()));
 
 		gameWorld.addStaticObject(new StaticVehicle());
 	}
 
 	void PlayingGameApplication::doFrame(float deltaTime) {
 		gameWorld.doTick(deltaTime);
+
+		gameRenderer.setCameraTarget(playerPawn->getPosition());
+
 		gameRenderer.drawFrame(getMainTarget());
 	}
 }

@@ -64,7 +64,7 @@ namespace qaib {
 
 		sf::View view;
 		view.setSize(targetSizeInMeters.x, targetSizeInMeters.y);
-		view.setCenter(0, 0);
+		view.setCenter(cameraTarget.x, cameraTarget.y);
 		target.setView(view);
 
 		lastUsedView = view;
