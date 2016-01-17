@@ -13,6 +13,9 @@ namespace qaib {
 		sf::Texture pawnTexture;
 		sf::Sprite pawnSprite;
 
+		sf::Texture sandTexture;
+		sf::Sprite sandSprite;
+
 		sf::View lastUsedView;
 
 		float dotsPerGameMeter;

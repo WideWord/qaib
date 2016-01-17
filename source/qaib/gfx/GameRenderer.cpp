@@ -11,6 +11,15 @@ namespace qaib {
 		pawnSprite.setTexture(pawnTexture);
 		pawnSprite.setOrigin(103.5f, 103.5f);
 
+		sandTexture.loadFromFile("data/art/terrain/sand.jpg");
+		sandTexture.setRepeated(true);
+
+		sandSprite.setTexture(sandTexture);
+		sandSprite.setTextureRect(sf::IntRect(0, 0, 256 * 50, 256 * 50));
+		sandSprite.setPosition(-100, -100);
+		sandSprite.setScale(1 / 100.0f, 1 / 100.0f);
+		
+
 		dotsPerGameMeter = 75;
 	}
 
@@ -20,13 +29,7 @@ namespace qaib {
 
 		setupView(target);
 
-		auto& pawns = gameWorld->getPawns();
-		for (auto pawn : pawns) {
-			sf::RenderStates states;
-			states.transform = pawn->getSFTransform();
-			states.transform = states.transform.scale(1.0f / 200.0f, 1.0f / 200.0f);
-			target.draw(pawnSprite, states);
-		}
+		target.draw(sandSprite);
 
 		auto& staticObjects = gameWorld->getStaticObjects();
 		for (auto object : staticObjects) {
@@ -35,6 +38,14 @@ namespace qaib {
 			sf::RenderStates states;
 			states.transform = object->getSFTransform();
 			target.draw(*sprite, states);
+		}
+
+		auto& pawns = gameWorld->getPawns();
+		for (auto pawn : pawns) {
+			sf::RenderStates states;
+			states.transform = pawn->getSFTransform();
+			states.transform = states.transform.scale(1.0f / 200.0f, 1.0f / 200.0f);
+			target.draw(pawnSprite, states);
 		}
 
 	}
