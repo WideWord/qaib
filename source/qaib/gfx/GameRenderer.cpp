@@ -55,7 +55,7 @@ namespace qaib {
 		glm::vec2 screenPosInMeters = screenPos / dotsPerGameMeter;
 		glm::vec2 center = glm::vec2(lastUsedView.getCenter().x, lastUsedView.getCenter().y);
 		glm::vec2 size = glm::vec2(lastUsedView.getSize().x, lastUsedView.getSize().y);
-		return screenPosInMeters - (size / 2.0f) - center;
+		return screenPosInMeters - (size / 2.0f) + center;
 	}
 
 	void GameRenderer::setupView(sf::RenderTarget& target) {

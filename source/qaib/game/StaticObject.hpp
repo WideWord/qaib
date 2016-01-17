@@ -12,6 +12,7 @@ namespace qaib {
 	class StaticObject: public Movable, public KeptInGameWorld {
 	public:
 		virtual sf::Sprite* getSprite() = 0;
+		virtual ~StaticObject();
 	};
 
 }

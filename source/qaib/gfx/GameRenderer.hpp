@@ -29,7 +29,7 @@ namespace qaib {
 		inline void setGameWorld(GameWorld* world) {
 			gameWorld = world;
 		}
-		inline GameWorld* getGameWorld() { gameWorld; }
+		inline GameWorld* getGameWorld() { return gameWorld; }
 
 		virtual void drawFrame(sf::RenderTarget& target);
 

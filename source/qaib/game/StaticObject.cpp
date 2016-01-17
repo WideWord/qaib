@@ -2,8 +2,6 @@
 
 namespace qaib {
 
-	/*b2FixtureDef StaticObject::physicsShape() {
-		
-	}*/
+	StaticObject::~StaticObject() {}
 
 }
