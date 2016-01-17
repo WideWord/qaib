@@ -8,6 +8,7 @@ namespace qaib {
 	private:
 		GameWorld* _world;
 	public:
+		KeptInGameWorld();
 		GameWorld* gameWorld() { return _world; }
 		void movedToGameWorld(GameWorld* newWorld); // weak ref
 	};

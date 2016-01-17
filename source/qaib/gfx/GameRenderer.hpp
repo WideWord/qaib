@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <glm/vec2.hpp>
 
 namespace qaib {
 
@@ -11,6 +12,17 @@ namespace qaib {
 		GameWorld* gameWorld;
 		sf::Texture pawnTexture;
 		sf::Sprite pawnSprite;
+
+		sf::Texture sandTexture;
+		sf::Sprite sandSprite;
+
+		sf::View lastUsedView;
+
+		float dotsPerGameMeter;
+
+		void setupView(sf::RenderTarget& target);
+
+		glm::vec2 cameraTarget;
 	public:
 		GameRenderer();
 
@@ -19,7 +31,13 @@ namespace qaib {
 		}
 		inline GameWorld* getGameWorld() { gameWorld; }
 
-		virtual void drawFrame(sf::RenderTarget* target);
+		virtual void drawFrame(sf::RenderTarget& target);
+
+		glm::vec2 screenToWorldPosition(glm::vec2 screenPos);
+
+		inline void setCameraTarget(glm::vec2 target) { cameraTarget = target; }
+		inline glm::vec2 getCameraTarget() { return cameraTarget; }
+
 	};
 
 }

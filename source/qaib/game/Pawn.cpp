@@ -1,21 +1,38 @@
 #include <qaib/game/Pawn.hpp>
+
 #include <qaib/game/PawnController.hpp>
+#include <glm/geometric.hpp>
+#include <glm/gtx/vector_angle.hpp>
 
 namespace qaib {
 
-	void Pawn::setController(PawnController* controller) {
-		if (_controller != nullptr) delete _controller;
-		_controller = controller;
+	Pawn::Pawn() {
+		moveSpeed = 5.0f;
+		controller = nullptr;
 	}
 
-	void Pawn::applyPawnControl() {
-		if (_controller == nullptr) return;
-		glm::vec2 pos = getPosition();
-		pos += _controller->movementDirection();
+	void Pawn::setController(PawnController* newController) {
+		if (controller != nullptr) delete controller;
+		controller = newController;
+		controller->setPawn(this);
+	}
+
+	void Pawn::applyPawnControl(float deltaTime) {
+		using glm::vec2;
+		using glm::normalize;
+
+		if (controller == nullptr) return;
+		vec2 pos = getPosition();
+		pos += controller->movementDirection() * deltaTime * moveSpeed;
+
+		vec2 forward = controller->turningTo();
+		float rotation = glm::orientedAngle(vec2(1, 0), normalize(forward));
+
 		setPosition(pos);
+		setRotation(rotation);
 	}
 
 	Pawn::~Pawn() {
-		if (_controller != nullptr) delete _controller;
+		if (controller != nullptr) delete controller;
 	}
 }
