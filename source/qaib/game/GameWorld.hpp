@@ -4,6 +4,7 @@
 #include <memory>
 #include <Box2D/Box2D.h>
 
+
 namespace qaib {
 
 	class Pawn;
@@ -11,9 +12,17 @@ namespace qaib {
 
 	class GameWorld {
 	private:
+		struct PawnEntry {
+			std::shared_ptr<Pawn> pawn;
+			b2Body* body;
+		};
+
+		std::list<PawnEntry> pawnEntries;
+
 		std::list<std::shared_ptr<Pawn>> pawns;
 		std::list<std::shared_ptr<StaticObject>> statics;
-		//b2World world;
+
+		b2World physicsWorld;
 	public:
 		GameWorld();
 

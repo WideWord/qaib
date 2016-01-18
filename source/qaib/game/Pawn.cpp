@@ -16,18 +16,16 @@ namespace qaib {
 		controller->setPawn(this);
 	}
 
-	void Pawn::applyPawnControl(float deltaTime) {
+	void Pawn::applyPawnControl(float deltaTime, glm::vec2& movementDirection) {
 		using glm::vec2;
 		using glm::normalize;
 
 		if (controller == nullptr) return;
-		vec2 pos = getPosition();
-		pos += controller->movementDirection() * deltaTime * moveSpeed;
+		movementDirection = controller->movementDirection() * moveSpeed;
 
 		vec2 forward = controller->turningTo();
 		float rotation = glm::orientedAngle(vec2(1, 0), normalize(forward));
 
-		setPosition(pos);
 		setRotation(rotation);
 	}
 

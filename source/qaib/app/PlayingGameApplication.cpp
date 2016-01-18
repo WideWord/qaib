@@ -14,6 +14,11 @@ namespace qaib {
 		playerPawn->setController(std::make_shared<PlayerPawnController>(gameRenderer, getMainTarget()));
 
 		gameWorld.addStaticObject(std::make_shared<StaticVehicle>());
+
+
+		auto anotherPawn = std::make_shared<Pawn>();
+		gameWorld.addPawn(anotherPawn);
+		anotherPawn->setPosition(glm::vec2(4, 4));
 	}
 
 	void PlayingGameApplication::doFrame(float deltaTime) {

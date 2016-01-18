@@ -20,7 +20,7 @@ namespace qaib {
 		void setController(std::shared_ptr<PawnController> controller);
 		inline std::shared_ptr<PawnController> getController() { return controller; }
 		
-		void applyPawnControl(float deltaTime);
+		void applyPawnControl(float deltaTime, glm::vec2& movementDirection);
 
 		virtual ~Pawn();
 	};
