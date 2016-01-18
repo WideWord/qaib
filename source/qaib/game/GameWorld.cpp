@@ -34,6 +34,25 @@ namespace qaib {
 	}
 
 	void GameWorld::addStaticObject(std::shared_ptr<StaticObject> obj) {
+
+		StaticObjectEntry entry;
+
+		entry.object = obj;
+
+		b2BodyDef bodyDef;
+		bodyDef.type = b2_staticBody;
+		bodyDef.position = convert<b2Vec2>(obj->getPosition());
+		bodyDef.angle = obj->getRotation();
+
+		entry.body = physicsWorld.CreateBody(&bodyDef);
+		auto shape = obj->getShape();
+		b2FixtureDef fixtureDef;
+		fixtureDef.shape = shape.get();
+		fixtureDef.density = 1;
+		entry.body->CreateFixture(&fixtureDef);
+
+		staticObjectEntries.push_back(entry);
+
 		statics.push_back(obj);
 		obj->movedToGameWorld(this);
 	}
@@ -48,6 +67,10 @@ namespace qaib {
 
 			entry.body->SetLinearVelocity(convert<b2Vec2>(movementDirection));
 			entry.body->SetTransform(convert<b2Vec2>(entry.pawn->getPosition()), entry.body->GetAngle());
+		}
+
+		for (auto& entry : staticObjectEntries) {
+			entry.body->SetTransform(convert<b2Vec2>(entry.object->getPosition()), entry.body->GetAngle());
 		}
 
 		physicsWorld.Step(deltaTime, 10, 10);

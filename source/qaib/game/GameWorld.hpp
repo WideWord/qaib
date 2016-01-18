@@ -20,6 +20,14 @@ namespace qaib {
 		std::list<PawnEntry> pawnEntries;
 
 		std::list<std::shared_ptr<Pawn>> pawns;
+
+		struct StaticObjectEntry {
+			std::shared_ptr<StaticObject> object;
+			b2Body* body;
+		};
+
+		std::list<StaticObjectEntry> staticObjectEntries;
+
 		std::list<std::shared_ptr<StaticObject>> statics;
 
 		b2World physicsWorld;

@@ -10,6 +10,7 @@ namespace qaib {
 		static sf::Texture* vehicleTexture;
 	public:
 		sf::Sprite* getSprite() override;
+		std::shared_ptr<b2Shape> getShape() override;
 	};
 
 }

@@ -17,4 +17,10 @@ namespace qaib {
 		return vehicleSprite;
 	}
 
+	std::shared_ptr<b2Shape> StaticVehicle::getShape() {
+		auto shape = std::make_shared<b2PolygonShape>();
+		shape->SetAsBox(0.7f, 1.9f);
+		return shape;
+	}
+
 }
