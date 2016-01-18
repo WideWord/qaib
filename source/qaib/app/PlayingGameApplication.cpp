@@ -8,12 +8,12 @@ namespace qaib {
 	PlayingGameApplication::PlayingGameApplication() {
 		gameRenderer.setGameWorld(&gameWorld);
 
-		playerPawn = new Pawn();
+		playerPawn = std::make_shared<Pawn>();
 		gameWorld.addPawn(playerPawn);
 
-		playerPawn->setController(new PlayerPawnController(gameRenderer, getMainTarget()));
+		playerPawn->setController(std::make_shared<PlayerPawnController>(gameRenderer, getMainTarget()));
 
-		gameWorld.addStaticObject(new StaticVehicle());
+		gameWorld.addStaticObject(std::make_shared<StaticVehicle>());
 	}
 
 	void PlayingGameApplication::doFrame(float deltaTime) {

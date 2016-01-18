@@ -6,12 +6,12 @@ namespace qaib {
 
 	GameWorld::GameWorld() {}
 
-	void GameWorld::addPawn(Pawn* pawn) {
+	void GameWorld::addPawn(std::shared_ptr<Pawn> pawn) {
 		pawns.push_back(pawn);
 		pawn->movedToGameWorld(this);
 	}
 
-	void GameWorld::addStaticObject(StaticObject* obj) {
+	void GameWorld::addStaticObject(std::shared_ptr<StaticObject> obj) {
 		statics.push_back(obj);
 		obj->movedToGameWorld(this);
 	}
@@ -23,13 +23,6 @@ namespace qaib {
 		}
 	}
 
-	GameWorld::~GameWorld() {
-		for (auto pawn : pawns) {
-			delete pawn;
-		}
-		for (auto obj : statics) {
-			delete obj;
-		}
-	}
+	GameWorld::~GameWorld() {}
 
 }

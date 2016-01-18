@@ -3,6 +3,8 @@
 #include <qaib/game/Movable.hpp>
 #include <qaib/game/KeptInGameWorld.hpp>
 
+#include <memory>
+
 namespace qaib {
 	
 	class PawnController;
@@ -10,13 +12,13 @@ namespace qaib {
 
 	class Pawn: public Movable, public KeptInGameWorld {
 	private:
-		PawnController* controller;
+		std::shared_ptr<PawnController> controller;
 		float moveSpeed;
 	public:
 		Pawn();
 
-		void setController(PawnController* controller);	// takes own
-		inline PawnController* getController() { return controller; } // borrow
+		void setController(std::shared_ptr<PawnController> controller);
+		inline std::shared_ptr<PawnController> getController() { return controller; }
 		
 		void applyPawnControl(float deltaTime);
 

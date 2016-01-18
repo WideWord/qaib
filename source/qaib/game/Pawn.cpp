@@ -11,8 +11,7 @@ namespace qaib {
 		controller = nullptr;
 	}
 
-	void Pawn::setController(PawnController* newController) {
-		if (controller != nullptr) delete controller;
+	void Pawn::setController(std::shared_ptr<PawnController> newController) {
 		controller = newController;
 		controller->setPawn(this);
 	}
@@ -32,7 +31,5 @@ namespace qaib {
 		setRotation(rotation);
 	}
 
-	Pawn::~Pawn() {
-		if (controller != nullptr) delete controller;
-	}
+	Pawn::~Pawn() { }
 }

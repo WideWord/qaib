@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <memory>
 #include <Box2D/Box2D.h>
 
 namespace qaib {
@@ -10,17 +11,17 @@ namespace qaib {
 
 	class GameWorld {
 	private:
-		std::list<Pawn*> pawns;
-		std::list<StaticObject*> statics;
+		std::list<std::shared_ptr<Pawn>> pawns;
+		std::list<std::shared_ptr<StaticObject>> statics;
 		//b2World world;
 	public:
 		GameWorld();
 
-		void addPawn(Pawn* pawn); // takes own
-		inline const std::list<Pawn*>& getPawns() { return pawns; }
+		void addPawn(std::shared_ptr<Pawn> pawn);
+		inline const std::list<std::shared_ptr<Pawn>>& getPawns() { return pawns; }
 
-		void addStaticObject(StaticObject* object); // takes own
-		inline const std::list<StaticObject*>& getStaticObjects() { return statics; }
+		void addStaticObject(std::shared_ptr<StaticObject> object); // takes own
+		inline const std::list<std::shared_ptr<StaticObject>>& getStaticObjects() { return statics; }
 
 		void doTick(float deltaTime);
 
