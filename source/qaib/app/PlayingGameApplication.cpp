@@ -1,7 +1,7 @@
 #include <qaib/app/PlayingGameApplication.hpp>
 #include <qaib/game/Pawn.hpp>
 #include <qaib/game/PlayerPawnController.hpp>
-#include <qaib/game/StaticVehicle.hpp>
+#include <qaib/game/StaticObject.hpp>
 
 namespace qaib {
 
@@ -13,8 +13,11 @@ namespace qaib {
 
 		playerPawn->setController(std::make_shared<PlayerPawnController>(gameRenderer, getMainTarget()));
 
-		gameWorld.addStaticObject(std::make_shared<StaticVehicle>());
+		auto def = YAML::LoadFile("data/static/veh_pickup/config.yaml");
 
+		auto cl = std::make_shared<StaticObjectClass>(def);
+
+		gameWorld.addStaticObject(std::make_shared<StaticObject>(cl));
 
 		auto anotherPawn = std::make_shared<Pawn>();
 		gameWorld.addPawn(anotherPawn);

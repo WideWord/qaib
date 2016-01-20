@@ -6,7 +6,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-file(GLOB QAIB_SOURCE source/**/*.cpp source/**/**/*.cpp source/**/*.hpp source/**/**/*.hpp)
+file(GLOB QAIB_SOURCE source/**/*.cpp source/**/**/*.cpp source/**/**/**/*.cpp source/**/*.hpp source/**/**/*.hpp source/**/**/**/*.hpp)
 
 
 macro(GroupSources curdir)
@@ -56,6 +56,11 @@ include_directories(${GLM_INCLUDE_DIRS})
 find_package(Box2D)
 include_directories(${BOX2D_INCLUDE_DIR})
 set(QAIB_LIBS ${QAIB_LIBS} ${BOX2D_LIBRARIES})
+
+# YamlCpp
+find_package(YamlCpp)
+include_directories(${YAMLCPP_INCLUDE_DIR})
+set(QAIB_LIBS ${QAIB_LIBS} ${YAMLCPP_LIBRARY})
 
 
 add_executable(qaib ${QAIB_SOURCE})
