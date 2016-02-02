@@ -62,6 +62,10 @@ find_package(YamlCpp)
 include_directories(${YAMLCPP_INCLUDE_DIR})
 set(QAIB_LIBS ${QAIB_LIBS} ${YAMLCPP_LIBRARY})
 
+# Boost
+find_package(Boost COMPONENTS filesystem)
+include_directories(${Boost_INCLUDE_DIRS})
+set(QAIB_LIBS ${QAIB_LIBS} ${Boost_LIBRARIES})
 
 add_executable(qaib ${QAIB_SOURCE})
 target_compile_features(qaib PRIVATE cxx_range_for)

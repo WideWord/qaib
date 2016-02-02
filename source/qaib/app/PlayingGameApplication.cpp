@@ -6,6 +6,8 @@
 namespace qaib {
 
 	PlayingGameApplication::PlayingGameApplication() {
+		objectClassManager.findClasses();
+
 		gameRenderer.setGameWorld(&gameWorld);
 
 		playerPawn = std::make_shared<Pawn>();
@@ -17,7 +19,7 @@ namespace qaib {
 
 		auto cl = std::make_shared<StaticObjectClass>(def);
 
-		gameWorld.addStaticObject(std::make_shared<StaticObject>(cl));
+		gameWorld.addStaticObject(std::make_shared<StaticObject>(objectClassManager.getRandomStaticObjectClass()));
 
 		auto anotherPawn = std::make_shared<Pawn>();
 		gameWorld.addPawn(anotherPawn);
