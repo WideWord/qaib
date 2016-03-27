@@ -3,6 +3,7 @@
 #include <qaib/game/PawnController.hpp>
 #include <glm/geometric.hpp>
 #include <glm/gtx/vector_angle.hpp>
+#include <qaib/game/GameWorld.hpp>
 
 namespace qaib {
 
@@ -16,7 +17,7 @@ namespace qaib {
 		controller->setPawn(this);
 	}
 
-	void Pawn::applyPawnControl(float deltaTime, glm::vec2& movementDirection) {
+	void Pawn::doTick(GameWorld& gameWorld, float deltaTime, glm::vec2& movementDirection) {
 		using glm::vec2;
 		using glm::normalize;
 
@@ -27,6 +28,10 @@ namespace qaib {
 		float rotation = glm::orientedAngle(vec2(1, 0), normalize(forward));
 
 		setRotation(rotation);
+
+		if (controller->shouldAttack()) {
+			gameWorld.doShot(getPosition(), getPosition());
+		}
 	}
 
 	Pawn::~Pawn() { }

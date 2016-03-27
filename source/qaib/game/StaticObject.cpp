@@ -27,7 +27,7 @@ namespace qaib {
 		}
 	}
 
-	sf::Sprite* StaticObjectClass::getSprite() {
+	std::shared_ptr<sf::Sprite> StaticObjectClass::getSprite() {
 		if (sprite == nullptr) {
 			texture = std::make_shared<sf::Texture>();
 			texture->loadFromFile(textureFile);
@@ -35,7 +35,7 @@ namespace qaib {
 			sprite->setOrigin(convert<sf::Vector2f>(centerPoint));
 			sprite->setScale(sf::Vector2f(spriteScale, spriteScale));
 		}
-		return sprite.get();
+		return sprite;
 	}
 
 	std::shared_ptr<b2Shape> StaticObjectClass::getShape() {

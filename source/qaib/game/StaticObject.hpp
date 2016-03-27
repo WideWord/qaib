@@ -1,7 +1,6 @@
 #pragma once
 
 #include <qaib/game/Movable.hpp>
-#include <qaib/game/KeptInGameWorld.hpp>
 
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
@@ -25,17 +24,18 @@ namespace qaib {
 		std::vector<b2Vec2> physicsShape;
 	public:
 		StaticObjectClass(const YAML::Node& def);
-		sf::Sprite* getSprite();
+		std::shared_ptr<sf::Sprite> getSprite();
 		std::shared_ptr<b2Shape> getShape();
 
+		std::string getName() { return name; }
 	};
 
-	class StaticObject: public Movable, public KeptInGameWorld {
+	class StaticObject: public Movable {
 	private:
 		std::shared_ptr<StaticObjectClass> staticObjectClass;
 	public:
 		StaticObject(std::shared_ptr<StaticObjectClass> cl) : staticObjectClass(cl) {}
-		inline sf::Sprite* getSprite() { return staticObjectClass->getSprite(); }
+		inline std::shared_ptr<sf::Sprite> getSprite() { return staticObjectClass->getSprite(); }
 		inline std::shared_ptr<b2Shape> getShape() { return staticObjectClass->getShape(); }
 		virtual ~StaticObject();
 	};

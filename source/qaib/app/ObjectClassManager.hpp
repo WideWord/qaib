@@ -19,6 +19,7 @@ namespace qaib {
         void loadClass(const YAML::Node& def);
 
         std::shared_ptr<StaticObjectClass> getRandomStaticObjectClass();
+        std::shared_ptr<StaticObjectClass> getStaticObjectClassWithName(std::string name);
     };
 
     qaibExceptionDecl(ObjectClassLoadingFailed, "Object class loading failed: ", Exception);

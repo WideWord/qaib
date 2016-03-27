@@ -3,7 +3,7 @@
 #include <list>
 #include <memory>
 #include <Box2D/Box2D.h>
-
+#include <glm/glm.hpp>
 
 namespace qaib {
 
@@ -30,6 +30,8 @@ namespace qaib {
 
 		std::list<std::shared_ptr<StaticObject>> statics;
 
+		std::list<b2Body*> bullets;
+
 		b2World physicsWorld;
 	public:
 		GameWorld();
@@ -39,6 +41,8 @@ namespace qaib {
 
 		void addStaticObject(std::shared_ptr<StaticObject> object); // takes own
 		inline const std::list<std::shared_ptr<StaticObject>>& getStaticObjects() { return statics; }
+
+		void doShot(glm::vec2 fromPosition, glm::vec2 inDirection);
 
 		void doTick(float deltaTime);
 

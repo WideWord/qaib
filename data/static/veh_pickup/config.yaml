@@ -3,9 +3,9 @@ type: static
 sprite:
   texture: data/static/veh_pickup/veh_pickup.png
   scale: 0.02
-  center: [0, 0]
+  center: [2.38, 2.72]
 collider:
-- [0, 0]
-- [1, 0]
-- [1, 1]
-- [0, 1]
+- [1.5, 0.72]
+- [3.24, 0.72]
+- [3.24, 4.78]
+- [1.5, 4.78]

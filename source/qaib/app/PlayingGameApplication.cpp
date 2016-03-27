@@ -15,11 +15,9 @@ namespace qaib {
 
 		playerPawn->setController(std::make_shared<PlayerPawnController>(gameRenderer, getMainTarget()));
 
-		auto def = YAML::LoadFile("data/static/veh_pickup/config.yaml");
-
-		auto cl = std::make_shared<StaticObjectClass>(def);
-
-		gameWorld.addStaticObject(std::make_shared<StaticObject>(objectClassManager.getRandomStaticObjectClass()));
+		auto pickupClass = objectClassManager.getStaticObjectClassWithName("veh_pickup");
+		auto pickup = std::make_shared<StaticObject>(pickupClass);
+		gameWorld.addStaticObject(pickup);
 
 		auto anotherPawn = std::make_shared<Pawn>();
 		gameWorld.addPawn(anotherPawn);

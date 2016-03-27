@@ -6,36 +6,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+
 file(GLOB QAIB_SOURCE source/**/*.cpp source/**/**/*.cpp source/**/**/**/*.cpp source/**/*.hpp source/**/**/*.hpp source/**/**/**/*.hpp)
 
-
-macro(GroupSources curdir)
-
-    file(GLOB children RELATIVE ${PROJECT_SOURCE_DIR}/${curdir}
- ${PROJECT_SOURCE_DIR}/${curdir}/*)
-
-    foreach(child ${children})
-
-           if(IS_DIRECTORY ${PROJECT_SOURCE_DIR}/${curdir}/${child})
-
-                   GroupSources(${curdir}/${child})
-
-           else()
-
-                  string(REPLACE "/" "\\" groupname ${curdir})
-
-                    string(REPLACE "src" "Common" groupname ${groupname})
-
-             source_group(${groupname} FILES
- ${PROJECT_SOURCE_DIR}/${curdir}/${child})
-
-           endif()
-
-    endforeach()
-
-endmacro()
-
-GroupSources(source/qaib)
 
 include_directories(source)
 
@@ -46,6 +20,11 @@ include_directories(source)
 find_package(SFML 2 COMPONENTS system window graphics)
 include_directories(${SFML_INCLUDE_DIR})
 set(QAIB_LIBS ${QAIB_LIBS} ${SFML_LIBRARIES})
+
+# SFGUI
+find_package(SFGUI)
+include_directories(${SFGUI_INCLUDE_DIR})
+set(QAIB_LIBS ${QAIB_LIBS} ${SFGUI_LIBRARY})
 
 # GLM
 find_package(GLM)

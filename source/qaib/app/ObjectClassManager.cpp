@@ -70,4 +70,13 @@ namespace qaib {
             return staticObjectClasses[rand() % classesCount];
         }
     }
+
+    std::shared_ptr<StaticObjectClass> ObjectClassManager::getStaticObjectClassWithName(std::string name) {
+        for (auto cl : staticObjectClasses) {
+            if (cl->getName().compare(name) == 0) {
+                return cl;
+            }
+        }
+        return nullptr;
+    }
 }

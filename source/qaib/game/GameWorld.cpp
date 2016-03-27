@@ -30,7 +30,6 @@ namespace qaib {
 		pawnEntries.push_back(entry);
 
 		pawns.push_back(pawn);
-		pawn->movedToGameWorld(this);
 	}
 
 	void GameWorld::addStaticObject(std::shared_ptr<StaticObject> obj) {
@@ -54,16 +53,34 @@ namespace qaib {
 		staticObjectEntries.push_back(entry);
 
 		statics.push_back(obj);
-		obj->movedToGameWorld(this);
 	}
 
+	void GameWorld::doShot(glm::vec2 fromPosition, glm::vec2 inDirection) {
+		b2BodyDef bodyDef;
+		bodyDef.type = b2_dynamicBody;
+		bodyDef.position = convert<b2Vec2>(fromPosition);
+		bodyDef.angle = 0;
+
+		auto body = physicsWorld.CreateBody(&bodyDef);
+		b2CircleShape shape;
+		shape.m_radius = 0.05f;
+
+		b2FixtureDef fixtureDef;
+		fixtureDef.shape = &shape;
+		fixtureDef.density = 1;
+		body->CreateFixture(&fixtureDef);
+
+		body->SetLinearVelocity(convert<b2Vec2>(glm::normalize(inDirection) * 10.0f));
+
+		bullets.push_back(body);
+	}
 
 	void GameWorld::doTick(float deltaTime) {
 		for (auto& entry : pawnEntries) {
 
 			glm::vec2 movementDirection;
 
-			entry.pawn->applyPawnControl(deltaTime, movementDirection);
+			entry.pawn->doTick(*this, deltaTime, movementDirection);
 
 			entry.body->SetLinearVelocity(convert<b2Vec2>(movementDirection));
 			entry.body->SetTransform(convert<b2Vec2>(entry.pawn->getPosition()), entry.body->GetAngle());
