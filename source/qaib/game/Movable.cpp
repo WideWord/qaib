@@ -9,7 +9,7 @@ namespace qaib {
 		rotation = 0;
 	}
 
-	sf::Transform Movable::getSFTransform()
+	sf::Transform Movable::getSFTransform() const
 	{
 		sf::Transform transform;
 		transform = transform.translate(position.x, position.y);

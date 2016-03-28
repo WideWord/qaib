@@ -5,29 +5,24 @@
 
 namespace qaib {
 
-	PlayingGameApplication::PlayingGameApplication() {
+	PlayingGameApplication::PlayingGameApplication(): playerPawn(gameWorld.createPawn()) {
 		objectClassManager.findClasses();
 
 		gameRenderer.setGameWorld(&gameWorld);
 
-		playerPawn = std::make_shared<Pawn>();
-		gameWorld.addPawn(playerPawn);
-
-		playerPawn->setController(std::make_shared<PlayerPawnController>(gameRenderer, getMainTarget()));
+		playerPawn.setController(std::make_shared<PlayerPawnController>(gameRenderer, getMainTarget()));
 
 		auto pickupClass = objectClassManager.getStaticObjectClassWithName("veh_pickup");
-		auto pickup = std::make_shared<StaticObject>(pickupClass);
-		gameWorld.addStaticObject(pickup);
+		gameWorld.createStaticObject(*pickupClass);
 
-		auto anotherPawn = std::make_shared<Pawn>();
-		gameWorld.addPawn(anotherPawn);
-		anotherPawn->setPosition(glm::vec2(4, 4));
+		auto anotherPawn = gameWorld.createPawn();
+		anotherPawn.setPosition(glm::vec2(4, 4));
 	}
 
 	void PlayingGameApplication::doFrame(float deltaTime) {
 		gameWorld.doTick(deltaTime);
 
-		gameRenderer.setCameraTarget(playerPawn->getPosition());
+		gameRenderer.setCameraTarget(playerPawn.getPosition());
 
 		gameRenderer.drawFrame(getMainTarget());
 	}

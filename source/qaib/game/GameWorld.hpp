@@ -4,6 +4,7 @@
 #include <memory>
 #include <Box2D/Box2D.h>
 #include <glm/glm.hpp>
+#include "StaticObject.hpp"
 
 namespace qaib {
 
@@ -13,22 +14,31 @@ namespace qaib {
 	class GameWorld {
 	private:
 		struct PawnEntry {
-			std::shared_ptr<Pawn> pawn;
+			PawnEntry(Pawn& pawn, b2Body* body) : pawn(pawn), body(body) {
+
+			}
+
+			Pawn& pawn;
 			b2Body* body;
 		};
 
 		std::list<PawnEntry> pawnEntries;
 
-		std::list<std::shared_ptr<Pawn>> pawns;
+		std::list<Pawn> pawns;
 
 		struct StaticObjectEntry {
-			std::shared_ptr<StaticObject> object;
+
+			StaticObjectEntry(StaticObject& object, b2Body* body) : object(object), body(body) {
+
+			}
+
+			StaticObject& object;
 			b2Body* body;
 		};
 
 		std::list<StaticObjectEntry> staticObjectEntries;
 
-		std::list<std::shared_ptr<StaticObject>> statics;
+		std::list<StaticObject> statics;
 
 		std::list<b2Body*> bullets;
 
@@ -36,11 +46,11 @@ namespace qaib {
 	public:
 		GameWorld();
 
-		void addPawn(std::shared_ptr<Pawn> pawn);
-		inline const std::list<std::shared_ptr<Pawn>>& getPawns() { return pawns; }
+		Pawn& createPawn();
+		inline const std::list<Pawn>& getPawns() { return pawns; }
 
-		void addStaticObject(std::shared_ptr<StaticObject> object); // takes own
-		inline const std::list<std::shared_ptr<StaticObject>>& getStaticObjects() { return statics; }
+		StaticObject& createStaticObject(StaticObjectClass& cl);
+		inline const std::list<StaticObject>& getStaticObjects() { return statics; }
 
 		void doShot(glm::vec2 fromPosition, glm::vec2 inDirection);
 

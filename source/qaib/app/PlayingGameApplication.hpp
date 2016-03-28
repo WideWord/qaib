@@ -13,7 +13,7 @@ namespace qaib {
 	private:
 		GameWorld gameWorld;
 		GameRenderer gameRenderer;
-		std::shared_ptr<Pawn> playerPawn;
+		Pawn& playerPawn;
 		ObjectClassManager objectClassManager;
 	protected:
 		virtual void doFrame(float deltaTime) override;

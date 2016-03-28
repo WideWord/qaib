@@ -27,18 +27,20 @@ namespace qaib {
 		}
 	}
 
-	std::shared_ptr<sf::Sprite> StaticObjectClass::getSprite() {
+	std::shared_ptr<sf::Sprite> StaticObjectClass::getSprite() const {
 		if (sprite == nullptr) {
-			texture = std::make_shared<sf::Texture>();
+			auto texture = std::make_shared<sf::Texture>();
 			texture->loadFromFile(textureFile);
-			sprite = std::make_shared<sf::Sprite>(*texture);
+			auto sprite = std::make_shared<sf::Sprite>(*texture);
 			sprite->setOrigin(convert<sf::Vector2f>(centerPoint));
 			sprite->setScale(sf::Vector2f(spriteScale, spriteScale));
+			((StaticObjectClass*)this)->texture = texture;
+			((StaticObjectClass*)this)->sprite = sprite;
 		}
 		return sprite;
 	}
 
-	std::shared_ptr<b2Shape> StaticObjectClass::getShape() {
+	std::shared_ptr<b2Shape> StaticObjectClass::getShape() const {
 		auto shape = std::make_shared<b2PolygonShape>();
 		shape->Set(&physicsShape.front(), physicsShape.size());
 		return shape;

@@ -24,19 +24,19 @@ namespace qaib {
 		std::vector<b2Vec2> physicsShape;
 	public:
 		StaticObjectClass(const YAML::Node& def);
-		std::shared_ptr<sf::Sprite> getSprite();
-		std::shared_ptr<b2Shape> getShape();
+		std::shared_ptr<sf::Sprite> getSprite() const;
+		std::shared_ptr<b2Shape> getShape() const;
 
 		std::string getName() { return name; }
 	};
 
 	class StaticObject: public Movable {
 	private:
-		std::shared_ptr<StaticObjectClass> staticObjectClass;
+		StaticObjectClass staticObjectClass;
 	public:
-		StaticObject(std::shared_ptr<StaticObjectClass> cl) : staticObjectClass(cl) {}
-		inline std::shared_ptr<sf::Sprite> getSprite() { return staticObjectClass->getSprite(); }
-		inline std::shared_ptr<b2Shape> getShape() { return staticObjectClass->getShape(); }
+		StaticObject(StaticObjectClass& cl) : staticObjectClass(cl) {}
+		inline std::shared_ptr<sf::Sprite> getSprite() const { return staticObjectClass.getSprite(); }
+		inline std::shared_ptr<b2Shape> getShape() const { return staticObjectClass.getShape(); }
 		virtual ~StaticObject();
 	};
 

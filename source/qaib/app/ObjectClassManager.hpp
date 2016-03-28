@@ -8,18 +8,15 @@ namespace qaib {
 
     class ObjectClassManager {
     private:
-        static ObjectClassManager* instance;
-        std::vector<std::shared_ptr<StaticObjectClass>> staticObjectClasses;
+        std::vector<StaticObjectClass> staticObjectClasses;
 
     public:
-        static ObjectClassManager& getInstance();
-
         void findClasses();
         void loadClass(std::string configPath);
         void loadClass(const YAML::Node& def);
 
-        std::shared_ptr<StaticObjectClass> getRandomStaticObjectClass();
-        std::shared_ptr<StaticObjectClass> getStaticObjectClassWithName(std::string name);
+        StaticObjectClass* getRandomStaticObjectClass();
+        StaticObjectClass* getStaticObjectClassWithName(std::string name);
     };
 
     qaibExceptionDecl(ObjectClassLoadingFailed, "Object class loading failed: ", Exception);

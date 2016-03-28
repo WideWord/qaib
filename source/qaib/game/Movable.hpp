@@ -23,7 +23,7 @@ namespace qaib {
 		inline float getRotation() { return rotation; }
 		inline void setRotation(float rot) { rotation = rot; }
 
-		sf::Transform getSFTransform();
+		sf::Transform getSFTransform() const;
 	};
 
 

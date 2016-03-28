@@ -8,13 +8,6 @@
 
 namespace qaib {
 
-    ObjectClassManager* ObjectClassManager::instance = nullptr;
-
-    ObjectClassManager& ObjectClassManager::getInstance() {
-        if (instance == nullptr) instance = new ObjectClassManager();
-        return *instance;
-    }
-
     void ObjectClassManager::findClasses() {
         using namespace boost::filesystem;
 
@@ -58,23 +51,23 @@ namespace qaib {
         std::string type = typeNode.as<std::string>("");
 
         if (type.compare("static") == 0) {
-            staticObjectClasses.push_back(std::make_shared<StaticObjectClass>(def));
+            staticObjectClasses.push_back(StaticObjectClass(def));
         }
     }
 
-    std::shared_ptr<StaticObjectClass> ObjectClassManager::getRandomStaticObjectClass() {
+    StaticObjectClass* ObjectClassManager::getRandomStaticObjectClass() {
         auto classesCount = staticObjectClasses.size();
         if (classesCount == 0) {
             return nullptr;
         } else {
-            return staticObjectClasses[rand() % classesCount];
+            return &staticObjectClasses[rand() % classesCount];
         }
     }
 
-    std::shared_ptr<StaticObjectClass> ObjectClassManager::getStaticObjectClassWithName(std::string name) {
-        for (auto cl : staticObjectClasses) {
-            if (cl->getName().compare(name) == 0) {
-                return cl;
+    StaticObjectClass* ObjectClassManager::getStaticObjectClassWithName(std::string name) {
+        for (auto& cl : staticObjectClasses) {
+            if (cl.getName().compare(name) == 0) {
+                return &cl;
             }
         }
         return nullptr;
