@@ -4,6 +4,7 @@
 #include <qaib/game/PawnController.hpp>
 
 #include <memory>
+#include <Box2D/Dynamics/b2Body.h>
 
 namespace qaib {
 	
@@ -14,8 +15,19 @@ namespace qaib {
 	private:
 		PawnController* controller;
 		float moveSpeed;
+
+		b2Body* physicsBody;
+	protected:
+		friend class GameWorld;
+		void setPhysicsBody(b2Body* body) {
+			physicsBody = body;
+		}
 	public:
 		Pawn();
+
+		b2Body* getPhysicsBody() {
+			return physicsBody;
+		}
 
 		template<typename C, typename ... Args> void useController(Args& ... args) {
 			if (controller != nullptr) delete controller;
@@ -23,7 +35,7 @@ namespace qaib {
 			controller->setPawn(this);
 		};
 
-		void doTick(GameWorld& gameWorld, float deltaTime, glm::vec2& outMovementDirection);
+		void doTick(GameWorld& gameWorld, float deltaTime);
 
 		virtual ~Pawn();
 	};

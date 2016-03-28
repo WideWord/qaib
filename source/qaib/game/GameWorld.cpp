@@ -27,8 +27,7 @@ namespace qaib {
 		pawnFixtureDef.density = 1;
 		body->CreateFixture(&pawnFixtureDef);
 
-
-		pawnEntries.push_back(PawnEntry(pawn, body));
+		pawn.setPhysicsBody(body);
 
 		return pawn;
 	}
@@ -53,7 +52,7 @@ namespace qaib {
 		fixtureDef.density = 1;
 		body->CreateFixture(&fixtureDef);
 
-		staticObjectEntries.push_back(StaticObjectEntry(obj, body));
+		obj.setPhysicsBody(body);
 
 		return obj;
 	}
@@ -79,24 +78,18 @@ namespace qaib {
 	}
 
 	void GameWorld::doTick(float deltaTime) {
-		for (auto& entry : pawnEntries) {
-
-			glm::vec2 movementDirection;
-
-			entry.pawn.doTick(*this, deltaTime, movementDirection);
-
-			entry.body->SetLinearVelocity(convert<b2Vec2>(movementDirection));
-			entry.body->SetTransform(convert<b2Vec2>(entry.pawn.getPosition()), entry.body->GetAngle());
+		for (auto& pawn : pawns) {
+			pawn.doTick(*this, deltaTime);
 		}
 
-		for (auto& entry : staticObjectEntries) {
-			entry.body->SetTransform(convert<b2Vec2>(entry.object.getPosition()), entry.body->GetAngle());
+		for (auto& object : statics) {
+			object.getPhysicsBody()->SetTransform(convert<b2Vec2>(object.getPosition()), object.getPhysicsBody()->GetAngle());
 		}
 
 		physicsWorld.Step(deltaTime, 10, 10);
 
-		for (auto& entry : pawnEntries) {
-			entry.pawn.setPosition(convert<glm::vec2>(entry.body->GetPosition()));
+		for (auto& pawn : pawns) {
+			pawn.setPosition(convert<glm::vec2>(pawn.getPhysicsBody()->GetPosition()));
 		}
 	}
 

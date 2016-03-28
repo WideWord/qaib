@@ -33,8 +33,19 @@ namespace qaib {
 	class StaticObject: public Movable {
 	private:
 		StaticObjectClass staticObjectClass;
+		b2Body* physicsBody;
+	protected:
+		friend class GameWorld;
+		void setPhysicsBody(b2Body* body) {
+			physicsBody = body;
+		}
 	public:
 		StaticObject(StaticObjectClass& cl) : staticObjectClass(cl) {}
+
+		b2Body* getPhysicsBody() {
+			return physicsBody;
+		}
+
 		inline std::shared_ptr<sf::Sprite> getSprite() const { return staticObjectClass.getSprite(); }
 		inline std::shared_ptr<b2Shape> getShape() const { return staticObjectClass.getShape(); }
 		virtual ~StaticObject();
