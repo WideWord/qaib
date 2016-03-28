@@ -10,6 +10,8 @@ namespace qaib {
 
 	int Application::exec() {
 
+		init();
+
 		sf::Clock clock;
 
 		while (window.isOpen()) {
@@ -35,6 +37,8 @@ namespace qaib {
     }
     
 	void Application::doFrame(float deltaTime) {}
+
+	void Application::init() {}
 
 	void Application::closeButtonClicked(){
 		quit();

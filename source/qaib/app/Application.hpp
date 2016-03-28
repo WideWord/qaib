@@ -12,6 +12,7 @@ namespace qaib {
 	private:
 		sf::RenderWindow window;
 	protected:
+		virtual void init();
 		virtual void doFrame(float deltaTime);
 		virtual void closeButtonClicked();
 	public:

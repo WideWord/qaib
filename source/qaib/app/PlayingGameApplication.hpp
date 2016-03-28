@@ -16,6 +16,7 @@ namespace qaib {
 		Pawn& playerPawn;
 		ObjectClassManager objectClassManager;
 	protected:
+		virtual void init() override;
 		virtual void doFrame(float deltaTime) override;
 	public:
 		PlayingGameApplication();

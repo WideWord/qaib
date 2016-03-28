@@ -5,7 +5,9 @@
 
 namespace qaib {
 
-	PlayingGameApplication::PlayingGameApplication(): playerPawn(gameWorld.createPawn()) {
+	PlayingGameApplication::PlayingGameApplication(): playerPawn(gameWorld.createPawn()) {}
+
+	void PlayingGameApplication::init() {
 		objectClassManager.findClasses();
 
 		gameRenderer.setGameWorld(&gameWorld);
