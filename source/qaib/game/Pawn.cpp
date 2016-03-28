@@ -12,11 +12,6 @@ namespace qaib {
 		controller = nullptr;
 	}
 
-	void Pawn::setController(std::shared_ptr<PawnController> newController) {
-		controller = newController;
-		controller->setPawn(this);
-	}
-
 	void Pawn::doTick(GameWorld& gameWorld, float deltaTime, glm::vec2& movementDirection) {
 		using glm::vec2;
 		using glm::normalize;
@@ -34,5 +29,9 @@ namespace qaib {
 		}
 	}
 
-	Pawn::~Pawn() { }
+	Pawn::~Pawn() {
+		if (controller != nullptr) {
+			delete controller;
+		}
+	}
 }

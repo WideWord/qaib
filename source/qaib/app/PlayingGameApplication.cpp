@@ -10,7 +10,7 @@ namespace qaib {
 
 		gameRenderer.setGameWorld(&gameWorld);
 
-		playerPawn.setController(std::make_shared<PlayerPawnController>(gameRenderer, getMainTarget()));
+		playerPawn.useController<PlayerPawnController>(gameRenderer, getMainTarget());
 
 		auto pickupClass = objectClassManager.getStaticObjectClassWithName("veh_pickup");
 		gameWorld.createStaticObject(*pickupClass);
