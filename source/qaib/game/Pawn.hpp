@@ -13,10 +13,14 @@ namespace qaib {
 
 	class Pawn: public Movable {
 	private:
-		PawnController* controller;
+		std::shared_ptr<PawnController> controller;
 		float moveSpeed;
 
 		b2Body* physicsBody;
+
+		bool shootAllowed;
+		float lastShootTimer;
+		float shootTimeout;
 	protected:
 		friend class GameWorld;
 		void setPhysicsBody(b2Body* body) {
@@ -30,8 +34,7 @@ namespace qaib {
 		}
 
 		template<typename C, typename ... Args> void useController(Args& ... args) {
-			if (controller != nullptr) delete controller;
-			controller = new C(args...);
+			controller = std::shared_ptr<PawnController>(new C(args...));
 			controller->setPawn(this);
 		};
 

@@ -1,6 +1,5 @@
 #include <qaib/game/Pawn.hpp>
 
-#include <qaib/game/PawnController.hpp>
 #include <glm/geometric.hpp>
 #include <glm/gtx/vector_angle.hpp>
 #include <qaib/game/GameWorld.hpp>
@@ -11,11 +10,22 @@ namespace qaib {
 	Pawn::Pawn() {
 		moveSpeed = 5.0f;
 		controller = nullptr;
+
+		shootAllowed = true;
+		lastShootTimer = 0;
+		shootTimeout = 1;
 	}
 
 	void Pawn::doTick(GameWorld& gameWorld, float deltaTime) {
 		using glm::vec2;
 		using glm::normalize;
+
+		if (!shootAllowed) {
+			lastShootTimer += deltaTime;
+			if (lastShootTimer > shootTimeout) {
+				shootAllowed = true;
+			}
+		}
 
 		if (controller == nullptr) {
 			physicsBody->SetLinearVelocity(b2Vec2_zero);
@@ -29,17 +39,15 @@ namespace qaib {
 
 		setRotation(rotation);
 
-		if (controller->shouldAttack()) {
+		if (controller->shouldAttack() && shootAllowed) {
 			gameWorld.doShot(getPosition(), forward);
+			lastShootTimer = 0;
+			shootAllowed = false;
 		}
 
 		physicsBody->SetLinearVelocity(convert<b2Vec2>(movementDirection));
 		physicsBody->SetTransform(convert<b2Vec2>(getPosition()), physicsBody->GetAngle());
 	}
 
-	Pawn::~Pawn() {
-		if (controller != nullptr) {
-			delete controller;
-		}
-	}
+	Pawn::~Pawn() {	}
 }
