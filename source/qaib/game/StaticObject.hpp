@@ -48,6 +48,13 @@ namespace qaib {
 
 		inline std::shared_ptr<sf::Sprite> getSprite() const { return staticObjectClass.getSprite(); }
 		inline std::shared_ptr<b2Shape> getShape() const { return staticObjectClass.getShape(); }
+
+		virtual glm::vec2 getPosition() const override;
+		virtual void setPosition(const glm::vec2& pos) override;
+
+		virtual float getRotation() const override;
+		virtual void setRotation(float rot) override;
+
 		virtual ~StaticObject();
 	};
 

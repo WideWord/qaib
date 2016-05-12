@@ -46,4 +46,21 @@ namespace qaib {
 		return shape;
 	}
 
+	glm::vec2 StaticObject::getPosition() const {
+		return convert<glm::vec2>(physicsBody->GetPosition());
+	}
+
+
+	void StaticObject::setPosition(const glm::vec2 &pos) {
+		physicsBody->SetTransform(convert<b2Vec2>(pos), physicsBody->GetAngle());
+	}
+
+	float StaticObject::getRotation() const {
+		return physicsBody->GetAngle();
+	}
+
+	void StaticObject::setRotation(float rot) {
+		physicsBody->SetTransform(physicsBody->GetPosition(), rot);
+
+	}
 }

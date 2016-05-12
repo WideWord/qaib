@@ -21,6 +21,8 @@ namespace qaib {
 		bool shootAllowed;
 		float lastShootTimer;
 		float shootTimeout;
+
+		float rotation;
 	protected:
 		friend class GameWorld;
 		void setPhysicsBody(b2Body* body) {
@@ -39,6 +41,12 @@ namespace qaib {
 		};
 
 		void doTick(GameWorld& gameWorld, float deltaTime);
+
+		virtual glm::vec2 getPosition() const override;
+		virtual void setPosition(const glm::vec2& pos) override;
+
+		virtual float getRotation() const override;
+		virtual void setRotation(float rot) override;
 
 		virtual ~Pawn();
 	};

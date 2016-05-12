@@ -11,17 +11,13 @@
 namespace qaib {
 
 	class Movable {
-	private:
-		glm::vec2 position;
-		float rotation;
 	public:
-		Movable();
 
-		inline glm::vec2 getPosition() { return position; }
-		inline void setPosition(const glm::vec2& pos) { position = pos; }
+		virtual glm::vec2 getPosition() const = 0;
+		virtual void setPosition(const glm::vec2& pos) = 0;
 
-		inline float getRotation() { return rotation; }
-		inline void setRotation(float rot) { rotation = rot; }
+		virtual float getRotation() const = 0;
+		virtual void setRotation(float rot) = 0;
 
 		sf::Transform getSFTransform() const;
 	};

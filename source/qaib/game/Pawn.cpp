@@ -14,6 +14,8 @@ namespace qaib {
 		shootAllowed = true;
 		lastShootTimer = 0;
 		shootTimeout = 1;
+
+		rotation = 0;
 	}
 
 	void Pawn::doTick(GameWorld& gameWorld, float deltaTime) {
@@ -29,7 +31,6 @@ namespace qaib {
 
 		if (controller == nullptr) {
 			physicsBody->SetLinearVelocity(b2Vec2_zero);
-			physicsBody->SetTransform(convert<b2Vec2>(getPosition()), physicsBody->GetAngle());
 			return;
 		}
 		auto movementDirection = controller->movementDirection() * moveSpeed;
@@ -46,7 +47,22 @@ namespace qaib {
 		}
 
 		physicsBody->SetLinearVelocity(convert<b2Vec2>(movementDirection));
-		physicsBody->SetTransform(convert<b2Vec2>(getPosition()), physicsBody->GetAngle());
+	}
+
+	glm::vec2 Pawn::getPosition() const {
+		return convert<glm::vec2>(physicsBody->GetPosition());
+	}
+
+	void Pawn::setPosition(const glm::vec2& pos) {
+		physicsBody->SetTransform(convert<b2Vec2>(pos), 0);
+	}
+
+	float Pawn::getRotation() const {
+		return rotation;
+	}
+
+	void Pawn::setRotation(float rot) {
+		rotation = rot;
 	}
 
 	Pawn::~Pawn() {	}

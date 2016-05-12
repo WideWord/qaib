@@ -82,15 +82,8 @@ namespace qaib {
 			pawn.doTick(*this, deltaTime);
 		}
 
-		for (auto& object : statics) {
-			object.getPhysicsBody()->SetTransform(convert<b2Vec2>(object.getPosition()), object.getPhysicsBody()->GetAngle());
-		}
-
 		physicsWorld.Step(deltaTime, 10, 10);
 
-		for (auto& pawn : pawns) {
-			pawn.setPosition(convert<glm::vec2>(pawn.getPhysicsBody()->GetPosition()));
-		}
 	}
 
 	GameWorld::~GameWorld() {}

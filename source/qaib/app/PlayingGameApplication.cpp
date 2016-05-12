@@ -15,7 +15,7 @@ namespace qaib {
 		playerPawn.useController<PlayerPawnController>(gameRenderer, getMainTarget());
 
 		auto pickupClass = objectClassManager.getStaticObjectClassWithName("veh_pickup");
-		gameWorld.createStaticObject(*pickupClass);
+		gameWorld.createStaticObject(*pickupClass).setPosition(glm::vec2(0, 0));
 
 		auto anotherPawn = gameWorld.createPawn();
 		anotherPawn.setPosition(glm::vec2(4, 4));

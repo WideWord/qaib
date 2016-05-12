@@ -5,12 +5,13 @@
 
 namespace qaib {
 
-	Movable::Movable() {
-		rotation = 0;
-	}
+
 
 	sf::Transform Movable::getSFTransform() const
 	{
+		auto position = getPosition();
+		auto rotation = getRotation();
+
 		sf::Transform transform;
 		transform = transform.translate(position.x, position.y);
 		transform = transform.rotate(rotation / 3.1415f * 180.0f);
