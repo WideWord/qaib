@@ -3,6 +3,16 @@
 
 namespace qaib {
 
+	StaticObject::StaticObject(StaticObjectClass& cl, b2Body* body) : staticObjectClass(cl) {
+		physicsBody = body;
+
+		auto shape = getShape();
+		b2FixtureDef fixtureDef;
+		fixtureDef.shape = shape.get();
+		fixtureDef.density = 1;
+		body->CreateFixture(&fixtureDef);
+	}
+
 	StaticObject::~StaticObject() {}
 
 	StaticObjectClass::StaticObjectClass(const YAML::Node &def) {

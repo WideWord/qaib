@@ -36,11 +36,9 @@ namespace qaib {
 		b2Body* physicsBody;
 	protected:
 		friend class GameWorld;
-		void setPhysicsBody(b2Body* body) {
-			physicsBody = body;
-		}
+		explicit StaticObject(StaticObjectClass& cl, b2Body* body);
+
 	public:
-		StaticObject(StaticObjectClass& cl) : staticObjectClass(cl) {}
 
 		b2Body* getPhysicsBody() {
 			return physicsBody;

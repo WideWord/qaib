@@ -32,18 +32,18 @@ namespace qaib {
 		target.draw(sandSprite);
 
 		auto& staticObjects = gameWorld->getStaticObjects();
-		for (auto& object : staticObjects) {
-			auto sprite = object.getSprite();
+		for (auto object : staticObjects) {
+			auto sprite = object->getSprite();
 			if (sprite == nullptr) continue;
 			sf::RenderStates states;
-			states.transform = object.getSFTransform();
+			states.transform = object->getSFTransform();
 			target.draw(*sprite, states);
 		}
 
 		auto& pawns = gameWorld->getPawns();
-		for (auto& pawn : pawns) {
+		for (auto pawn : pawns) {
 			sf::RenderStates states;
-			states.transform = pawn.getSFTransform();
+			states.transform = pawn->getSFTransform();
 			states.transform = states.transform.scale(1.0f / 200.0f, 1.0f / 200.0f);
 			target.draw(pawnSprite, states);
 		}

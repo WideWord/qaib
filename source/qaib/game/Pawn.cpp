@@ -7,7 +7,7 @@
 
 namespace qaib {
 
-	Pawn::Pawn() {
+	Pawn::Pawn(b2Body* body) {
 		moveSpeed = 5.0f;
 		controller = nullptr;
 
@@ -16,6 +16,16 @@ namespace qaib {
 		shootTimeout = 1;
 
 		rotation = 0;
+
+		physicsBody = body;
+
+		b2CircleShape pawnShape;
+		pawnShape.m_radius = 0.35f;
+
+		b2FixtureDef pawnFixtureDef;
+		pawnFixtureDef.shape = &pawnShape;
+		pawnFixtureDef.density = 1;
+		physicsBody->CreateFixture(&pawnFixtureDef);
 	}
 
 	void Pawn::doTick(GameWorld& gameWorld, float deltaTime) {

@@ -25,11 +25,8 @@ namespace qaib {
 		float rotation;
 	protected:
 		friend class GameWorld;
-		void setPhysicsBody(b2Body* body) {
-			physicsBody = body;
-		}
+		explicit Pawn(b2Body* physicsBody);
 	public:
-		Pawn();
 
 		b2Body* getPhysicsBody() {
 			return physicsBody;

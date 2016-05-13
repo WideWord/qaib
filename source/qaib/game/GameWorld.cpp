@@ -7,53 +7,26 @@ namespace qaib {
 
 	GameWorld::GameWorld() : physicsWorld(b2Vec2_zero) {}
 
-	Pawn& GameWorld::createPawn() {
-
-		pawns.push_back(Pawn());
-
-		Pawn& pawn = pawns.back();
+	Pawn* GameWorld::createPawn() {
 
 		b2BodyDef pawnBodyDef;
 		pawnBodyDef.type = b2_dynamicBody;
-		pawnBodyDef.position = convert<b2Vec2>(pawn.getPosition());
-		pawnBodyDef.angle = pawn.getRotation();
 
 		auto body = physicsWorld.CreateBody(&pawnBodyDef);
-		b2CircleShape pawnShape;
-		pawnShape.m_radius = 0.35f;
 
-		b2FixtureDef pawnFixtureDef;
-		pawnFixtureDef.shape = &pawnShape;
-		pawnFixtureDef.density = 1;
-		body->CreateFixture(&pawnFixtureDef);
-
-		pawn.setPhysicsBody(body);
-
+		auto pawn = new Pawn(body);
+		pawns.push_back(pawn);
 		return pawn;
 	}
 
-	StaticObject& GameWorld::createStaticObject(StaticObjectClass &cl){
-
-		statics.push_back(StaticObject(cl));
-
-		StaticObject& obj = statics.back();
-
-
-
+	StaticObject* GameWorld::createStaticObject(StaticObjectClass &cl) {
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_staticBody;
-		bodyDef.position = convert<b2Vec2>(obj.getPosition());
-		bodyDef.angle = obj.getRotation();
 
 		auto body = physicsWorld.CreateBody(&bodyDef);
-		auto shape = obj.getShape();
-		b2FixtureDef fixtureDef;
-		fixtureDef.shape = shape.get();
-		fixtureDef.density = 1;
-		body->CreateFixture(&fixtureDef);
 
-		obj.setPhysicsBody(body);
-
+		auto obj = new StaticObject(cl, body);
+		statics.push_back(obj);
 		return obj;
 	}
 
@@ -78,14 +51,23 @@ namespace qaib {
 	}
 
 	void GameWorld::doTick(float deltaTime) {
-		for (auto& pawn : pawns) {
-			pawn.doTick(*this, deltaTime);
+		for (auto pawn : pawns) {
+			pawn->doTick(*this, deltaTime);
 		}
 
 		physicsWorld.Step(deltaTime, 10, 10);
 
 	}
 
-	GameWorld::~GameWorld() {}
+	GameWorld::~GameWorld() {
+		for (auto pawn : pawns) {
+			delete pawn;
+		}
+
+		for (auto obj : statics) {
+			delete obj;
+		}
+
+	}
 
 }

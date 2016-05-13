@@ -13,7 +13,7 @@ namespace qaib {
 	private:
 		GameWorld gameWorld;
 		GameRenderer gameRenderer;
-		Pawn& playerPawn;
+		Pawn* playerPawn;
 		ObjectClassManager objectClassManager;
 	protected:
 		virtual void init() override;

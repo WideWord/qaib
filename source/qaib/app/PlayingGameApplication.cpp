@@ -5,26 +5,31 @@
 
 namespace qaib {
 
-	PlayingGameApplication::PlayingGameApplication(): playerPawn(gameWorld.createPawn()) {}
+	PlayingGameApplication::PlayingGameApplication() {}
 
 	void PlayingGameApplication::init() {
 		objectClassManager.findClasses();
 
 		gameRenderer.setGameWorld(&gameWorld);
 
-		playerPawn.useController<PlayerPawnController>(gameRenderer, getMainTarget());
+		playerPawn = gameWorld.createPawn();
+
+		playerPawn->useController<PlayerPawnController>(gameRenderer, getMainTarget());
 
 		auto pickupClass = objectClassManager.getStaticObjectClassWithName("veh_pickup");
-		gameWorld.createStaticObject(*pickupClass).setPosition(glm::vec2(0, 0));
+		auto pickup = gameWorld.createStaticObject(*pickupClass);
+
+		pickup->setPosition(glm::vec2(0, 0));
+		pickup->setRotation(0);
 
 		auto anotherPawn = gameWorld.createPawn();
-		anotherPawn.setPosition(glm::vec2(4, 4));
+		anotherPawn->setPosition(glm::vec2(4, 4));
 	}
 
 	void PlayingGameApplication::doFrame(float deltaTime) {
 		gameWorld.doTick(deltaTime);
 
-		gameRenderer.setCameraTarget(playerPawn.getPosition());
+		gameRenderer.setCameraTarget(playerPawn->getPosition());
 
 		gameRenderer.drawFrame(getMainTarget());
 	}

@@ -14,9 +14,9 @@ namespace qaib {
 	class GameWorld {
 	private:
 
-		std::list<Pawn> pawns;
+		std::list<Pawn*> pawns;
 
-		std::list<StaticObject> statics;
+		std::list<StaticObject*> statics;
 
 		std::list<b2Body*> bullets;
 
@@ -24,11 +24,11 @@ namespace qaib {
 	public:
 		GameWorld();
 
-		Pawn& createPawn();
-		inline const std::list<Pawn>& getPawns() { return pawns; }
+		Pawn* createPawn();
+		inline const std::list<Pawn*>& getPawns() { return pawns; }
 
-		StaticObject& createStaticObject(StaticObjectClass& cl);
-		inline const std::list<StaticObject>& getStaticObjects() { return statics; }
+		StaticObject* createStaticObject(StaticObjectClass& cl);
+		inline const std::list<StaticObject*>& getStaticObjects() { return statics; }
 
 		void doShot(glm::vec2 fromPosition, glm::vec2 inDirection);
 
