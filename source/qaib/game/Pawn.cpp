@@ -15,6 +15,8 @@ namespace qaib {
 		lastShootTimer = 0;
 		shootTimeout = 1;
 
+		health = 100;
+
 		rotation = 0;
 
 		physicsBody = body;
@@ -26,6 +28,8 @@ namespace qaib {
 		pawnFixtureDef.shape = &pawnShape;
 		pawnFixtureDef.density = 1;
 		physicsBody->CreateFixture(&pawnFixtureDef);
+
+		physicsBody->SetUserData(this);
 	}
 
 	void Pawn::doTick(GameWorld& gameWorld, float deltaTime) {
@@ -73,6 +77,10 @@ namespace qaib {
 
 	void Pawn::setRotation(float rot) {
 		rotation = rot;
+	}
+
+	void Pawn::applyDamage(float damage) {
+		health -= damage;
 	}
 
 	Pawn::~Pawn() {	}

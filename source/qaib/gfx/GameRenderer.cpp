@@ -3,6 +3,7 @@
 #include <qaib/game/GameWorld.hpp>
 #include <qaib/game/Pawn.hpp>
 #include <qaib/game/StaticObject.hpp>
+#include <qaib/game/Bullet.hpp>
 
 namespace qaib {
 	
@@ -48,6 +49,17 @@ namespace qaib {
 			target.draw(pawnSprite, states);
 		}
 
+		{
+			sf::RectangleShape shape(sf::Vector2f(0.3, 0.02));
+			shape.setFillColor(sf::Color::Yellow);
+
+			auto &bullets = gameWorld->getBullets();
+			for (auto bullet : bullets) {
+				sf::RenderStates states;
+				states.transform = bullet->getSFTransform();
+				target.draw(shape, states);
+			}
+		}
 	}
 
 	glm::vec2 GameRenderer::screenToWorldPosition(glm::vec2 screenPos) {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <qaib/game/Movable.hpp>
+#include <qaib/game/Damagable.hpp>
 #include <qaib/game/PawnController.hpp>
 
 #include <memory>
@@ -11,7 +12,7 @@ namespace qaib {
 	class PawnController;
 	class GameWorld;
 
-	class Pawn: public Movable {
+	class Pawn: public Movable, public Damagable {
 	private:
 		std::shared_ptr<PawnController> controller;
 		float moveSpeed;
@@ -21,6 +22,8 @@ namespace qaib {
 		bool shootAllowed;
 		float lastShootTimer;
 		float shootTimeout;
+
+		float health;
 
 		float rotation;
 	protected:
@@ -39,11 +42,17 @@ namespace qaib {
 
 		void doTick(GameWorld& gameWorld, float deltaTime);
 
+		bool isDead() {
+			return health < 0;
+		}
+
 		virtual glm::vec2 getPosition() const override;
 		virtual void setPosition(const glm::vec2& pos) override;
 
 		virtual float getRotation() const override;
 		virtual void setRotation(float rot) override;
+
+		virtual void applyDamage(float damage) override;
 
 		virtual ~Pawn();
 	};

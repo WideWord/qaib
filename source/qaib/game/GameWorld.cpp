@@ -2,10 +2,15 @@
 #include <qaib/game/Pawn.hpp>
 #include <qaib/game/StaticObject.hpp>
 #include <qaib/util/VectorConversion.hpp>
+#include <qaib/game/Bullet.hpp>
+#include <glm/gtx/vector_angle.hpp>
+
 
 namespace qaib {
 
-	GameWorld::GameWorld() : physicsWorld(b2Vec2_zero) {}
+	GameWorld::GameWorld() : physicsWorld(b2Vec2_zero) {
+		physicsWorld.SetContactListener(this);
+	}
 
 	Pawn* GameWorld::createPawn() {
 
@@ -31,28 +36,71 @@ namespace qaib {
 	}
 
 	void GameWorld::doShot(glm::vec2 fromPosition, glm::vec2 inDirection) {
+
+		auto normalizedDirection = glm::normalize(inDirection);
+
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_dynamicBody;
-		bodyDef.position = convert<b2Vec2>(fromPosition);
-		bodyDef.angle = 0;
+		bodyDef.position = convert<b2Vec2>(fromPosition + normalizedDirection * 0.5f);
+		bodyDef.angle = glm::orientedAngle(glm::vec2(1, 0), normalizedDirection);
 
 		auto body = physicsWorld.CreateBody(&bodyDef);
-		b2CircleShape shape;
-		shape.m_radius = 0.05f;
+		body->SetLinearVelocity(convert<b2Vec2>(normalizedDirection * 10.0f));
 
-		b2FixtureDef fixtureDef;
-		fixtureDef.shape = &shape;
-		fixtureDef.density = 1;
-		body->CreateFixture(&fixtureDef);
 
-		body->SetLinearVelocity(convert<b2Vec2>(glm::normalize(inDirection) * 10.0f));
-
-		bullets.push_back(body);
+		bullets.push_back(new Bullet(body));
 	}
 
+	void GameWorld::BeginContact(b2Contact* contact) {
+		Movable* a = (Movable*)contact->GetFixtureA()->GetBody()->GetUserData();
+		Movable* b = (Movable*)contact->GetFixtureB()->GetBody()->GetUserData();
+
+		Bullet* ba = dynamic_cast<Bullet*>(a);
+		Bullet* bb = dynamic_cast<Bullet*>(b);
+
+		Damagable* da = dynamic_cast<Damagable*>(a);
+		Damagable* db = dynamic_cast<Damagable*>(b);
+
+		if (ba && db) {
+			db->applyDamage(20);
+		} else if (bb && da) {
+			da->applyDamage(20);
+		}
+
+		if (ba) {
+			removeBullet(ba);
+		}
+		if (bb) {
+			removeBullet(bb);
+		}
+	}
+
+	void GameWorld::removeBullet(Bullet *bullet) {
+		bullets.remove(bullet);
+		bullet->getPhysicsBody()->SetUserData(nullptr);
+		physicsWorld.DestroyBody(bullet->getPhysicsBody());
+		delete bullet;
+	}
+
+
 	void GameWorld::doTick(float deltaTime) {
-		for (auto pawn : pawns) {
+
+		for (auto it = pawns.begin(); it != pawns.end();) {
+			Pawn* pawn = *it;
+
+			auto nextIt = it;
+			++nextIt;
+
 			pawn->doTick(*this, deltaTime);
+
+			if (pawn->isDead()) {
+				pawn->getPhysicsBody()->SetUserData(nullptr);
+				physicsWorld.DestroyBody(pawn->getPhysicsBody());
+				delete pawn;
+				pawns.erase(it);
+			}
+
+			it = nextIt;
 		}
 
 		physicsWorld.Step(deltaTime, 10, 10);
@@ -66,6 +114,10 @@ namespace qaib {
 
 		for (auto obj : statics) {
 			delete obj;
+		}
+
+		for (auto bullet: bullets) {
+			delete bullet;
 		}
 
 	}

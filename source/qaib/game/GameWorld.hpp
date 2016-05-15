@@ -10,17 +10,22 @@ namespace qaib {
 
 	class Pawn;
 	class StaticObject;
+	class Bullet;
 
-	class GameWorld {
+	class GameWorld : private b2ContactListener {
 	private:
 
 		std::list<Pawn*> pawns;
 
 		std::list<StaticObject*> statics;
 
-		std::list<b2Body*> bullets;
+		std::list<Bullet*> bullets;
 
 		b2World physicsWorld;
+
+		virtual void BeginContact(b2Contact* contact) override;
+
+		void removeBullet(Bullet* bullet);
 	public:
 		GameWorld();
 
@@ -29,6 +34,8 @@ namespace qaib {
 
 		StaticObject* createStaticObject(StaticObjectClass& cl);
 		inline const std::list<StaticObject*>& getStaticObjects() { return statics; }
+
+		inline const std::list<Bullet*>& getBullets() { return bullets; }
 
 		void doShot(glm::vec2 fromPosition, glm::vec2 inDirection);
 
