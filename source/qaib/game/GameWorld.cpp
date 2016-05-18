@@ -91,13 +91,14 @@ namespace qaib {
 			auto nextIt = it;
 			++nextIt;
 
-			pawn->doTick(*this, deltaTime);
 
 			if (pawn->isDead()) {
 				pawn->getPhysicsBody()->SetUserData(nullptr);
 				physicsWorld.DestroyBody(pawn->getPhysicsBody());
 				delete pawn;
 				pawns.erase(it);
+			} else {
+				pawn->doTick(*this, deltaTime);
 			}
 
 			it = nextIt;

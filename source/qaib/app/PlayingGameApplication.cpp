@@ -29,6 +29,10 @@ namespace qaib {
 	void PlayingGameApplication::doFrame(float deltaTime) {
 		gameWorld.doTick(deltaTime);
 
+		if (playerPawn->isDead()) {
+			quit();
+		}
+
 		gameRenderer.setCameraTarget(playerPawn->getPosition());
 
 		gameRenderer.drawFrame(getMainTarget());
