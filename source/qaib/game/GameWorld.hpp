@@ -5,6 +5,7 @@
 #include <Box2D/Box2D.h>
 #include <glm/glm.hpp>
 #include "StaticObject.hpp"
+#include <qaib/util/Typedef.hpp>
 
 namespace qaib {
 
@@ -15,9 +16,9 @@ namespace qaib {
 	class GameWorld : private b2ContactListener {
 	private:
 
-		std::list<Pawn*> pawns;
+		std::list<Ref<Pawn>> pawns;
 
-		std::list<StaticObject*> statics;
+		std::list<Ref<StaticObject>> statics;
 
 		std::list<Bullet*> bullets;
 
@@ -29,11 +30,11 @@ namespace qaib {
 	public:
 		GameWorld();
 
-		Pawn* createPawn();
-		inline const std::list<Pawn*>& getPawns() { return pawns; }
+        Ref<Pawn> createPawn();
+		inline const std::list<Ref<Pawn>>& getPawns() { return pawns; }
 
-		StaticObject* createStaticObject(StaticObjectClass& cl);
-		inline const std::list<StaticObject*>& getStaticObjects() { return statics; }
+        Ref<StaticObject> createStaticObject(StaticObjectClass& cl);
+		inline const std::list<Ref<StaticObject>>& getStaticObjects() { return statics; }
 
 		inline const std::list<Bullet*>& getBullets() { return bullets; }
 

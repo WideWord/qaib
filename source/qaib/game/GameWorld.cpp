@@ -12,25 +12,25 @@ namespace qaib {
 		physicsWorld.SetContactListener(this);
 	}
 
-	Pawn* GameWorld::createPawn() {
+	Ref<Pawn> GameWorld::createPawn() {
 
 		b2BodyDef pawnBodyDef;
 		pawnBodyDef.type = b2_dynamicBody;
 
 		auto body = physicsWorld.CreateBody(&pawnBodyDef);
 
-		auto pawn = new Pawn(body);
+		auto pawn = Ref<Pawn>(new Pawn(body));
 		pawns.push_back(pawn);
 		return pawn;
 	}
 
-	StaticObject* GameWorld::createStaticObject(StaticObjectClass &cl) {
+	Ref<StaticObject> GameWorld::createStaticObject(StaticObjectClass &cl) {
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_staticBody;
 
 		auto body = physicsWorld.CreateBody(&bodyDef);
 
-		auto obj = new StaticObject(cl, body);
+		auto obj = Ref<StaticObject>(new StaticObject(cl, body));
 		statics.push_back(obj);
 		return obj;
 	}
@@ -86,7 +86,7 @@ namespace qaib {
 	void GameWorld::doTick(float deltaTime) {
 
 		for (auto it = pawns.begin(); it != pawns.end();) {
-			Pawn* pawn = *it;
+			auto pawn = *it;
 
 			auto nextIt = it;
 			++nextIt;
@@ -95,7 +95,6 @@ namespace qaib {
 			if (pawn->isDead()) {
 				pawn->getPhysicsBody()->SetUserData(nullptr);
 				physicsWorld.DestroyBody(pawn->getPhysicsBody());
-				delete pawn;
 				pawns.erase(it);
 			} else {
 				pawn->doTick(*this, deltaTime);
@@ -105,18 +104,9 @@ namespace qaib {
 		}
 
 		physicsWorld.Step(deltaTime, 10, 10);
-
 	}
 
 	GameWorld::~GameWorld() {
-		for (auto pawn : pawns) {
-			delete pawn;
-		}
-
-		for (auto obj : statics) {
-			delete obj;
-		}
-
 		for (auto bullet: bullets) {
 			delete bullet;
 		}

@@ -12,6 +12,8 @@ file(GLOB QAIB_SOURCE source/**/*.cpp source/**/**/*.cpp source/**/**/**/*.cpp s
 
 
 include_directories(source)
+include_directories(/usr/include)
+include_directories(/usr/local/include)
 
 
 # LIBRARIES

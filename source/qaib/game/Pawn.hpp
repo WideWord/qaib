@@ -3,6 +3,7 @@
 #include <qaib/game/Movable.hpp>
 #include <qaib/game/Damagable.hpp>
 #include <qaib/game/PawnController.hpp>
+#include <qaib/util/Typedef.hpp>
 
 #include <memory>
 #include <Box2D/Dynamics/b2Body.h>
@@ -14,7 +15,7 @@ namespace qaib {
 
 	class Pawn: public Movable, public Damagable {
 	private:
-		std::shared_ptr<PawnController> controller;
+		Ref<PawnController> controller;
 		float moveSpeed;
 
 		b2Body* physicsBody;
@@ -36,7 +37,7 @@ namespace qaib {
 		}
 
 		template<typename C, typename ... Args> void useController(Args& ... args) {
-			controller = std::shared_ptr<PawnController>(new C(args...));
+			controller = Ref<PawnController>(new C(args...));
 			controller->setPawn(this);
 		};
 

@@ -4,8 +4,7 @@
 #include <qaib/gfx/GameRenderer.hpp>
 #include <qaib/game/GameWorld.hpp>
 #include <qaib/app/ObjectClassManager.hpp>
-
-#include <memory>
+#include <qaib/util/Typedef.hpp>
 
 namespace qaib {
 
@@ -13,7 +12,7 @@ namespace qaib {
 	private:
 		GameWorld gameWorld;
 		GameRenderer gameRenderer;
-		Pawn* playerPawn;
+		Ref<Pawn> playerPawn;
 		ObjectClassManager objectClassManager;
 	protected:
 		virtual void init() override;
