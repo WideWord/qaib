@@ -37,19 +37,15 @@ namespace qaib {
 
 	void GameWorld::doShot(glm::vec2 fromPosition, glm::vec2 inDirection) {
 
+        auto bullet = allocBullet();
+
 		auto normalizedDirection = glm::normalize(inDirection);
 
-		b2BodyDef bodyDef;
-		bodyDef.type = b2_dynamicBody;
-		bodyDef.position = convert<b2Vec2>(fromPosition + normalizedDirection * 0.5f);
-		bodyDef.angle = glm::orientedAngle(glm::vec2(1, 0), normalizedDirection);
+        bullet->setPosition(fromPosition + normalizedDirection * 0.5f);
+        bullet->setRotation(glm::orientedAngle(glm::vec2(1, 0), normalizedDirection));
 
-		auto body = physicsWorld.CreateBody(&bodyDef);
-		body->SetLinearVelocity(convert<b2Vec2>(normalizedDirection * 10.0f));
-
-
-		bullets.push_back(new Bullet(body));
-	}
+		bullet->getPhysicsBody()->SetLinearVelocity(convert<b2Vec2>(normalizedDirection * 10.0f));
+    }
 
 	void GameWorld::BeginContact(b2Contact* contact) {
 		Movable* a = (Movable*)contact->GetFixtureA()->GetBody()->GetUserData();
@@ -68,19 +64,35 @@ namespace qaib {
 		}
 
 		if (ba) {
-			removeBullet(ba);
+            freeBullet(ba);
 		}
 		if (bb) {
-			removeBullet(bb);
+            freeBullet(bb);
 		}
 	}
 
-	void GameWorld::removeBullet(Bullet *bullet) {
-		bullets.remove(bullet);
-		bullet->getPhysicsBody()->SetUserData(nullptr);
-		physicsWorld.DestroyBody(bullet->getPhysicsBody());
-		delete bullet;
+	Ref<Bullet> GameWorld::allocBullet() {
+        for (auto bullet : bullets) {
+            if (!bullet->isActive) {
+                bullet->isActive = true;
+                return bullet;
+            }
+        }
+
+        b2BodyDef bodyDef;
+        bodyDef.type = b2_dynamicBody;
+        auto body = physicsWorld.CreateBody(&bodyDef);
+
+        auto bullet = Ref<Bullet>(new Bullet(body));
+        bullet->isActive = true;
+        bullets.push_back(bullet);
+
+        return bullet;
 	}
+
+	void GameWorld::freeBullet(Ref<Bullet> bullet) {
+        bullet->isActive = false;
+    }
 
 
 	void GameWorld::doTick(float deltaTime) {

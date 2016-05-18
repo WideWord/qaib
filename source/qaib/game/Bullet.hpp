@@ -8,10 +8,10 @@ namespace qaib {
     class Bullet : public Movable {
     private:
         b2Body* physicsBody;
-        bool active;
     protected:
         friend class GameWorld;
         explicit Bullet(b2Body* body);
+        bool isActive;
     public:
 
         virtual glm::vec2 getPosition() const override;
@@ -19,14 +19,6 @@ namespace qaib {
 
         virtual float getRotation() const override;
         virtual void setRotation(float rot) override;
-
-        inline bool isActive() {
-            return active;
-        }
-
-        inline void deactivate() {
-            active = false;
-        }
 
         inline b2Body* getPhysicsBody() {
             return physicsBody;

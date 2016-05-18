@@ -20,13 +20,15 @@ namespace qaib {
 
 		std::list<Ref<StaticObject>> statics;
 
-		std::list<Bullet*> bullets;
+		std::list<Ref<Bullet>> bullets;
+
+        Ref<Bullet> allocBullet();
+        void freeBullet(Ref<Bullet> bullet);
 
 		b2World physicsWorld;
 
 		virtual void BeginContact(b2Contact* contact) override;
 
-		void removeBullet(Bullet* bullet);
 	public:
 		GameWorld();
 

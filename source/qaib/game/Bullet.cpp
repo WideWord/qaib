@@ -15,7 +15,7 @@ namespace qaib {
         body->CreateFixture(&fixtureDef);
         body->SetUserData(this);
 
-        active = true;
+        isActive = true;
     }
 
     glm::vec2 Bullet::getPosition() const {
