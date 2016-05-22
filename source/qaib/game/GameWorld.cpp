@@ -10,6 +10,7 @@ namespace qaib {
 
 	GameWorld::GameWorld() : physicsWorld(b2Vec2_zero) {
 		physicsWorld.SetContactListener(this);
+        physicsWorld.SetContactFilter(this);
 	}
 
 	Ref<Pawn> GameWorld::createPawn() {
@@ -71,7 +72,30 @@ namespace qaib {
 		}
 	}
 
-	Ref<Bullet> GameWorld::allocBullet() {
+    bool GameWorld::ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB) {
+        Movable* a = (Movable*)fixtureA->GetBody()->GetUserData();
+        Movable* b = (Movable*)fixtureA->GetBody()->GetUserData();
+
+        Bullet* ba = dynamic_cast<Bullet*>(a);
+        Bullet* bb = dynamic_cast<Bullet*>(b);
+
+        if (ba) {
+            if (!ba->isActive) {
+                return false;
+            }
+        }
+
+        if (bb) {
+            if (!bb->isActive) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    Ref<Bullet> GameWorld::allocBullet() {
         for (auto bullet : bullets) {
             if (!bullet->isActive) {
                 bullet->isActive = true;
@@ -91,7 +115,13 @@ namespace qaib {
 	}
 
 	void GameWorld::freeBullet(Ref<Bullet> bullet) {
+        freeBullet(bullet.get());
+    }
+
+    void GameWorld::freeBullet(Bullet* bullet) {
         bullet->isActive = false;
+        bullet->getPhysicsBody()->SetLinearVelocity(b2Vec2_zero);
+        bullet->getPhysicsBody()->SetAngularVelocity(0);
     }
 
 
@@ -119,9 +149,6 @@ namespace qaib {
 	}
 
 	GameWorld::~GameWorld() {
-		for (auto bullet: bullets) {
-			delete bullet;
-		}
 
 	}
 

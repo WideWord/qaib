@@ -23,6 +23,10 @@ namespace qaib {
         inline b2Body* getPhysicsBody() {
             return physicsBody;
         }
+
+        inline bool getIsActive() {
+            return isActive;
+        }
     };
 
 }

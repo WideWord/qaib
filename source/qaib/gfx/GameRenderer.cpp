@@ -55,6 +55,9 @@ namespace qaib {
 
 			auto &bullets = gameWorld->getBullets();
 			for (auto bullet : bullets) {
+				if (!bullet->getIsActive()) {
+                    continue;
+                }
 				sf::RenderStates states;
 				states.transform = bullet->getSFTransform();
 				target.draw(shape, states);

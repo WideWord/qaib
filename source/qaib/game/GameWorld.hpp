@@ -13,7 +13,7 @@ namespace qaib {
 	class StaticObject;
 	class Bullet;
 
-	class GameWorld : private b2ContactListener {
+	class GameWorld : private b2ContactListener, private b2ContactFilter {
 	private:
 
 		std::list<Ref<Pawn>> pawns;
@@ -24,10 +24,12 @@ namespace qaib {
 
         Ref<Bullet> allocBullet();
         void freeBullet(Ref<Bullet> bullet);
+        void freeBullet(Bullet* bullet);
 
 		b2World physicsWorld;
 
 		virtual void BeginContact(b2Contact* contact) override;
+        virtual bool ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB) override;
 
 	public:
 		GameWorld();
@@ -38,7 +40,7 @@ namespace qaib {
         Ref<StaticObject> createStaticObject(StaticObjectClass& cl);
 		inline const std::list<Ref<StaticObject>>& getStaticObjects() { return statics; }
 
-		inline const std::list<Bullet*>& getBullets() { return bullets; }
+		inline const std::list<Ref<Bullet>>& getBullets() { return bullets; }
 
 		void doShot(glm::vec2 fromPosition, glm::vec2 inDirection);
 
