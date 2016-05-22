@@ -12,6 +12,7 @@ namespace qaib {
 	class Pawn;
 	class StaticObject;
 	class Bullet;
+    class Obstruction;
 
 	class GameWorld : private b2ContactListener, private b2ContactFilter {
 	private:
@@ -21,6 +22,8 @@ namespace qaib {
 		std::list<Ref<StaticObject>> statics;
 
 		std::list<Ref<Bullet>> bullets;
+
+        std::list<Ref<Obstruction>> obstructions;
 
         Ref<Bullet> allocBullet();
         void freeBullet(Ref<Bullet> bullet);
@@ -32,7 +35,7 @@ namespace qaib {
         virtual bool ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB) override;
 
 	public:
-		GameWorld();
+		GameWorld(float size, int obstructionCount);
 
         Ref<Pawn> createPawn();
 		inline const std::list<Ref<Pawn>>& getPawns() { return pawns; }

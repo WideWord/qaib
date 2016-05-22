@@ -4,13 +4,16 @@
 #include <qaib/util/VectorConversion.hpp>
 #include <qaib/game/Bullet.hpp>
 #include <glm/gtx/vector_angle.hpp>
-
+#include <qaib/game/ObstructionGenerator.hpp>
 
 namespace qaib {
 
-	GameWorld::GameWorld() : physicsWorld(b2Vec2_zero) {
+	GameWorld::GameWorld(float size, int obstructionCount) : physicsWorld(b2Vec2_zero) {
 		physicsWorld.SetContactListener(this);
         physicsWorld.SetContactFilter(this);
+
+        ObstructionGenerator generator(physicsWorld, obstructions);
+        generator.generate(obstructionCount, size);
 	}
 
 	Ref<Pawn> GameWorld::createPawn() {
