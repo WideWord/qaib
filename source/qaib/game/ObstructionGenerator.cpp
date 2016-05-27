@@ -16,7 +16,7 @@ namespace qaib {
 
         std::random_device rd;
         std::mt19937 mt(rd());
-        std::uniform_real_distribution<float> randomDistance(0, radius);
+        std::uniform_real_distribution<float> randomDistance(2, radius);
         std::uniform_real_distribution<float> randomAngle(0, (float)M_PI * 2.0f);
 
         for (int i = 0; i < count; ++i) {

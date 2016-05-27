@@ -15,7 +15,7 @@ namespace qaib {
 		lastShootTimer = 0;
 		shootTimeout = 1;
 
-		health = 100;
+		health = getInitialHealth();
 
 		rotation = 0;
 

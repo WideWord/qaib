@@ -43,9 +43,19 @@ namespace qaib {
 
 		void doTick(GameWorld& gameWorld, float deltaTime);
 
-		bool isDead() {
-			return health < 0;
+		inline bool isDead() const {
+			return health <= 0;
 		}
+
+		inline float getHealth() const {
+			return health;
+		}
+
+		inline float getInitialHealth() const {
+			return 100;
+		}
+
+
 
 		virtual glm::vec2 getPosition() const override;
 		virtual void setPosition(const glm::vec2& pos) override;

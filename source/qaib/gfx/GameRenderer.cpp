@@ -4,6 +4,7 @@
 #include <qaib/game/Pawn.hpp>
 #include <qaib/game/Bullet.hpp>
 #include <qaib/game/Obstruction.hpp>
+#include <qaib/util/VectorConversion.hpp>
 
 namespace qaib {
 	
@@ -70,6 +71,18 @@ namespace qaib {
 			states.transform = pawn->getSFTransform();
 			states.transform = states.transform.scale(1.0f / 200.0f, 1.0f / 200.0f);
 			target.draw(pawnSprite, states);
+
+            sf::RectangleShape rect(sf::Vector2f(0.5, 0.05));
+            rect.setPosition(convert<sf::Vector2f>(pawn->getPosition() + glm::vec2(-0.25, -0.6)));
+
+            rect.setFillColor(sf::Color::Red);
+            target.draw(rect);
+
+            float health = pawn->getHealth() / pawn->getInitialHealth();
+
+            rect.setSize(sf::Vector2f(0.5f * health, 0.05f));
+            rect.setFillColor(sf::Color::Green);
+            target.draw(rect);
 		}
 
 		{
