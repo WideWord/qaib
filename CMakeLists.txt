@@ -23,11 +23,6 @@ find_package(SFML 2 COMPONENTS system window graphics)
 include_directories(${SFML_INCLUDE_DIR})
 set(QAIB_LIBS ${QAIB_LIBS} ${SFML_LIBRARIES})
 
-# SFGUI
-find_package(SFGUI)
-include_directories(${SFGUI_INCLUDE_DIR})
-set(QAIB_LIBS ${QAIB_LIBS} ${SFGUI_LIBRARY})
-
 # GLM
 find_package(GLM)
 include_directories(${GLM_INCLUDE_DIRS})
@@ -37,16 +32,6 @@ include_directories(${GLM_INCLUDE_DIRS})
 find_package(Box2D)
 include_directories(${BOX2D_INCLUDE_DIR})
 set(QAIB_LIBS ${QAIB_LIBS} ${BOX2D_LIBRARIES})
-
-# YamlCpp
-find_package(YamlCpp)
-include_directories(${YAMLCPP_INCLUDE_DIR})
-set(QAIB_LIBS ${QAIB_LIBS} ${YAMLCPP_LIBRARY})
-
-# Boost
-find_package(Boost COMPONENTS filesystem)
-include_directories(${Boost_INCLUDE_DIRS})
-set(QAIB_LIBS ${QAIB_LIBS} ${Boost_LIBRARIES})
 
 add_executable(qaib ${QAIB_SOURCE})
 target_compile_features(qaib PRIVATE cxx_range_for)

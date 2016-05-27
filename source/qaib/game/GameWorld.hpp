@@ -4,7 +4,6 @@
 #include <memory>
 #include <Box2D/Box2D.h>
 #include <glm/glm.hpp>
-#include "StaticObject.hpp"
 #include <qaib/util/Typedef.hpp>
 
 namespace qaib {
@@ -18,8 +17,6 @@ namespace qaib {
 	private:
 
 		std::list<Ref<Pawn>> pawns;
-
-		std::list<Ref<StaticObject>> statics;
 
 		std::list<Ref<Bullet>> bullets;
 
@@ -43,9 +40,6 @@ namespace qaib {
 
         Ref<Pawn> createPawn();
 		inline const std::list<Ref<Pawn>>& getPawns() { return pawns; }
-
-        Ref<StaticObject> createStaticObject(StaticObjectClass& cl);
-		inline const std::list<Ref<StaticObject>>& getStaticObjects() { return statics; }
 
 		inline const std::list<Ref<Bullet>>& getBullets() { return bullets; }
 

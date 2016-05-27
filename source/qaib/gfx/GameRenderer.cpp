@@ -2,7 +2,6 @@
 
 #include <qaib/game/GameWorld.hpp>
 #include <qaib/game/Pawn.hpp>
-#include <qaib/game/StaticObject.hpp>
 #include <qaib/game/Bullet.hpp>
 #include <qaib/game/Obstruction.hpp>
 
@@ -64,15 +63,6 @@ namespace qaib {
 
             }
         }
-
-		auto& staticObjects = gameWorld->getStaticObjects();
-		for (auto object : staticObjects) {
-			auto sprite = object->getSprite();
-			if (sprite == nullptr) continue;
-			sf::RenderStates states;
-			states.transform = object->getSFTransform();
-			target.draw(*sprite, states);
-		}
 
 		auto& pawns = gameWorld->getPawns();
 		for (auto pawn : pawns) {

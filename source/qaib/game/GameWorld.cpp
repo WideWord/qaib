@@ -1,6 +1,5 @@
 #include <qaib/game/GameWorld.hpp>
 #include <qaib/game/Pawn.hpp>
-#include <qaib/game/StaticObject.hpp>
 #include <qaib/util/VectorConversion.hpp>
 #include <qaib/game/Bullet.hpp>
 #include <glm/gtx/vector_angle.hpp>
@@ -60,17 +59,6 @@ namespace qaib {
 		auto pawn = Ref<Pawn>(new Pawn(body));
 		pawns.push_back(pawn);
 		return pawn;
-	}
-
-	Ref<StaticObject> GameWorld::createStaticObject(StaticObjectClass &cl) {
-		b2BodyDef bodyDef;
-		bodyDef.type = b2_staticBody;
-
-		auto body = physicsWorld.CreateBody(&bodyDef);
-
-		auto obj = Ref<StaticObject>(new StaticObject(cl, body));
-		statics.push_back(obj);
-		return obj;
 	}
 
 	void GameWorld::doShot(glm::vec2 fromPosition, glm::vec2 inDirection) {
