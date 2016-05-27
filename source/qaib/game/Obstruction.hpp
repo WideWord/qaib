@@ -2,6 +2,7 @@
 
 #include <qaib/game/Movable.hpp>
 #include <Box2D/Box2D.h>
+#include <SFML/Graphics.hpp>
 
 
 namespace qaib {
@@ -11,9 +12,9 @@ namespace qaib {
     class Obstruction: public Movable {
     private:
         b2Body* physicsBody;
-        glm::vec2 points[4];
+        sf::Vertex points[3];
     protected:
-        friend class GameWorld;
+        friend class ObstructionGenerator;
         explicit Obstruction(b2Body* body);
     public:
         inline b2Body* getPhysicsBody() {
@@ -25,6 +26,10 @@ namespace qaib {
 
         virtual float getRotation() const override;
         virtual void setRotation(float rot) override;
+
+        inline const sf::Vertex* getPoints() const {
+            return points;
+        }
     };
 
 }

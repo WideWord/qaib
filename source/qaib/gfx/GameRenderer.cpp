@@ -4,6 +4,7 @@
 #include <qaib/game/Pawn.hpp>
 #include <qaib/game/StaticObject.hpp>
 #include <qaib/game/Bullet.hpp>
+#include <qaib/game/Obstruction.hpp>
 
 namespace qaib {
 	
@@ -46,6 +47,22 @@ namespace qaib {
             sand.setTextureRect(sf::IntRect(0, 0, 256 * 50, 256 * 50));
 
             target.draw(sand);
+        }
+
+        {
+            auto& obstructions = gameWorld->getObstructions();
+
+            for (auto obstruction : obstructions) {
+
+                sf::RenderStates states;
+                states.transform = obstruction->getSFTransform();
+                //states.transform = states.transform.scale(1.0f / 200.0f, 1.0f / 200.0f);
+                states.texture = &rockTexture;
+
+
+                target.draw(obstruction->getPoints(), 3, sf::Triangles, states);
+
+            }
         }
 
 		auto& staticObjects = gameWorld->getStaticObjects();

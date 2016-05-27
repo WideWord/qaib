@@ -15,9 +15,40 @@ namespace qaib {
 
         worldSize = size;
 
+        buildFieldEdges();
+
         ObstructionGenerator generator(physicsWorld, obstructions);
         generator.generate(obstructionCount, size);
 	}
+
+    void GameWorld::buildFieldEdges() {
+
+        b2BodyDef bodyDef;
+        bodyDef.type = b2_staticBody;
+
+        auto body = physicsWorld.CreateBody(&bodyDef);
+
+        b2PolygonShape shape;
+        b2FixtureDef fixture;
+        fixture.shape = &shape;
+
+        for (int i = 0; i < 80; ++i) {
+            b2Vec2 points[4];
+
+            float angle = (float)i * (float)M_PI / 40.0f;
+            float nextAngle = (float)(i + 1) * (float)M_PI / 40.0f;
+            float radius = worldSize * 0.5f;
+
+            points[0] = b2Vec2(sinf(angle) * radius, cosf(angle) * radius);
+            points[1] = b2Vec2(sinf(nextAngle) * radius, cosf(nextAngle) * radius);
+            points[2] = b2Vec2(sinf(nextAngle) * (radius + 1.0f), cosf(nextAngle) * (radius + 1.0f));
+            points[3] = b2Vec2(sinf(angle) * (radius + 1.0f), cosf(angle) * (radius + 1.0f));
+
+            shape.Set(points, 4);
+
+            body->CreateFixture(&fixture);
+        }
+    }
 
 	Ref<Pawn> GameWorld::createPawn() {
 
@@ -65,9 +96,11 @@ namespace qaib {
 		Damagable* db = dynamic_cast<Damagable*>(b);
 
 		if (ba && db) {
-			db->applyDamage(20);
+            if (ba->isActive)
+			    db->applyDamage(20);
 		} else if (bb && da) {
-			da->applyDamage(20);
+            if (bb->isActive)
+                da->applyDamage(20);
 		}
 
 		if (ba) {
@@ -154,7 +187,9 @@ namespace qaib {
 		physicsWorld.Step(deltaTime, 10, 10);
 	}
 
-	GameWorld::~GameWorld() {
+
+
+    GameWorld::~GameWorld() {
 
 	}
 

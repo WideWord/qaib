@@ -5,7 +5,7 @@
 
 namespace qaib {
 
-	PlayingGameApplication::PlayingGameApplication() : gameWorld(50, 300) {}
+	PlayingGameApplication::PlayingGameApplication() : gameWorld(50, 50) {}
 
 	void PlayingGameApplication::init() {
 		objectClassManager.findClasses();
@@ -15,9 +15,6 @@ namespace qaib {
 		playerPawn = gameWorld.createPawn();
 
 		playerPawn->useController<PlayerPawnController>(gameRenderer, getMainTarget());
-
-		auto pickupClass = objectClassManager.getStaticObjectClassWithName("veh_pickup");
-		auto pickup = gameWorld.createStaticObject(*pickupClass);
 
 		pickup->setPosition(glm::vec2(0, 0));
 		pickup->setRotation(0);

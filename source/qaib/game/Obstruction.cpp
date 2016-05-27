@@ -8,18 +8,20 @@ namespace qaib {
         physicsBody = body;
 
 
-        b2Vec2 points[4];
+        b2Vec2 points[3];
 
         std::random_device rd;
         std::mt19937 mt(rd());
-        std::uniform_real_distribution<float> dist(-10.0, 10.0);
+        std::uniform_real_distribution<float> dist(-2.0, 2.0);
 
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < 3; ++i) {
             points[i] = b2Vec2(dist(mt), dist(mt));
+            this->points[i].position = convert<sf::Vector2f>(points[i]);
+            this->points[i].texCoords = this->points[i].position * 75.0f;
         }
 
         b2PolygonShape shape;
-        shape.Set(points, 4);
+        shape.Set(points, 3);
 
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &shape;

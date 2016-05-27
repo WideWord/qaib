@@ -36,6 +36,8 @@ namespace qaib {
 
         float worldSize;
 
+        void buildFieldEdges();
+
 	public:
 		GameWorld(float size, int obstructionCount);
 
@@ -46,6 +48,8 @@ namespace qaib {
 		inline const std::list<Ref<StaticObject>>& getStaticObjects() { return statics; }
 
 		inline const std::list<Ref<Bullet>>& getBullets() { return bullets; }
+
+        inline const std::list<Ref<Obstruction>>& getObstructions() { return obstructions; }
 
         inline const float getWorldSize() { return worldSize; }
 
