@@ -11,6 +11,7 @@ namespace qaib {
     class Obstruction: public Movable {
     private:
         b2Body* physicsBody;
+        glm::vec2 points[4];
     protected:
         friend class GameWorld;
         explicit Obstruction(b2Body* body);

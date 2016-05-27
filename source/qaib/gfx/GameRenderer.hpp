@@ -16,6 +16,9 @@ namespace qaib {
 		sf::Texture sandTexture;
 		sf::Sprite sandSprite;
 
+		sf::Texture rockTexture;
+		sf::Sprite rockSprite;
+
 		sf::View lastUsedView;
 
 		float dotsPerGameMeter;

@@ -34,6 +34,8 @@ namespace qaib {
 		virtual void BeginContact(b2Contact* contact) override;
         virtual bool ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB) override;
 
+        float worldSize;
+
 	public:
 		GameWorld(float size, int obstructionCount);
 
@@ -44,6 +46,8 @@ namespace qaib {
 		inline const std::list<Ref<StaticObject>>& getStaticObjects() { return statics; }
 
 		inline const std::list<Ref<Bullet>>& getBullets() { return bullets; }
+
+        inline const float getWorldSize() { return worldSize; }
 
 		void doShot(glm::vec2 fromPosition, glm::vec2 inDirection);
 

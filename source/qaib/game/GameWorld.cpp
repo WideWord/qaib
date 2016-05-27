@@ -12,6 +12,9 @@ namespace qaib {
 		physicsWorld.SetContactListener(this);
         physicsWorld.SetContactFilter(this);
 
+
+        worldSize = size;
+
         ObstructionGenerator generator(physicsWorld, obstructions);
         generator.generate(obstructionCount, size);
 	}

@@ -15,11 +15,14 @@ namespace qaib {
 		sandTexture.loadFromFile("data/art/terrain/sand.jpg");
 		sandTexture.setRepeated(true);
 
-		sandSprite.setTexture(sandTexture);
-		sandSprite.setTextureRect(sf::IntRect(0, 0, 256 * 50, 256 * 50));
-		sandSprite.setPosition(-100, -100);
-		sandSprite.setScale(1 / 100.0f, 1 / 100.0f);
-		
+        rockTexture.loadFromFile("data/art/terrain/rock.jpg");
+        rockTexture.setRepeated(true);
+
+        rockSprite.setTexture(rockTexture);
+        rockSprite.setTextureRect(sf::IntRect(0, 0, 256 * 100, 256 * 100));
+        rockSprite.setPosition(-100, -100);
+        rockSprite.setScale(1 / 100.0f, 1 / 100.0f);
+
 
 		dotsPerGameMeter = 75;
 	}
@@ -30,7 +33,20 @@ namespace qaib {
 
 		setupView(target);
 
-		target.draw(sandSprite);
+		target.draw(rockSprite);
+
+        {
+            auto radius = gameWorld->getWorldSize() * 0.5f;
+
+            sf::CircleShape sand(radius, 80);
+            sand.setPosition(-radius, -radius);
+
+            //sand.setFillColor(sf::Color::Yellow);
+            sand.setTexture(&sandTexture);
+            sand.setTextureRect(sf::IntRect(0, 0, 256 * 50, 256 * 50));
+
+            target.draw(sand);
+        }
 
 		auto& staticObjects = gameWorld->getStaticObjects();
 		for (auto object : staticObjects) {

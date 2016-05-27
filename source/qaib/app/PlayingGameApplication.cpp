@@ -5,7 +5,7 @@
 
 namespace qaib {
 
-	PlayingGameApplication::PlayingGameApplication() : gameWorld(100, 300) {}
+	PlayingGameApplication::PlayingGameApplication() : gameWorld(50, 300) {}
 
 	void PlayingGameApplication::init() {
 		objectClassManager.findClasses();
