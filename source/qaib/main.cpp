@@ -6,11 +6,6 @@
 using namespace qaib;
 
 int main() {
-	//return PlayingGameApplication().exec();
-
-    auto nn = NeuralNetworkFactory::buildPerceptron({2, 3, 1});
-
-    nn->mutate();
-
+	return PlayingGameApplication().exec();
     return 0;
 }
