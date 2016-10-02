@@ -1,12 +1,15 @@
 #pragma once
 
 #include <qaib/nn/Innovation.hpp>
+#include <qaib/util/Typedef.hpp>
 #include <vector>
 #include <set>
 
 namespace qaib {
 
     using Neuron = Innovation;
+
+    class NeuralNetwork;
 
     class Genome {
     private:
@@ -22,6 +25,7 @@ namespace qaib {
                 this->from = from;
                 this->to = to;
                 this->weight = weight;
+                enabled = true;
             }
         };
         std::vector<Gene> genes;
@@ -41,6 +45,8 @@ namespace qaib {
         void insertRandomNode(InnovationGenerator& g);
         void mutateRandomWeight();
         void mutate(InnovationGenerator& g);
+
+        Ref<NeuralNetwork> buildNeuralNetwork();
     };
 
 }

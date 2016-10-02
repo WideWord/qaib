@@ -1,38 +1,34 @@
 #pragma once
 
 #include <qaib/util/Typedef.hpp>
+#include <qaib/nn/Genome.hpp>
 #include <vector>
+#include <list>
+#include <map>
 
 namespace qaib {
 
-    class NeuralNetworkFactory;
-
     class NeuralNetwork {
     protected:
-        friend class NeuralNetworkFactory;
 
-        struct Neuron {
-            float power;
-            bool isCompleted;
+        friend class Genome;
+
+        struct NeuronData {
+            struct Link {
+                Neuron from;
+                float weight;
+            };
+            std::vector<Link> inputs;
+            Neuron neuron;
+            bool flag;
         };
 
-        struct Link {
-            int inputNeuron;
-            int outputNeuron;
-            float weight;
-        };
+        std::vector<NeuronData> executionRules;
 
-        std::vector<Neuron> neurons;
-        std::vector<Link> links;
-
-        int inputsCount;
-        int outputsCount;
+        std::vector<Neuron> inputs;
+        std::vector<Neuron> outputs;
     public:
-
-        std::vector<float> exec(const std::vector<float>& inputs);
-
-        void crossover(NeuralNetwork& other);
-        void mutate();
+        std::vector<float> execute(std::vector<float> inputs);
     };
 
 }

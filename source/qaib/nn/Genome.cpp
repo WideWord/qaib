@@ -1,5 +1,7 @@
 #include <qaib/nn/Genome.hpp>
 #include <qaib/util/Random.hpp>
+#include <qaib/nn/NeuralNetwork.hpp>
+#include <queue>
 
 namespace qaib {
 
@@ -70,9 +72,12 @@ namespace qaib {
     void Genome::insertRandomNode(InnovationGenerator& g) {
         Gene& gene = getRandomEnabledGene();
         gene.enabled = false;
+
+        float newWeight = sqrtf(fabsf(gene.weight));
+
         Neuron newNeuron = g.generate();
-        genes.push_back(Gene(g, gene.from, newNeuron, gene.weight));
-        genes.push_back(Gene(g, newNeuron, gene.to, gene.weight));
+        genes.push_back(Gene(g, gene.from, newNeuron, newWeight));
+        genes.push_back(Gene(g, newNeuron, gene.to, (gene.weight < 0) ? -newWeight : newWeight));
     }
 
     Genome::Genome(InnovationGenerator& g, int inputsCount, int outputsCount) {
@@ -114,6 +119,70 @@ namespace qaib {
         } else {
             mutateRandomWeight();
         }
+    }
+
+    Ref<NeuralNetwork> Genome::buildNeuralNetwork() {
+
+        std::map<Neuron, NeuralNetwork::NeuronData> net;
+
+        for (auto input : inputs) {
+            NeuralNetwork::NeuronData data;
+            data.neuron = input;
+            data.flag = true;
+            net[input] = data;
+        }
+
+        for (auto& gene : genes) {
+            if (!gene.enabled) continue;
+
+            if (net.find(gene.to) == net.end()) {
+                NeuralNetwork::NeuronData data;
+                data.neuron = gene.to;
+                data.flag = false;
+                net[gene.to] = data;
+            }
+
+            auto& toNeuronData = net[gene.to];
+
+            NeuralNetwork::NeuronData::Link link;
+            link.from = gene.from;
+            link.weight = gene.weight;
+            toNeuronData.inputs.push_back(link);
+        }
+
+        std::queue<Neuron> queue;
+        for (auto output : outputs) {
+            queue.push(output);
+        }
+
+        auto nn = Ref<NeuralNetwork>(new NeuralNetwork());
+
+        std::vector<NeuralNetwork::NeuronData> exec;
+
+        while (!queue.empty()) {
+            auto neuron = queue.front();
+            queue.pop();
+            if (net[neuron].flag) {
+                continue;
+            }
+            auto data = net[neuron];
+            exec.push_back(data);
+            net[neuron].flag = true;
+            for (auto& link : net[neuron].inputs) {
+                queue.push(link.from);
+            }
+        }
+
+        nn->inputs = inputs;
+        nn->outputs = outputs;
+
+        nn->executionRules.reserve(exec.size());
+
+        for (auto it = exec.rbegin(); it != exec.rend(); ++it) {
+            nn->executionRules.push_back(*it);
+        }
+
+        return nn;
     }
 
 
