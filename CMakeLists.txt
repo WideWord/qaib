@@ -20,7 +20,7 @@ include_directories(/usr/local/include)
 # LIBRARIES
 
 # SFML
-find_package(SFML 2 COMPONENTS system window graphics)
+find_package(SFML 2 COMPONENTS system window graphics network)
 include_directories(${SFML_INCLUDE_DIR})
 set(QAIB_LIBS ${QAIB_LIBS} ${SFML_LIBRARIES})
 

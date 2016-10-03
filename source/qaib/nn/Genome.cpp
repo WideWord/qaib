@@ -6,11 +6,6 @@
 namespace qaib {
 
 
-
-    Genome::Genome(Genome&& other) {
-        genes = std::move(other.genes);
-    }
-
     Genome::Genome(const Genome& a, const Genome& b) {
         auto it1 = a.genes.begin();
         auto it2 = b.genes.begin();
@@ -39,6 +34,9 @@ namespace qaib {
         while (it2 != b.genes.end()) {
             genes.push_back(*it2++);
         }
+
+        inputs = a.inputs;
+        outputs = a.outputs;
     }
 
     Genome::Gene& Genome::getRandomEnabledGene() {
@@ -84,13 +82,11 @@ namespace qaib {
         for (int i = 0; i < inputsCount; ++i) {
             Neuron n = g.generate();
             inputs.push_back(n);
-            neurons.insert(n);
         }
 
         for (int i = 0; i < outputsCount; ++i) {
             Neuron n = g.generate();
             outputs.push_back(n);
-            neurons.insert(n);
 
             for (int j = 0; j < inputsCount; ++j) {
                 addConnection(g, inputs[j], outputs[i], Random::getFloat(-2, 2));
@@ -121,7 +117,7 @@ namespace qaib {
         }
     }
 
-    Ref<NeuralNetwork> Genome::buildNeuralNetwork() {
+    Ref<NeuralNetwork> Genome::buildNeuralNetwork() const {
 
         std::map<Neuron, NeuralNetwork::NeuronData> net;
 
@@ -183,6 +179,52 @@ namespace qaib {
         }
 
         return nn;
+    }
+
+    Genome::Genome(sf::Packet& packet) {
+        uint64_t size;
+        packet >> size;
+        for (uint64_t i = 0; i < size; ++i) {
+            genes.push_back(Gene(packet));
+        }
+
+        uint64_t inputsCount;
+        uint64_t outputsCount;
+
+        packet >> inputsCount;
+        for (uint64_t i = 0; i < inputsCount; ++i) {
+            Neuron input;
+            packet >> input;
+            inputs.push_back(input);
+        }
+
+        packet >> outputsCount;
+        for (uint64_t i = 0; i < outputsCount; ++i) {
+            Neuron output;
+            packet >> output;
+            outputs.push_back(output);
+        }
+    }
+
+    void Genome::writeTo(sf::Packet& packet) const {
+        uint64_t size = genes.size();
+        packet << size;
+
+        for (auto& gene : genes) {
+            gene.writeTo(packet);
+        }
+
+        packet << (uint64_t)inputs.size();
+
+        for (auto i : inputs) {
+            packet << i;
+        }
+
+        packet << (uint64_t)outputs.size();
+
+        for (auto i : outputs) {
+            packet << i;
+        }
     }
 
 

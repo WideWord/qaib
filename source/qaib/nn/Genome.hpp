@@ -4,6 +4,7 @@
 #include <qaib/util/Typedef.hpp>
 #include <vector>
 #include <set>
+#include <SFML/Network/Packet.hpp>
 
 namespace qaib {
 
@@ -27,18 +28,26 @@ namespace qaib {
                 this->weight = weight;
                 enabled = true;
             }
+
+            inline Gene(sf::Packet& packet) {
+                packet >> innovation >> from >> to >> enabled >> weight;
+            }
+
+            inline void writeTo(sf::Packet& packet) const {
+                packet << innovation << from << to << enabled << weight;
+            }
         };
         std::vector<Gene> genes;
         std::vector<Neuron> inputs;
         std::vector<Neuron> outputs;
-        std::set<Neuron> neurons;
 
         Gene& getRandomEnabledGene();
         Neuron getRandomNeuron();
     public:
         Genome(InnovationGenerator& g, int inputsCount, int outputsCout);
         Genome(const Genome& a, const Genome& b);
-        Genome(Genome&& other);
+        Genome(sf::Packet& packet);
+        void writeTo(sf::Packet& packet) const;
 
         void addConnection(InnovationGenerator& g, Neuron from, Neuron to, float weight);
         void insertRandomConnection(InnovationGenerator& g);
@@ -46,7 +55,7 @@ namespace qaib {
         void mutateRandomWeight();
         void mutate(InnovationGenerator& g);
 
-        Ref<NeuralNetwork> buildNeuralNetwork();
+        Ref<NeuralNetwork> buildNeuralNetwork() const;
     };
 
 }
