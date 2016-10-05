@@ -15,9 +15,10 @@ namespace qaib {
         sf::Image result;
         sf::Texture redTexture;
         float fovSize;
-        int resolution;
+        int samples;
+        float pixelSize;
     public:
-        AIVisionGameRenderer(float fovSize, int resolution);
+        AIVisionGameRenderer(float fovSize, int resolution, int samples);
         const sf::Texture& drawFrame(GameWorld& gameWorld, const Pawn& pawn);
 
     };

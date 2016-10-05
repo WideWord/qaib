@@ -3,6 +3,7 @@
 #include <vector>
 #include <qaib/nn/NeuralNetwork.hpp>
 #include <qaib/game/Pawn.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 namespace qaib {
 
@@ -16,7 +17,6 @@ namespace qaib {
                 auto pix = image.getPixel(x, y);
                 inputs.push_back(((float)pix.r) / 127.0f - 1.0f);
                 inputs.push_back(((float)pix.g) / 127.0f - 1.0f);
-                inputs.push_back(((float)pix.b) / 127.0f - 1.0f);
             }
         }
 
@@ -27,11 +27,12 @@ namespace qaib {
     }
 
     glm::vec2 NeuralNetworkPawnController::movementDirection() {
-        return glm::vec2(outputs[0], outputs[1]);
+        return glm::rotate(glm::vec2(outputs[0], outputs[1]), -(getPawn()->getRotation() / (float)M_PI * 180.0f));
     }
 
     glm::vec2 NeuralNetworkPawnController::turningTo() {
-        return glm::vec2(outputs[2], outputs[3]);
+        return glm::rotate(glm::vec2(outputs[2], outputs[3]), -(getPawn()->getRotation() / (float)M_PI * 180.0f));
+
     }
 
     bool NeuralNetworkPawnController::shouldAttack() {

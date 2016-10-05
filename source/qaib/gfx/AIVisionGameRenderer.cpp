@@ -6,12 +6,13 @@
 
 namespace qaib {
 
-    AIVisionGameRenderer::AIVisionGameRenderer(float fovSize, int resolution) {
+    AIVisionGameRenderer::AIVisionGameRenderer(float fovSize, int resolution, int samples) {
         this->fovSize = fovSize;
-        this->resolution = resolution;
+        this->samples = samples;
+        pixelSize = fovSize / (float)resolution;
         target.create(resolution, resolution, false);
-        bigTarget.create(resolution * 8, resolution * 8, false);
-        bigTarget.setSmooth(true);
+        bigTarget.create(resolution * samples, resolution * samples, false);
+        bigTarget.setSmooth(false);
 
         redTexture.create(1, 1);
 
@@ -66,8 +67,9 @@ namespace qaib {
         }
 
         {
-            sf::CircleShape shape(0.3);
-            shape.setFillColor(sf::Color::Green);
+            sf::CircleShape circleShape(pixelSize * 0.65f, 8);
+            circleShape.setFillColor(sf::Color::Green);
+            circleShape.setPosition(-0.2f, -0.2f);
 
             auto &pawns = gameWorld.getPawns();
             for (auto pawn : pawns) {
@@ -75,7 +77,7 @@ namespace qaib {
                 sf::RenderStates states;
                 states.transform = pawn->getSFTransform();
                 states.blendMode = sf::BlendAdd;
-                bigTarget.draw(shape, states);
+                bigTarget.draw(circleShape, states);
             }
         }
 
@@ -97,8 +99,9 @@ namespace qaib {
         }
         bigTarget.display();
 
+
         sf::Sprite sprite(bigTarget.getTexture());
-        sprite.setScale(0.125f, 0.125f);
+        sprite.setScale(1.0f / samples, 1.0f / samples);
 
         target.draw(sprite);
 

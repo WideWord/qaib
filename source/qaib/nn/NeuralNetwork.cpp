@@ -15,7 +15,7 @@ namespace qaib {
             for (auto& link : n.inputs) {
                 power += powers[link.from] * link.weight;
             }
-            powers[n.neuron] = power;
+            powers[n.neuron] = power > 0 ? 1 : -1;
         }
 
         std::vector<float> res;
