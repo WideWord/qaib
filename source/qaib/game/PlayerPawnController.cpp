@@ -38,14 +38,6 @@ namespace qaib {
 		return playerToMouse;
 	}
 
-	bool PlayerPawnController::shouldDropWeapon() {
-		return false;
-	}
-
-	bool PlayerPawnController::shouldTakeWeapon() {
-		return false;
-	}
-
 	bool PlayerPawnController::shouldAttack() {
 		return sf::Mouse::isButtonPressed(sf::Mouse::Left);
 	}

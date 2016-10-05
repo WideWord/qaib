@@ -6,6 +6,8 @@ namespace qaib {
 		pawn = nullptr;
 	}
 
+	void PawnController::prepareTick(GameWorld& gameWorld, float deltaTime) {}
+
 	PawnController::~PawnController() {}
 
 }

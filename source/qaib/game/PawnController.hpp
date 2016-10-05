@@ -5,6 +5,7 @@
 namespace qaib {
 
 	class Pawn;
+	class GameWorld;
 
 	class PawnController {
 	private:
@@ -20,10 +21,9 @@ namespace qaib {
 
 		inline Pawn* getPawn() { return pawn; }
 
+		virtual void prepareTick(GameWorld& gameWorld, float deltaTime);
 		virtual glm::vec2 movementDirection() = 0;
 		virtual glm::vec2 turningTo() = 0;
-		virtual bool shouldDropWeapon() = 0;
-		virtual bool shouldTakeWeapon() = 0;
 		virtual bool shouldAttack() = 0;
 
 		virtual ~PawnController();

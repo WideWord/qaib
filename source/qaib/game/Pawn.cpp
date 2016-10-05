@@ -47,6 +47,9 @@ namespace qaib {
 			physicsBody->SetLinearVelocity(b2Vec2_zero);
 			return;
 		}
+
+		controller->prepareTick(gameWorld, deltaTime);
+
 		auto movementDirection = controller->movementDirection() * moveSpeed;
 
 		vec2 forward = controller->turningTo();

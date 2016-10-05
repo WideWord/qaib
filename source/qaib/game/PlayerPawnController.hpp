@@ -16,8 +16,6 @@ namespace qaib {
 
 		glm::vec2 movementDirection() override;
 		glm::vec2 turningTo() override;
-		bool shouldDropWeapon() override;
-		bool shouldTakeWeapon() override;
 		bool shouldAttack() override;
 	};
 

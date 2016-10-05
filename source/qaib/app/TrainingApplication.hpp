@@ -12,7 +12,6 @@ namespace qaib {
     private:
         GameWorld gameWorld;
         GameRenderer gameRenderer;
-
     protected:
         virtual void init() override;
         virtual void doFrame(float deltaTime) override;
