@@ -12,7 +12,6 @@ namespace qaib {
     private:
         sf::RenderTexture target;
         sf::RenderTexture bigTarget;
-        sf::Image result;
         sf::Texture redTexture;
         float fovSize;
         int samples;

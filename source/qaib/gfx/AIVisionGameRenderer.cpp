@@ -12,7 +12,7 @@ namespace qaib {
         pixelSize = fovSize / (float)resolution;
         target.create(resolution, resolution, false);
         bigTarget.create(resolution * samples, resolution * samples, false);
-        bigTarget.setSmooth(false);
+        bigTarget.setSmooth(true);
 
         redTexture.create(1, 1);
 
@@ -69,7 +69,7 @@ namespace qaib {
         {
             sf::CircleShape circleShape(pixelSize * 0.65f, 8);
             circleShape.setFillColor(sf::Color::Green);
-            circleShape.setPosition(-0.2f, -0.2f);
+            circleShape.setPosition(-0.175f, -0.175f);
 
             auto &pawns = gameWorld.getPawns();
             for (auto pawn : pawns) {
@@ -98,6 +98,7 @@ namespace qaib {
             }
         }
         bigTarget.display();
+
 
 
         sf::Sprite sprite(bigTarget.getTexture());

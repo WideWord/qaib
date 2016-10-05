@@ -8,7 +8,7 @@
 
 namespace qaib {
 
-	PlayingGameApplication::PlayingGameApplication() : gameWorld(50, 50), aiVision(10, 10, 16) {}
+	PlayingGameApplication::PlayingGameApplication() : gameWorld(50, 50), aiVision(10, 10, 4) {}
 
 	void PlayingGameApplication::init() {
 		gameRenderer.setGameWorld(&gameWorld);

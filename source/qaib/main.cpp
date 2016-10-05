@@ -2,10 +2,11 @@
 
 
 #include <qaib/nn/NeuralNetwork.hpp>
+#include <qaib/app/TrainingApplication.hpp>
 
 using namespace qaib;
 
 int main() {
-	return PlayingGameApplication().exec();
+	return TrainingApplication().exec();
     return 0;
 }

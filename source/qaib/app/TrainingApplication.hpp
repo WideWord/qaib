@@ -5,13 +5,19 @@
 #include <qaib/gfx/GameRenderer.hpp>
 #include <qaib/game/GameWorld.hpp>
 #include <qaib/util/Typedef.hpp>
+#include <qaib/nn/Population.hpp>
+#include <qaib/gfx/AIVisionGameRenderer.hpp>
 
 namespace qaib {
 
     class TrainingApplication: public Application {
     private:
-        GameWorld gameWorld;
+        Ref<GameWorld> gameWorld;
         GameRenderer gameRenderer;
+        Population population;
+        AIVisionGameRenderer aiVision;
+
+        void newPopulation();
     protected:
         virtual void init() override;
         virtual void doFrame(float deltaTime) override;
