@@ -12,6 +12,7 @@ namespace qaib {
         friend class GameWorld;
         explicit Bullet(b2Body* body);
         bool isActive;
+        Ref<Pawn> shootBy;
     public:
 
         virtual glm::vec2 getPosition() const override;

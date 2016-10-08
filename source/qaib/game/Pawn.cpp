@@ -9,6 +9,7 @@ namespace qaib {
 
 	Pawn::Pawn(b2Body* body) {
 		moveSpeed = 5.0f;
+		score = 0;
 		controller = nullptr;
 
 		shootAllowed = true;
@@ -59,6 +60,7 @@ namespace qaib {
 
 		if (controller->shouldAttack() && shootAllowed) {
 			gameWorld.doShot(getPosition(), forward);
+			addScore(-0.1f);
 			lastShootTimer = 0;
 			shootAllowed = false;
 		}

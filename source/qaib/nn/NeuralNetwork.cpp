@@ -1,4 +1,5 @@
 #include <qaib/nn/NeuralNetwork.hpp>
+#include <cmath>
 
 namespace qaib {
 
@@ -15,7 +16,7 @@ namespace qaib {
             for (auto& link : n.inputs) {
                 power += powers[link.from] * link.weight;
             }
-            powers[n.neuron] = power > 0 ? 1 : -1;
+            powers[n.neuron] = 1.0f / (1.0f +  expf(-power)) * 2.0f - 1.0f;
         }
 
         std::vector<float> res;

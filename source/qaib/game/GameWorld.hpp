@@ -35,6 +35,8 @@ namespace qaib {
 
         void buildFieldEdges();
 
+		Ref<Pawn> currentShootBy;
+
 	public:
 		GameWorld(float size, int obstructionCount);
 

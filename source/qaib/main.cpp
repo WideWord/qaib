@@ -8,5 +8,4 @@ using namespace qaib;
 
 int main() {
 	return TrainingApplication().exec();
-    return 0;
 }

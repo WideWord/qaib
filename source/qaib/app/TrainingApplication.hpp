@@ -18,6 +18,7 @@ namespace qaib {
         AIVisionGameRenderer aiVision;
 
         void newPopulation();
+        float roundFrames;
     protected:
         virtual void init() override;
         virtual void doFrame(float deltaTime) override;

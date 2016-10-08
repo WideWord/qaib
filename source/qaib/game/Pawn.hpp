@@ -27,6 +27,8 @@ namespace qaib {
 		float health;
 
 		float rotation;
+
+		float score;
 	protected:
 		friend class GameWorld;
 		explicit Pawn(b2Body* physicsBody);
@@ -53,6 +55,14 @@ namespace qaib {
 
 		inline float getInitialHealth() const {
 			return 100;
+		}
+
+		inline float getScore() const {
+			return score;
+		}
+
+		inline void addScore(float delta) {
+			score += delta;
 		}
 
 

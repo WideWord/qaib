@@ -71,6 +71,9 @@ namespace qaib {
         bullet->setRotation(glm::orientedAngle(glm::vec2(1, 0), normalizedDirection));
 
 		bullet->getPhysicsBody()->SetLinearVelocity(convert<b2Vec2>(normalizedDirection * 10.0f));
+
+
+        bullet->shootBy = currentShootBy;
     }
 
 	void GameWorld::BeginContact(b2Contact* contact) {
@@ -84,11 +87,19 @@ namespace qaib {
 		Damagable* db = dynamic_cast<Damagable*>(b);
 
 		if (ba && db) {
-            if (ba->isActive)
-			    db->applyDamage(20);
+            if (ba->isActive) {
+                db->applyDamage(20);
+                if (ba->shootBy) {
+                    ba->shootBy->addScore(1);
+                }
+            }
 		} else if (bb && da) {
-            if (bb->isActive)
+            if (bb->isActive) {
                 da->applyDamage(20);
+                if (bb->shootBy) {
+                    bb->shootBy->addScore(1);
+                }
+            }
 		}
 
 		if (ba) {
@@ -166,8 +177,10 @@ namespace qaib {
 				physicsWorld.DestroyBody(pawn->getPhysicsBody());
 				pawns.erase(it);
 			} else {
+                currentShootBy = pawn;
 				pawn->doTick(*this, deltaTime);
-			}
+                currentShootBy = nullptr;
+            }
 
 			it = nextIt;
 		}

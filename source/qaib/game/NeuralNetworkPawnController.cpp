@@ -8,6 +8,8 @@
 namespace qaib {
 
     void NeuralNetworkPawnController::prepareTick(GameWorld& gameWorld, float deltaTime) {
+        this->deltaTime = deltaTime;
+
         auto image = vision.drawFrame(gameWorld, *getPawn()).copyToImage();
 
         std::vector<float> inputs;
@@ -27,16 +29,16 @@ namespace qaib {
     }
 
     glm::vec2 NeuralNetworkPawnController::movementDirection() {
-        return glm::rotate(glm::vec2(outputs[0], outputs[1]), -(getPawn()->getRotation() / (float)M_PI * 180.0f));
+        return glm::rotate(glm::vec2(outputs[0], outputs[1]), -(getPawn()->getRotation()));
     }
 
     glm::vec2 NeuralNetworkPawnController::turningTo() {
-        return glm::rotate(glm::vec2(outputs[2], outputs[3]), -(getPawn()->getRotation() / (float)M_PI * 180.0f));
+        return glm::rotate(glm::vec2(1, 0), getPawn()->getRotation() + outputs[2] * deltaTime);
 
     }
 
     bool NeuralNetworkPawnController::shouldAttack() {
-        return outputs[4] > 0;
+        return outputs[3] > 0;
     }
 
 

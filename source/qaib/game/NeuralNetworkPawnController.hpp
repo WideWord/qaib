@@ -15,6 +15,7 @@ namespace qaib {
         AIVisionGameRenderer& vision;
 
         std::vector<float> outputs;
+        float deltaTime;
     public:
         inline NeuralNetworkPawnController(const Ref<NeuralNetwork>& net, AIVisionGameRenderer& vision)
         : vision(vision), net(net) {}

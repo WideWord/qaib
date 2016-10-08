@@ -41,8 +41,8 @@ namespace qaib {
 
         for (int i = 0; i < newSize; ++i) {
 
-            Genome* a;
-            Genome* b;
+            Genome* a = nullptr;
+            Genome* b = nullptr;
 
             float ar = Random::getFloat(0, 1);
             float br = Random::getFloat(0, 1);
@@ -72,6 +72,9 @@ namespace qaib {
             }
 
             Genome result(*a, *b);
+            if (Random::getInt(0, 100) > 90) {
+                result.mutate(innovationGenerator);
+            }
             newGenomes.push_back(result);
         }
 

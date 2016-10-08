@@ -69,7 +69,7 @@ namespace qaib {
         {
             sf::CircleShape circleShape(pixelSize * 0.65f, 8);
             circleShape.setFillColor(sf::Color::Green);
-            circleShape.setPosition(-0.175f, -0.175f);
+            circleShape.setPosition(-1, -1);
 
             auto &pawns = gameWorld.getPawns();
             for (auto pawn : pawns) {
