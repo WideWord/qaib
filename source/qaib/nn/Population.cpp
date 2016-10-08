@@ -5,12 +5,12 @@ namespace qaib {
 
     Population::Population(int size, int inputsCount, int outputsCount) {
         Genome initialGenome(innovationGenerator, inputsCount, outputsCount);
-        for (int i = 0; i < 20; ++i) {
+        for (int i = 0; i < 5; ++i) {
             initialGenome.mutate(innovationGenerator);
         }
         for (int i = 0; i < size; ++i) {
             auto genome = initialGenome;
-            for (int j = 0; j < 5; ++j) {
+            for (int j = 0; j < 20; ++j) {
                 genome.mutate(innovationGenerator);
             }
             genomes.push_back(genome);

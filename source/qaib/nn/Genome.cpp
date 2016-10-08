@@ -1,7 +1,7 @@
 #include <qaib/nn/Genome.hpp>
 #include <qaib/util/Random.hpp>
 #include <qaib/nn/NeuralNetwork.hpp>
-#include <queue>
+#include <deque>
 
 namespace qaib {
 
@@ -110,7 +110,7 @@ namespace qaib {
         int r = Random::getInt(0, 100);
         if (r < 5) {
             insertRandomNode(g);
-        } else if (r < 15) {
+        } else if (r < 10) {
             insertRandomConnection(g);
         } else {
             mutateRandomWeight();
@@ -146,9 +146,9 @@ namespace qaib {
             toNeuronData.inputs.push_back(link);
         }
 
-        std::queue<Neuron> queue;
+        std::deque<Neuron> queue;
         for (auto output : outputs) {
-            queue.push(output);
+            queue.push_back(output);
         }
 
         auto nn = Ref<NeuralNetwork>(new NeuralNetwork());
@@ -157,7 +157,7 @@ namespace qaib {
 
         while (!queue.empty()) {
             auto neuron = queue.front();
-            queue.pop();
+            queue.pop_front();
             if (net[neuron].flag) {
                 continue;
             }
@@ -165,7 +165,7 @@ namespace qaib {
             exec.push_back(data);
             net[neuron].flag = true;
             for (auto& link : net[neuron].inputs) {
-                queue.push(link.from);
+                queue.push_back(link.from);
             }
         }
 

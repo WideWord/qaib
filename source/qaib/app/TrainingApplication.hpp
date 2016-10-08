@@ -7,16 +7,27 @@
 #include <qaib/util/Typedef.hpp>
 #include <qaib/nn/Population.hpp>
 #include <qaib/gfx/AIVisionGameRenderer.hpp>
+#include <vector>
+#include <queue>
 
 namespace qaib {
+
+    class Pawn;
 
     class TrainingApplication: public Application {
     private:
         Ref<GameWorld> gameWorld;
         GameRenderer gameRenderer;
+        AIVisionGameRenderer aiVision;
         Population population;
 
-        void newPopulation();
+        void newGeneration();
+        void nextTest();
+
+        std::queue<Ref<NeuralNetwork>> testQueue;
+        std::vector<float> fitness;
+        Ref<Pawn> aPawn, bPawn;
+
         float roundFrames;
         int generationCount;
     protected:

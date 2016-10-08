@@ -10,41 +10,40 @@
 namespace qaib {
 
     void NeuralNetworkPawnController::prepareTick(GameWorld& gameWorld, float deltaTime) {
+        using namespace glm;
+
         this->deltaTime = deltaTime;
 
         std::vector<float> inputs;
 
-        Ref<Pawn> nearestVisiblePawn;
-        float nearestDist = INFINITY;
         auto me = getPawn();
-        for (auto& pawn : gameWorld.getPawns()) {
-            if (pawn.get() == me) {
-                continue;
-            }
-            glm::vec2 dir = pawn->getPosition() - me->getPosition();
-            auto dist = dir.x * dir.x + dir.y * dir.y;
-            if (dist < nearestDist) {
-                nearestDist = dist;
-                nearestVisiblePawn = pawn;
-            }
-        }
+        if (enemy && !enemy->isDead()) {
+            vec2 dir = enemy->getPosition() - me->getPosition();
+            vec2 forward = me->getForward();
 
-        if (nearestVisiblePawn) {
-            glm::vec2 dir = nearestVisiblePawn->getPosition() - me->getPosition();
-            glm::vec2 forward = me->getForward();
+            float dist = sqrtf((dir.x * dir.x + dir.y * dir.y)) / 50.0f;
+            if (dist > 1.0f) dist = 1.0f;
 
-            inputs.push_back(1);
-            inputs.push_back(sqrtf(nearestDist));
-            auto angle = glm::orientedAngle(forward, dir);
+            inputs.push_back(dist);
+
+            dir = normalize(dir);
+            auto angle = ((forward.x * dir.x + forward.y * dir.y) * 0.5f + 1);
+            if (orientedAngle(forward, dir) < 0) angle = -angle;
             inputs.push_back(angle);
         } else {
-            inputs.push_back(-1);
             inputs.push_back(0);
             inputs.push_back(0);
         }
 
+        inputs.push_back(me->getHealth() / me->getInitialHealth());
 
-        inputs.push_back(getPawn()->getHealth() / getPawn()->getInitialHealth());
+        auto img = vision.drawFrame(gameWorld, *getPawn()).copyToImage();
+        auto size = img.getSize();
+        for (int x = 0; x < size.x; ++x) {
+            for (int y = 0; y < size.y; ++y) {
+                inputs.push_back(((float)img.getPixel(x, y).r) / 255.0f);
+            }
+        }
 
         outputs = net->execute(inputs);
     }
