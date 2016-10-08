@@ -4,22 +4,43 @@
 #include <qaib/nn/NeuralNetwork.hpp>
 #include <qaib/game/Pawn.hpp>
 #include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/vector_angle.hpp>
+#include <qaib/game/GameWorld.hpp>
 
 namespace qaib {
 
     void NeuralNetworkPawnController::prepareTick(GameWorld& gameWorld, float deltaTime) {
         this->deltaTime = deltaTime;
 
-        auto image = vision.drawFrame(gameWorld, *getPawn()).copyToImage();
-
         std::vector<float> inputs;
-        auto size = image.getSize();
-        for (int x = 0; x < size.x; ++x) {
-            for (int y = 0; y < size.y; ++y) {
-                auto pix = image.getPixel(x, y);
-                inputs.push_back(((float)pix.r) / 127.0f - 1.0f);
-                inputs.push_back(((float)pix.g) / 127.0f - 1.0f);
+
+        Ref<Pawn> nearestVisiblePawn;
+        float nearestDist = INFINITY;
+        auto me = getPawn();
+        for (auto& pawn : gameWorld.getPawns()) {
+            if (pawn.get() == me) {
+                continue;
             }
+            glm::vec2 dir = pawn->getPosition() - me->getPosition();
+            auto dist = dir.x * dir.x + dir.y * dir.y;
+            if (dist < nearestDist) {
+                nearestDist = dist;
+                nearestVisiblePawn = pawn;
+            }
+        }
+
+        if (nearestVisiblePawn) {
+            glm::vec2 dir = nearestVisiblePawn->getPosition() - me->getPosition();
+            glm::vec2 forward = me->getForward();
+
+            inputs.push_back(1);
+            inputs.push_back(sqrtf(nearestDist));
+            auto angle = glm::orientedAngle(forward, dir);
+            inputs.push_back(angle);
+        } else {
+            inputs.push_back(-1);
+            inputs.push_back(0);
+            inputs.push_back(0);
         }
 
 

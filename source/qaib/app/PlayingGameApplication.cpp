@@ -24,7 +24,7 @@ namespace qaib {
 
 		auto anotherPawn = gameWorld.createPawn();
 		anotherPawn->setPosition(glm::vec2(4, 4));
-		anotherPawn->useController<NeuralNetworkPawnController>(net, aiVision);
+		anotherPawn->useController<NeuralNetworkPawnController>(net);
 	}
 
 	void PlayingGameApplication::doFrame(float deltaTime) {

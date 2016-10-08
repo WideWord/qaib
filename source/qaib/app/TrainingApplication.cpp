@@ -2,11 +2,13 @@
 #include <qaib/game/Pawn.hpp>
 #include <qaib/game/NeuralNetworkPawnController.hpp>
 #include <qaib/util/Random.hpp>
+#include <fstream>
+#include <sstream>
 
 namespace qaib {
 
-    TrainingApplication::TrainingApplication() : population(50, 10 * 10 * 2 + 1, 4), aiVision(10, 10, 4) {
-
+    TrainingApplication::TrainingApplication() : population(30, 4, 4) {
+        generationCount = 0;
     }
 
     void TrainingApplication::init() {
@@ -14,6 +16,9 @@ namespace qaib {
     }
 
     void TrainingApplication::newPopulation() {
+
+        generationCount += 1;
+
         if (gameWorld) {
             std::vector<float> fitness;
             for (auto& pawn : gameWorld->getPawns()) {
@@ -24,17 +29,26 @@ namespace qaib {
                 fitness.push_back(score / (pawn->getHealth() / 10.0f + 0.1f));
             }
 
-            population.makeSelection(50, fitness);
+            population.makeSelection(30, fitness);
         }
 
-        gameWorld = Ref<GameWorld>(new GameWorld(50, 50));
+        gameWorld = Ref<GameWorld>(new GameWorld(10, 3));
         gameRenderer.setGameWorld(gameWorld.get());
 
         for (auto& net : population.getNeuralNetworks()) {
             auto pawn = gameWorld->createPawn();
-            pawn->setPosition(glm::vec2(Random::getFloat(-30, 30), Random::getFloat(-30, 30)));
-            pawn->useController<NeuralNetworkPawnController>(net, aiVision);
+            pawn->setPosition(glm::vec2(Random::getFloat(-5, 5), Random::getFloat(-5, 5)));
+            pawn->useController<NeuralNetworkPawnController>(net);
         }
+
+        sf::Packet packet;
+        population.writeTo(packet);
+
+        std::stringstream ss;
+        ss << "populations/" << generationCount << ".pop";
+
+        std::ofstream out(ss.str());
+        out.write((const char*)packet.getData(), packet.getDataSize());
 
         roundFrames = 0;
     }

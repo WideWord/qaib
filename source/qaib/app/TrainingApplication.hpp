@@ -15,10 +15,10 @@ namespace qaib {
         Ref<GameWorld> gameWorld;
         GameRenderer gameRenderer;
         Population population;
-        AIVisionGameRenderer aiVision;
 
         void newPopulation();
         float roundFrames;
+        int generationCount;
     protected:
         virtual void init() override;
         virtual void doFrame(float deltaTime) override;

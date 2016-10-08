@@ -19,6 +19,8 @@ namespace qaib {
 		virtual float getRotation() const = 0;
 		virtual void setRotation(float rot) = 0;
 
+		glm::vec2 getForward() const;
+
 		sf::Transform getSFTransform() const;
 	};
 
