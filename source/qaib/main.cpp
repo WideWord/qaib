@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 
-	if (strcmp(argv[1], "train") == 0) {
+	if (strcmp(argv[1], "train-gui") == 0) {
 		if (argc < 3) {
 			return TrainingApplication().exec();
 		} else {
@@ -19,6 +19,15 @@ int main(int argc, char** argv) {
 			int generation;
 			ss >> generation;
 			return TrainingApplication(generation).exec();
+		}
+	} else if (strcmp(argv[1], "train") == 0) {
+		if (argc < 3) {
+			return TrainingApplication(-1, false).exec();
+		} else {
+			std::stringstream ss(argv[2]);
+			int generation;
+			ss >> generation;
+			return TrainingApplication(generation, false).exec();
 		}
 	} else if (strcmp(argv[1], "play") == 0) {
 		if (argc < 3) {

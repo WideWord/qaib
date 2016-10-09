@@ -8,38 +8,43 @@
 
 namespace qaib {
 
-    TrainingApplication::TrainingApplication() {
-        generationCount = 0;
-        gameWorld = nullptr;
-        aPawn = nullptr;
-        bPawn = nullptr;
-        population = Ref<Population>(new Population(30, 7, 4));
-    }
 
-    TrainingApplication::TrainingApplication(int startFromGeneration) {
-        generationCount = startFromGeneration;
+
+    TrainingApplication::TrainingApplication(int startFromGeneration, bool gui) : Application(gui), gui(gui) {
         gameWorld = nullptr;
         aPawn = nullptr;
         bPawn = nullptr;
-        population = Population::load(MakeString() << "populations/" << startFromGeneration << ".pop");
+        if (startFromGeneration <= 0) {
+            generationCount = 1;
+            population = Ref<Population>(new Population(populationSize, NeuralNetworkPawnController::inputsCount, NeuralNetworkPawnController::outputsCount));
+        } else {
+            generationCount = startFromGeneration;
+            population = Population::load(MakeString() << "populations/" << startFromGeneration << ".pop");
+        }
+
+        if (gui) {
+            gameRenderer = Ref<GameRenderer>(new GameRenderer);
+        }
     }
 
     void TrainingApplication::init() {
+        aID = populationSize;
+        bID = populationSize;
         nextTest();
     }
 
-    void TrainingApplication::newGeneration(){
+    void TrainingApplication::newGeneration() {
 
         generationCount += 1;
 
         if (fitness.size() > 0) {
-            population->makeSelection(30, fitness);
-            fitness.clear();
+            population->makeSelection(populationSize, fitness);
+        } else {
+            fitness.resize(populationSize);
         }
 
-        for (auto& genome : population->getGenomes()) {
-            auto ptr = &genome;
-            testQueue.push(ptr);
+        for (int i = 0; i < populationSize; ++i) {
+            fitness[i] = 0;
         }
 
         sf::Packet packet;
@@ -50,6 +55,9 @@ namespace qaib {
 
         std::ofstream out(MakeString() << "populations/" << generationCount << ".pop");
         out.write((const char*)packet.getData(), packet.getDataSize());
+
+        aID = 0;
+        bID = 0;
 
     }
 
@@ -62,34 +70,39 @@ namespace qaib {
                 if (score < 0.1f) {
                     score = 0.1f;
                 }
-                return score * 0.1f + health / 100.0f - powf(aNeuronsCount, 2) / 10000.0f;
+                return score + health / 10.0f - powf(neuronsCount, 2) / 10000.0f;
             };
 
-            fitness.push_back(fitnessFunc(aPawn->getScore(), aPawn->getHealth(), aNeuronsCount));
-            fitness.push_back(fitnessFunc(bPawn->getScore(), bPawn->getHealth(), bNeuronsCount));
+            fitness[aID] += (fitnessFunc(aPawn->getScore(), aPawn->getHealth(), population->getGenomes()[aID].getNeuronsCount()));
+            fitness[bID] += (fitnessFunc(bPawn->getScore(), bPawn->getHealth(), population->getGenomes()[bID].getNeuronsCount()));
 
             aPawn = nullptr;
             bPawn = nullptr;
             gameWorld = nullptr;
         }
 
-        if (testQueue.empty()) {
-            newGeneration();
+        aID += 1;
+
+        if (aID >= populationSize) {
+            aID = 0;
+            bID += 1;
+            if (bID >= populationSize) {
+                bID = 0;
+                newGeneration();
+            }
         }
 
-        auto& aGenome = *(testQueue.front());
-        testQueue.pop();
-        auto& bGenome = *(testQueue.front());
-        testQueue.pop();
+        auto& aGenome = population->getGenomes()[aID];
+        auto& bGenome = population->getGenomes()[bID];
 
         auto aNet = aGenome.buildNeuralNetwork();
         auto bNet = bGenome.buildNeuralNetwork();
 
-        aNeuronsCount = aGenome.getNeuronsCount();
-        bNeuronsCount = bGenome.getNeuronsCount();
+        gameWorld = Ref<GameWorld>(new GameWorld(1000, 0));
 
-        gameWorld = Ref<GameWorld>(new GameWorld(20, 0));
-        gameRenderer.setGameWorld(gameWorld.get());
+        if (gui) {
+            gameRenderer->setGameWorld(gameWorld.get());
+        }
 
         aPawn = gameWorld->createPawn();
         bPawn = gameWorld->createPawn();
@@ -113,7 +126,9 @@ namespace qaib {
             nextTest();
         }
 
-        gameRenderer.drawFrame(getMainTarget());
+        if (gui) {
+            gameRenderer->drawFrame(getMainTarget());
+        }
     }
 
 }

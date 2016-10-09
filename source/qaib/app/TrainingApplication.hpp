@@ -17,24 +17,25 @@ namespace qaib {
     class TrainingApplication: public Application {
     private:
         Ref<GameWorld> gameWorld;
-        GameRenderer gameRenderer;
+        Ref<GameRenderer> gameRenderer;
         Ref<Population> population;
 
         void newGeneration();
         void nextTest();
 
-        std::queue<const Genome*> testQueue;
         std::vector<float> fitness;
         Ref<Pawn> aPawn, bPawn;
-        int aNeuronsCount, bNeuronsCount;
+        int aID, bID;
 
         float roundFrames;
         int generationCount;
+
+        static const int populationSize = 30;
+        bool gui;
     protected:
         virtual void init() override;
         virtual void doFrame(float deltaTime) override;
     public:
-        TrainingApplication();
-        TrainingApplication(int startFromGeneration);
+        TrainingApplication(int startFromGeneration = -1, bool gui = true);
     };
 }

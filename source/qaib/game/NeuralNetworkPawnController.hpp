@@ -24,6 +24,9 @@ namespace qaib {
         glm::vec2 movementDirection() override;
         glm::vec2 turningTo() override;
         bool shouldAttack() override;
+
+        static const int inputsCount = 7;
+        static const int outputsCount = 4;
     };
 
 }
