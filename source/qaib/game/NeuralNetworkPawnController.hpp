@@ -13,13 +13,12 @@ namespace qaib {
     private:
         Ref<NeuralNetwork> net;
         Ref<Pawn> enemy;
-        AIVisionGameRenderer& vision;
 
         std::vector<float> outputs;
         float deltaTime;
     public:
-        inline NeuralNetworkPawnController(const Ref<NeuralNetwork>& net, const Ref<Pawn>& enemy, AIVisionGameRenderer& vision)
-        : net(net), enemy(enemy), vision(vision) {}
+        inline NeuralNetworkPawnController(const Ref<NeuralNetwork>& net, const Ref<Pawn>& enemy)
+        : net(net), enemy(enemy) {}
 
         void prepareTick(GameWorld& gameWorld, float deltaTime) override;
         glm::vec2 movementDirection() override;

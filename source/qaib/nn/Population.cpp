@@ -1,3 +1,4 @@
+#include <SFML/System.hpp>
 #include <qaib/nn/Population.hpp>
 #include <qaib/util/Random.hpp>
 
@@ -98,6 +99,23 @@ namespace qaib {
         for (auto& genome : genomes) {
             genome.writeTo(packet);
         }
+    }
+
+    Ref<Population> Population::load(const std::string& filename) {
+        sf::FileInputStream in;
+        in.open(filename);
+        size_t aiDataSize = (size_t)in.getSize();
+        void* aiData = malloc(aiDataSize);
+        in.read(aiData, aiDataSize);
+
+        sf::Packet packet;
+        packet.append(aiData, aiDataSize);
+
+        auto res = Ref<Population>(new Population(packet));
+
+        free(aiData);
+
+        return res;
     }
 
 }

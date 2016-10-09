@@ -18,8 +18,7 @@ namespace qaib {
     private:
         Ref<GameWorld> gameWorld;
         GameRenderer gameRenderer;
-        AIVisionGameRenderer aiVision;
-        Population population;
+        Ref<Population> population;
 
         void newGeneration();
         void nextTest();
@@ -35,6 +34,7 @@ namespace qaib {
         virtual void doFrame(float deltaTime) override;
     public:
         TrainingApplication();
+        TrainingApplication(int startFromGeneration);
     };
 
 }

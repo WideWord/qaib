@@ -4,15 +4,24 @@
 #include <qaib/util/Random.hpp>
 #include <fstream>
 #include <sstream>
-#include <qaib/util/VectorConversion.hpp>
+#include <qaib/util/MakeString.hpp>
 
 namespace qaib {
 
-    TrainingApplication::TrainingApplication() : population(30, 4 + 12, 4), aiVision(4, 3, 4) {
+    TrainingApplication::TrainingApplication() {
         generationCount = 0;
         gameWorld = nullptr;
         aPawn = nullptr;
         bPawn = nullptr;
+        population = Ref<Population>(new Population(30, 4 + 12, 4));
+    }
+
+    TrainingApplication::TrainingApplication(int startFromGeneration) {
+        generationCount = startFromGeneration - 1;
+        gameWorld = nullptr;
+        aPawn = nullptr;
+        bPawn = nullptr;
+        population = Population::load(MakeString() << "populations/" << startFromGeneration << ".pop");
     }
 
     void TrainingApplication::init() {
@@ -24,21 +33,21 @@ namespace qaib {
         generationCount += 1;
 
         if (fitness.size() > 0) {
-            population.makeSelection(30, fitness);
+            population->makeSelection(30, fitness);
             fitness.clear();
         }
 
-        for (auto& net : population.getNeuralNetworks()) {
+        for (auto& net : population->getNeuralNetworks()) {
             testQueue.push(net);
         }
 
         sf::Packet packet;
-        population.writeTo(packet);
+        population->writeTo(packet);
 
         std::stringstream ss;
         ss << "populations/" << generationCount << ".pop";
 
-        std::ofstream out(ss.str());
+        std::ofstream out(MakeString() << "populations/" << generationCount << ".pop");
         out.write((const char*)packet.getData(), packet.getDataSize());
 
     }
@@ -80,8 +89,8 @@ namespace qaib {
         aPawn = gameWorld->createPawn();
         bPawn = gameWorld->createPawn();
 
-        aPawn->useController<NeuralNetworkPawnController>(aNet, bPawn, aiVision);
-        bPawn->useController<NeuralNetworkPawnController>(bNet, aPawn, aiVision);
+        aPawn->useController<NeuralNetworkPawnController>(aNet, bPawn);
+        bPawn->useController<NeuralNetworkPawnController>(bNet, aPawn);
 
         aPawn->setPosition(glm::vec2(Random::getFloat(-2, 2), Random::getFloat(-2, 2)));
         aPawn->setRotation(Random::getFloat(-M_PI, M_PI));
@@ -100,13 +109,6 @@ namespace qaib {
         }
 
         gameRenderer.drawFrame(getMainTarget());
-
-        auto& texture = aiVision.drawFrame(*(gameWorld.get()), *(aPawn.get()));
-
-        sf::Sprite sprite(texture);
-        sprite.setScale(0.3f, 0.3f);
-        sprite.setPosition(convert<sf::Vector2f>(aPawn->getPosition() + glm::vec2(0, 1)));
-        getMainTarget().draw(sprite);
     }
 
 }
