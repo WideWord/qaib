@@ -6,8 +6,8 @@ namespace qaib {
 
     Population::Population(int size, int inputsCount, int outputsCount) {
         Genome initialGenome(innovationGenerator, inputsCount, outputsCount);
-        for (int i = 0; i < 5; ++i) {
-            initialGenome.mutate(innovationGenerator);
+        for (int i = 0; i < 10; ++i) {
+            initialGenome.insertRandomConnection(innovationGenerator);
         }
         for (int i = 0; i < size; ++i) {
             auto genome = initialGenome;
@@ -28,14 +28,15 @@ namespace qaib {
         return res;
     }
 
-    void Population::makeSelection(int newSize, std::vector<float> success) {
+    void Population::makeSelection(int newSize, std::vector<float> fitness) {
 
-        float successSum = 0;
-        for (auto s : success) {
-            successSum += s;
+        float fitnessSum = 0;
+        for (auto s : fitness) {
+            if (s < 0.00001f) s = 0.00001f;
+            fitnessSum += s;
         }
-        for (auto& s : success) {
-            s /= successSum;
+        for (auto& s : fitness) {
+            s /= fitnessSum;
         }
 
         std::vector<Genome> newGenomes;
@@ -49,8 +50,8 @@ namespace qaib {
             float br = Random::getFloat(0, 1);
 
             for (int i = 0, iend = genomes.size(); i < iend; ++i) {
-                ar -= success[i];
-                br -= success[i];
+                ar -= fitness[i];
+                br -= fitness[i];
 
                 if (!a && ar < 0) {
                     a = &genomes[i];
@@ -73,13 +74,15 @@ namespace qaib {
             }
 
             Genome result(*a, *b);
-            if (Random::getInt(0, 100) > 50) {
+            if (Random::getInt(0, 100) > 80) {
                 result.mutate(innovationGenerator);
             }
             newGenomes.push_back(result);
         }
 
         genomes = newGenomes;
+
+        deleteOldGenes();
     }
 
     Population::Population(sf::Packet& packet) : innovationGenerator(packet) {
@@ -116,6 +119,36 @@ namespace qaib {
         free(aiData);
 
         return res;
+    }
+
+    void Population::deleteOldGenes() {
+        while (true) {
+            if (genomes.front().genes.empty()) break;
+            Genome::Gene& original = genomes.front().genes.front();
+            bool removeGene = true;
+            for (auto& genome : genomes) {
+                if (genome.genes.empty()) {
+                    removeGene = false;
+                    break;
+                }
+                Genome::Gene& gene = genome.genes.front();
+                if (
+                        gene.enabled ||
+                        gene.innovation != original.innovation ||
+                        gene.from != original.from ||
+                        gene.to != original.to) {
+                    removeGene = false;
+                    break;
+                }
+            }
+            if (removeGene) {
+                for (auto& genome : genomes) {
+                    genome.genes.erase(genome.genes.begin());
+                }
+            } else {
+                break;
+            }
+        }
     }
 
 }

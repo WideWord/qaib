@@ -13,7 +13,8 @@ namespace qaib {
     class NeuralNetwork;
 
     class Genome {
-    private:
+    protected:
+        friend class Population;
         struct Gene {
             Innovation innovation;
             Neuron from;
@@ -37,12 +38,18 @@ namespace qaib {
                 packet << innovation << from << to << enabled << weight;
             }
         };
+
         std::vector<Gene> genes;
         std::vector<Neuron> inputs;
         std::vector<Neuron> outputs;
+        std::set<Neuron> neurons;
 
-        Gene& getRandomEnabledGene();
+        void recollectNeurons();
+
+        Gene* getRandomEnabledGene();
         Neuron getRandomNeuron();
+
+
     public:
         Genome(InnovationGenerator& g, int inputsCount, int outputsCout);
         Genome(const Genome& a, const Genome& b);
@@ -51,11 +58,16 @@ namespace qaib {
 
         void addConnection(InnovationGenerator& g, Neuron from, Neuron to, float weight);
         void insertRandomConnection(InnovationGenerator& g);
+        void removeRandomConnection();
         void insertRandomNode(InnovationGenerator& g);
         void mutateRandomWeight();
         void mutate(InnovationGenerator& g);
 
         Ref<NeuralNetwork> buildNeuralNetwork() const;
+
+        inline int getNeuronsCount() const {
+            return (int)neurons.size();
+        }
     };
 
 }

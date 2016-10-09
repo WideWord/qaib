@@ -11,12 +11,17 @@ namespace qaib {
     private:
         InnovationGenerator innovationGenerator;
         std::vector<Genome> genomes;
+
+        void deleteOldGenes();
     public:
         Population(int size, int inputsCount, int outputsCount);
 
         std::vector<Ref<NeuralNetwork>> getNeuralNetworks() const;
+        inline const std::vector<Genome>& getGenomes() const {
+            return genomes;
+        }
 
-        void makeSelection(int newSize, std::vector<float> succsess);
+        void makeSelection(int newSize, std::vector<float> fitness);
 
         void writeTo(sf::Packet &packet) const;
 

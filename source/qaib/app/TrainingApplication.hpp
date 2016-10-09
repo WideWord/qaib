@@ -23,9 +23,10 @@ namespace qaib {
         void newGeneration();
         void nextTest();
 
-        std::queue<Ref<NeuralNetwork>> testQueue;
+        std::queue<const Genome*> testQueue;
         std::vector<float> fitness;
         Ref<Pawn> aPawn, bPawn;
+        int aNeuronsCount, bNeuronsCount;
 
         float roundFrames;
         int generationCount;
@@ -36,5 +37,4 @@ namespace qaib {
         TrainingApplication();
         TrainingApplication(int startFromGeneration);
     };
-
 }

@@ -2,6 +2,7 @@
 #include <qaib/util/Random.hpp>
 #include <qaib/nn/NeuralNetwork.hpp>
 #include <deque>
+#include <algorithm>
 
 namespace qaib {
 
@@ -37,21 +38,28 @@ namespace qaib {
 
         inputs = a.inputs;
         outputs = a.outputs;
+
+        recollectNeurons();
     }
 
-    Genome::Gene& Genome::getRandomEnabledGene() {
-        while (true) {
+    Genome::Gene* Genome::getRandomEnabledGene() {
+        if (genes.empty()) return nullptr;
+        int maxQueries = 10;
+        for (int i = 0; i < maxQueries; ++i) {
             int geneId = Random::getInt(0, (int)(genes.size() - 1));
             Gene& gene = genes[geneId];
             if (gene.enabled) {
-                return gene;
+                return &gene;
             }
         }
+        return nullptr;
     }
 
     Neuron Genome::getRandomNeuron() {
-        Gene& gene = getRandomEnabledGene();
-        return Random::getBool() ? gene.from : gene.to;
+        int id = Random::getInt(0, (int)neurons.size() - 1);
+        auto it = neurons.begin();
+        std::advance(it, id);
+        return *it;
     }
 
     void Genome::addConnection(InnovationGenerator& g, Neuron from, Neuron to, float weight) {
@@ -61,14 +69,25 @@ namespace qaib {
     void Genome::insertRandomConnection(InnovationGenerator& g) {
         Neuron n1 = getRandomNeuron();
         Neuron n2;
-        do {
+        while (true) {
             n2 = getRandomNeuron();
-        } while (n1 == n2);
+            bool connectionExists = false;
+            for (auto& gene : genes) {
+                if (!gene.enabled) continue;
+                if ((gene.from == n1 && gene.to == n2) || (gene.from == n2 && gene.to == n1)) {
+                    connectionExists = true;
+                    break;
+                }
+            }
+            if (n1 != n2 && !connectionExists) break;
+        }
         addConnection(g, n1, n2, Random::getFloat(-2, 2));
     }
 
     void Genome::insertRandomNode(InnovationGenerator& g) {
-        Gene& gene = getRandomEnabledGene();
+        Gene* maybeGene = getRandomEnabledGene();
+        if (!maybeGene) return;
+        Gene& gene = *maybeGene;
         gene.enabled = false;
 
         float newWeight = sqrtf(fabsf(gene.weight));
@@ -76,6 +95,14 @@ namespace qaib {
         Neuron newNeuron = g.generate();
         genes.push_back(Gene(g, gene.from, newNeuron, newWeight));
         genes.push_back(Gene(g, newNeuron, gene.to, (gene.weight < 0) ? -newWeight : newWeight));
+        neurons.insert(newNeuron);
+    }
+
+    void Genome::removeRandomConnection() {
+        Gene* gene = getRandomEnabledGene();
+        if (!gene) return;
+        gene->enabled = false;
+        recollectNeurons();
     }
 
     Genome::Genome(InnovationGenerator& g, int inputsCount, int outputsCount) {
@@ -87,17 +114,15 @@ namespace qaib {
         for (int i = 0; i < outputsCount; ++i) {
             Neuron n = g.generate();
             outputs.push_back(n);
-
-            for (int j = 0; j < inputsCount; ++j) {
-                addConnection(g, inputs[j], outputs[i], Random::getFloat(-2, 2));
-            }
         }
 
-
+        recollectNeurons();
     }
 
     void Genome::mutateRandomWeight() {
-        Gene& gene = getRandomEnabledGene();
+        Gene* maybeGene = getRandomEnabledGene();
+        if (!maybeGene) return;
+        Gene& gene = *maybeGene;
         gene.weight = gene.weight + Random::getFloat(-0.2, 0.2);
         if (gene.weight < -2) {
             gene.weight = -2;
@@ -108,10 +133,12 @@ namespace qaib {
 
     void Genome::mutate(InnovationGenerator& g) {
         int r = Random::getInt(0, 100);
-        if (r < 20) {
+        if (r < 15) {
             insertRandomNode(g);
-        } else if (r < 40) {
+        } else if (r < 30) {
             insertRandomConnection(g);
+        } else if (r < 35) {
+            removeRandomConnection();
         } else {
             mutateRandomWeight();
         }
@@ -227,5 +254,19 @@ namespace qaib {
         }
     }
 
+    void Genome::recollectNeurons() {
+        neurons.clear();
+        for (auto& gene : genes) {
+            if (!gene.enabled) continue;
+            neurons.insert(gene.from);
+            neurons.insert(gene.to);
+        }
+        for (auto& neuron : inputs) {
+            neurons.insert(neuron);
+        }
+        for (auto& neuron : outputs) {
+            neurons.insert(neuron);
+        }
+    }
 
 }

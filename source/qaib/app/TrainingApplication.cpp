@@ -37,8 +37,9 @@ namespace qaib {
             fitness.clear();
         }
 
-        for (auto& net : population->getNeuralNetworks()) {
-            testQueue.push(net);
+        for (auto& genome : population->getGenomes()) {
+            auto ptr = &genome;
+            testQueue.push(ptr);
         }
 
         sf::Packet packet;
@@ -57,17 +58,15 @@ namespace qaib {
 
         if (aPawn && bPawn) {
 
-            auto score = aPawn->getScore();
-            if (score < 0.1f) {
-                score = 0.1f;
-            }
-            fitness.push_back(score / (aPawn->getHealth() / 10.0f + 0.1f));
+            auto fitnessFunc = [](float score, float health, int neuronsCount) {
+                if (score < 0.1f) {
+                    score = 0.1f;
+                }
+                return score * 0.1f + health / 100.0f - powf(aNeuronsCount, 2) / 10000.0f;
+            };
 
-            score = bPawn->getScore();
-            if (score < 0.1f) {
-                score = 0.1f;
-            }
-            fitness.push_back(score / (bPawn->getHealth() / 10.0f + 0.1f));
+            fitness.push_back(fitnessFunc(aPawn->getScore(), aPawn->getHealth(), aNeuronsCount));
+            fitness.push_back(fitnessFunc(bPawn->getScore(), bPawn->getHealth(), bNeuronsCount));
 
             aPawn = nullptr;
             bPawn = nullptr;
@@ -78,10 +77,16 @@ namespace qaib {
             newGeneration();
         }
 
-        auto aNet = testQueue.front();
+        auto& aGenome = *(testQueue.front());
         testQueue.pop();
-        auto bNet = testQueue.front();
+        auto& bGenome = *(testQueue.front());
         testQueue.pop();
+
+        auto aNet = aGenome.buildNeuralNetwork();
+        auto bNet = bGenome.buildNeuralNetwork();
+
+        aNeuronsCount = aGenome.getNeuronsCount();
+        bNeuronsCount = bGenome.getNeuronsCount();
 
         gameWorld = Ref<GameWorld>(new GameWorld(20, 0));
         gameRenderer.setGameWorld(gameWorld.get());
@@ -92,9 +97,9 @@ namespace qaib {
         aPawn->useController<NeuralNetworkPawnController>(aNet, bPawn);
         bPawn->useController<NeuralNetworkPawnController>(bNet, aPawn);
 
-        aPawn->setPosition(glm::vec2(Random::getFloat(-2, 2), Random::getFloat(-2, 2)));
+        aPawn->setPosition(glm::vec2(-8, 0));
         aPawn->setRotation(Random::getFloat(-M_PI, M_PI));
-        bPawn->setPosition(glm::vec2(Random::getFloat(-2, 2), Random::getFloat(-2, 2)));
+        bPawn->setPosition(glm::vec2(8, 0));
         bPawn->setRotation(Random::getFloat(-M_PI, M_PI));
 
 
