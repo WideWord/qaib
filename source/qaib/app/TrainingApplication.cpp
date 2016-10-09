@@ -17,7 +17,7 @@ namespace qaib {
     }
 
     TrainingApplication::TrainingApplication(int startFromGeneration) {
-        generationCount = startFromGeneration - 1;
+        generationCount = startFromGeneration;
         gameWorld = nullptr;
         aPawn = nullptr;
         bPawn = nullptr;

@@ -17,6 +17,7 @@ int main(int argc, char** argv) {
 		} else {
 			std::stringstream ss(argv[2]);
 			int generation;
+			ss >> generation;
 			return TrainingApplication(generation).exec();
 		}
 	} else if (strcmp(argv[1], "play") == 0) {
