@@ -13,7 +13,7 @@ namespace qaib {
         gameWorld = nullptr;
         aPawn = nullptr;
         bPawn = nullptr;
-        population = Ref<Population>(new Population(30, 4 + 12, 4));
+        population = Ref<Population>(new Population(30, 7, 4));
     }
 
     TrainingApplication::TrainingApplication(int startFromGeneration) {
@@ -83,7 +83,7 @@ namespace qaib {
         auto bNet = testQueue.front();
         testQueue.pop();
 
-        gameWorld = Ref<GameWorld>(new GameWorld(20, 10));
+        gameWorld = Ref<GameWorld>(new GameWorld(20, 0));
         gameRenderer.setGameWorld(gameWorld.get());
 
         aPawn = gameWorld->createPawn();

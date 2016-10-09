@@ -28,6 +28,10 @@ namespace qaib {
         inline bool getIsActive() {
             return isActive;
         }
+
+        inline Ref<Pawn> getShootBy() {
+            return shootBy;
+        }
     };
 
 }

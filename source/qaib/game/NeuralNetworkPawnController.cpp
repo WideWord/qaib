@@ -6,6 +6,7 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/vector_angle.hpp>
 #include <qaib/game/GameWorld.hpp>
+#include <qaib/game/Bullet.hpp>
 
 namespace qaib {
 
@@ -30,18 +31,55 @@ namespace qaib {
             auto angle = ((forward.x * dir.x + forward.y * dir.y) * 0.5f + 1);
             if (orientedAngle(forward, dir) < 0) angle = -angle;
             inputs.push_back(angle);
+
+            float hit = dot(enemy->getForward(), -dir);
+            inputs.push_back(hit);
         } else {
+            inputs.push_back(1.0f);
             inputs.push_back(0);
+            inputs.push_back(-1);
+        }
+
+        float distToBullet = INFINITY;
+        Ref<Bullet> nearestBullet;
+        for (auto& bullet : gameWorld.getBullets()) {
+            if (bullet->getShootBy().get() == me) continue;
+            float dist = distance(bullet->getPosition(), me->getPosition());
+            if (dist < distToBullet) {
+                nearestBullet = bullet;
+                distToBullet = dist;
+            }
+        }
+
+        if (nearestBullet) {
+            vec2 dir = nearestBullet->getPosition() - me->getPosition();
+            vec2 forward = me->getForward();
+
+            float dist = sqrtf((dir.x * dir.x + dir.y * dir.y)) / 50.0f;
+            if (dist > 1.0f) dist = 1.0f;
+
+            inputs.push_back(dist);
+
+            dir = normalize(dir);
+            auto angle = ((forward.x * dir.x + forward.y * dir.y) * 0.5f + 1);
+            if (orientedAngle(forward, dir) < 0) angle = -angle;
+            inputs.push_back(angle);
+
+            float hit = dot(nearestBullet->getForward(), -dir);
+            inputs.push_back(hit);
+        } else {
+            inputs.push_back(1.0f);
             inputs.push_back(0);
+            inputs.push_back(-1);
         }
 
         inputs.push_back(me->getHealth() / me->getInitialHealth());
 
-        for (int i = 0; i < 12; ++i) {
-            float angle = (float)M_PI / 6.0f * ((float)i) + me->getRotation();
-            vec2 dir = rotate(vec2(1, 0), angle);
-            inputs.push_back(gameWorld.rayCast(me->getPosition(), dir) / 100.0f);
-        }
+//        for (int i = 0; i < 12; ++i) {
+//            float angle = (float)M_PI / 6.0f * ((float)i) + me->getRotation();
+//            vec2 dir = rotate(vec2(1, 0), angle);
+//            inputs.push_back(gameWorld.rayCast(me->getPosition(), dir) / 100.0f);
+//        }
 
         outputs = net->execute(inputs);
     }
