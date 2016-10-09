@@ -8,7 +8,7 @@
 
 namespace qaib {
 
-    TrainingApplication::TrainingApplication() : population(30, 4 + 3 * 3, 4), aiVision(4, 3, 4) {
+    TrainingApplication::TrainingApplication() : population(30, 4 + 12, 4), aiVision(4, 3, 4) {
         generationCount = 0;
         gameWorld = nullptr;
         aPawn = nullptr;

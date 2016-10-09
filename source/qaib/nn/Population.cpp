@@ -72,7 +72,7 @@ namespace qaib {
             }
 
             Genome result(*a, *b);
-            if (Random::getInt(0, 100) > 90) {
+            if (Random::getInt(0, 100) > 50) {
                 result.mutate(innovationGenerator);
             }
             newGenomes.push_back(result);

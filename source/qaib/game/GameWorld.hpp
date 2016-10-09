@@ -13,7 +13,7 @@ namespace qaib {
 	class Bullet;
     class Obstruction;
 
-	class GameWorld : private b2ContactListener, private b2ContactFilter {
+	class GameWorld : private b2ContactListener, private b2ContactFilter, private b2RayCastCallback {
 	private:
 
 		std::list<Ref<Pawn>> pawns;
@@ -27,9 +27,13 @@ namespace qaib {
         void freeBullet(Bullet* bullet);
 
 		b2World physicsWorld;
+		b2Body* fieldEdges;
+		float raycastFraction;
 
 		virtual void BeginContact(b2Contact* contact) override;
         virtual bool ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB) override;
+		virtual float ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction) override;
+
 
         float worldSize;
 
@@ -52,6 +56,8 @@ namespace qaib {
 		void doShot(glm::vec2 fromPosition, glm::vec2 inDirection);
 
 		void doTick(float deltaTime);
+
+		float rayCast(glm::vec2 fromPosition, glm::vec2 inDirection);
 
 		virtual ~GameWorld();
 	};

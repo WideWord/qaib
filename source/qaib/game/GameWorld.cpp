@@ -27,6 +27,8 @@ namespace qaib {
 
         auto body = physicsWorld.CreateBody(&bodyDef);
 
+        fieldEdges = body;
+
         b2PolygonShape shape;
         b2FixtureDef fixture;
         fixture.shape = &shape;
@@ -188,7 +190,17 @@ namespace qaib {
 		physicsWorld.Step(deltaTime, 10, 10);
 	}
 
+    float GameWorld::rayCast(glm::vec2 fromPosition, glm::vec2 inDirection) {
+        raycastFraction = 1;
+        physicsWorld.RayCast(this, convert<b2Vec2>(fromPosition), convert<b2Vec2>(fromPosition + glm::normalize(inDirection) * 100.0f));
+        return raycastFraction * 100.0f;
+    }
 
+    float GameWorld::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction) {
+        if (fixture->GetBody()->GetType() != b2_staticBody) return raycastFraction;
+        raycastFraction = fraction;
+        return fraction;
+    }
 
     GameWorld::~GameWorld() {
 

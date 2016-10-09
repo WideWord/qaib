@@ -37,12 +37,10 @@ namespace qaib {
 
         inputs.push_back(me->getHealth() / me->getInitialHealth());
 
-        auto img = vision.drawFrame(gameWorld, *getPawn()).copyToImage();
-        auto size = img.getSize();
-        for (int x = 0; x < size.x; ++x) {
-            for (int y = 0; y < size.y; ++y) {
-                inputs.push_back(((float)img.getPixel(x, y).r) / 255.0f);
-            }
+        for (int i = 0; i < 12; ++i) {
+            float angle = (float)M_PI / 6.0f * ((float)i) + me->getRotation();
+            vec2 dir = rotate(vec2(1, 0), angle);
+            inputs.push_back(gameWorld.rayCast(me->getPosition(), dir) / 100.0f);
         }
 
         outputs = net->execute(inputs);
@@ -53,7 +51,7 @@ namespace qaib {
     }
 
     glm::vec2 NeuralNetworkPawnController::turningTo() {
-        return glm::rotate(glm::vec2(1, 0), getPawn()->getRotation() + outputs[2] * deltaTime);
+        return glm::rotate(glm::vec2(1, 0), getPawn()->getRotation() + outputs[2] * deltaTime * 4);
 
     }
 
