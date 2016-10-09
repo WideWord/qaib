@@ -14,10 +14,10 @@ namespace qaib {
             nextInnovation = 0;
         }
         inline InnovationGenerator(sf::Packet& packet) {
-            packet >> nextInnovation;
+            packet >> (sf::Uint64&)nextInnovation;
         }
         inline void writeTo(sf::Packet& packet)const {
-            packet << nextInnovation;
+            packet << (sf::Uint64&)nextInnovation;
         }
         inline Innovation generate() {
             return nextInnovation++;
