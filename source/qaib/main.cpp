@@ -15,7 +15,7 @@ int parseIntArg(const char* arg) {
 
 int main(int argc, char** argv) {
 	if (argc < 2) {
-		std::cout << "Usage:\n\tqaib train [continue from generation]\n\tqaib play [population file]";
+        std::cout << "Usage: qaib [train, train-mt, play, graph]\n";
 		return -1;
 	}
 
