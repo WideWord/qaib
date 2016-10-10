@@ -15,7 +15,7 @@ int parseIntArg(const char* arg) {
 
 int main(int argc, char** argv) {
 	if (argc < 2) {
-        std::cout << "Usage: qaib [train, train-mt, play, graph]\n";
+        std::cout << "Usage: qaib [train, train-gui, play, play-jit, graph]\n";
 		return -1;
 	}
 
@@ -28,15 +28,6 @@ int main(int argc, char** argv) {
 			ss >> generation;
 			return TrainingApplication(generation).exec();
 		}
-	} else if (strcmp(argv[1], "train") == 0) {
-		if (argc < 3) {
-			return TrainingApplication(-1, false).exec();
-		} else {
-			std::stringstream ss(argv[2]);
-			int generation;
-			ss >> generation;
-			return TrainingApplication(generation, false).exec();
-		}
 	} else if (strcmp(argv[1], "play") == 0) {
 		if (argc < 3) {
 			return PlayingGameApplication("data/default_ai.pop").exec();
@@ -44,7 +35,14 @@ int main(int argc, char** argv) {
 			std::string aiFilename(argv[2]);
 			return PlayingGameApplication(aiFilename).exec();
 		}
-	} else if (strcmp(argv[1], "graph") == 0) {
+	} else if (strcmp(argv[1], "play-jit") == 0) {
+        if (argc < 3) {
+            return PlayingGameApplication("data/default_ai.pop").exec();
+        } else {
+            std::string aiFilename(argv[2]);
+            return PlayingGameApplication(aiFilename, true).exec();
+        }
+    } else if (strcmp(argv[1], "graph") == 0) {
         if (argc < 3) {
             std::cout << "Usage: qaib graph [population file]\n";
             return -1;
@@ -54,9 +52,9 @@ int main(int argc, char** argv) {
 			std::cout << population->getGenomes().front().renderGraph();
 			return 0;
         }
-    } else if (strcmp(argv[1], "train-mt") == 0) {
+    } else if (strcmp(argv[1], "train") == 0) {
 		if (argc < 7) {
-			std::cout << "Usage qaib train-mt [threads] [use jit (0 or 1)] [population size] [rounds] [start from generation]\n";
+			std::cout << "Usage qaib train [threads] [use jit (0 or 1)] [population size] [rounds] [start from generation]\n";
 		}
 		MultithreadedTrainer::Config cfg;
 		cfg.threads = parseIntArg(argv[2]);
@@ -68,7 +66,7 @@ int main(int argc, char** argv) {
 		trainer.run(cfg);
 		return 0;
 	} else {
-		std::cout << "Usage: qaib [train, train-mt, play, graph]\n";
+		std::cout << "Usage: qaib [train, train-gui, play, graph]\n";
 		return -1;
 	}
 }
