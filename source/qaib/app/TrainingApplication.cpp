@@ -1,5 +1,6 @@
 #include <qaib/app/TrainingApplication.hpp>
 #include <qaib/game/Pawn.hpp>
+#include <qaib/nn/NeuralNetwork.hpp>
 #include <qaib/game/NeuralNetworkPawnController.hpp>
 #include <qaib/util/Random.hpp>
 #include <fstream>
@@ -98,8 +99,8 @@ namespace qaib {
         auto& aGenome = population->getGenomes()[aID];
         auto& bGenome = population->getGenomes()[bID];
 
-        auto aNet = aGenome.buildNeuralNetwork();
-        auto bNet = bGenome.buildNeuralNetwork();
+        auto aNet = RefCast<NeuralNetwork>(aGenome.buildNeuralNetwork());
+        auto bNet = RefCast<NeuralNetwork>(bGenome.buildNeuralNetwork());
 
         gameWorld = Ref<GameWorld>(new GameWorld(20, 15));
 

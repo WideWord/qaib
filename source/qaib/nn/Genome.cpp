@@ -165,12 +165,12 @@ namespace qaib {
         }
     }
 
-    Ref<NeuralNetwork> Genome::buildNeuralNetwork() const {
+    Ref<PlainNeuralNetwork> Genome::buildNeuralNetwork() const {
 
-        std::map<Neuron, NeuralNetwork::NeuronData> net;
+        std::map<Neuron, PlainNeuralNetwork::NeuronData> net;
 
         for (auto input : inputs) {
-            NeuralNetwork::NeuronData data;
+            PlainNeuralNetwork::NeuronData data;
             data.neuron = input;
             data.flag = true;
             net[input] = data;
@@ -180,7 +180,7 @@ namespace qaib {
             if (!gene.enabled) continue;
 
             if (net.find(gene.to) == net.end()) {
-                NeuralNetwork::NeuronData data;
+                PlainNeuralNetwork::NeuronData data;
                 data.neuron = gene.to;
                 data.flag = false;
                 net[gene.to] = data;
@@ -188,7 +188,7 @@ namespace qaib {
 
             auto& toNeuronData = net[gene.to];
 
-            NeuralNetwork::NeuronData::Link link;
+            PlainNeuralNetwork::NeuronData::Link link;
             link.from = gene.from;
             link.weight = gene.weight;
             toNeuronData.inputs.push_back(link);
@@ -199,9 +199,9 @@ namespace qaib {
             queue.push_back(output);
         }
 
-        auto nn = Ref<NeuralNetwork>(new NeuralNetwork());
+        auto nn = Ref<PlainNeuralNetwork>(new PlainNeuralNetwork());
 
-        std::vector<NeuralNetwork::NeuronData> exec;
+        std::vector<PlainNeuralNetwork::NeuronData> exec;
 
         while (!queue.empty()) {
             auto neuron = queue.front();

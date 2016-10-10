@@ -8,10 +8,19 @@
 
 namespace qaib {
 
+    class JITNeuralNetwork;
+
     class NeuralNetwork {
+    public:
+        virtual std::vector<float> execute(std::vector<float> inputs) = 0;
+        virtual ~NeuralNetwork();
+    };
+
+    class PlainNeuralNetwork: public NeuralNetwork {
     protected:
 
         friend class Genome;
+        friend class JITNeuralNetwork;
 
         struct NeuronData {
             struct Link {
@@ -28,7 +37,8 @@ namespace qaib {
         std::vector<Neuron> inputs;
         std::vector<Neuron> outputs;
     public:
-        std::vector<float> execute(std::vector<float> inputs);
+        virtual std::vector<float> execute(std::vector<float> inputs) override;
+
     };
 
 }

@@ -18,16 +18,6 @@ namespace qaib {
         }
     }
 
-    std::vector<Ref<NeuralNetwork>> Population::getNeuralNetworks() const {
-        std::vector<Ref<NeuralNetwork>> res;
-
-        for (auto& genome : genomes) {
-            res.push_back(genome.buildNeuralNetwork());
-        }
-
-        return res;
-    }
-
     void Population::makeSelection(int newSize, std::vector<float> fitness) {
 
         float fitnessSum = 0;

@@ -8,7 +8,7 @@
 namespace qaib {
 
     class Population;
-    class NeuralNetwork;
+    class JITNeuralNetworkWithField;
 
     class MultithreadedTrainer {
     public:
@@ -37,7 +37,7 @@ namespace qaib {
 
         std::vector<float> fitness;
         std::mutex fitnessMutex;
-        std::vector<std::vector<Ref<NeuralNetwork>>> nets;
+        std::vector<std::vector<Ref<JITNeuralNetworkWithField>>> nets;
         std::vector<int> netLinksCount;
 
         void worker(int thread);

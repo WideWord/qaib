@@ -10,7 +10,7 @@ namespace qaib {
 
     using Neuron = Innovation;
 
-    class NeuralNetwork;
+    class PlainNeuralNetwork;
 
     class Genome {
     protected:
@@ -63,7 +63,7 @@ namespace qaib {
         void mutateRandomWeight();
         void mutate(InnovationGenerator& g);
 
-        Ref<NeuralNetwork> buildNeuralNetwork() const;
+        Ref<PlainNeuralNetwork> buildNeuralNetwork() const;
 
         inline int getNeuronsCount() const {
             return (int)neurons.size();

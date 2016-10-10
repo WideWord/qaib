@@ -16,7 +16,6 @@ namespace qaib {
     public:
         Population(int size, int inputsCount, int outputsCount);
 
-        std::vector<Ref<NeuralNetwork>> getNeuralNetworks() const;
         inline const std::vector<Genome>& getGenomes() const {
             return genomes;
         }

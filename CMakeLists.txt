@@ -9,10 +9,20 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 SET (CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -rpath .")
 
-file(GLOB QAIB_SOURCE source/**/*.cpp source/**/**/*.cpp source/**/**/**/*.cpp source/**/*.hpp source/**/**/*.hpp source/**/**/**/*.hpp)
+file(GLOB QAIB_SOURCE
+		source/**/*.cpp
+		source/**/**/*.cpp
+		source/**/**/**/*.cpp
+		source/**/*.hpp
+		source/**/**/*.hpp
+		source/**/**/**/*.hpp
+		source/**/*.h
+		source/**/**/*.h
+		source/**/**/**/*.h)
 
 
 include_directories(source)
+include_directories(source/third-party)
 include_directories(/usr/include)
 include_directories(/usr/local/include)
 

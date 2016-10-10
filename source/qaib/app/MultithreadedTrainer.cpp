@@ -3,7 +3,7 @@
 #include <qaib/nn/Population.hpp>
 #include <qaib/game/Pawn.hpp>
 #include <qaib/game/GameWorld.hpp>
-#include <qaib/nn/NeuralNetwork.hpp>
+#include <qaib/nn/JITNeuralNetwork.hpp>
 #include <qaib/game/NeuralNetworkPawnController.hpp>
 #include <mutex>
 #include <functional>
@@ -58,10 +58,16 @@ namespace qaib {
                 bCtr = 0;
                 bigRoundCtr = 0;
 
+
+
                 for (int th = 0; th < config.threads; ++th) {
                     nets[th].clear();
-                    for (auto& genome : population->getGenomes()) {
-                        nets[th].push_back(genome.buildNeuralNetwork());
+                }
+
+                for (auto& genome : population->getGenomes()) {
+                    auto jitnet = Ref<JITNeuralNetwork>(new JITNeuralNetwork(genome.buildNeuralNetwork()));
+                    for (int th = 0; th < config.threads; ++th) {
+                        nets[th].push_back(Ref<JITNeuralNetworkWithField>(new JITNeuralNetworkWithField(jitnet)));
                     }
                 }
 

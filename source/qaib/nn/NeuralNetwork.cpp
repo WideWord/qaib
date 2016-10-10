@@ -3,7 +3,9 @@
 
 namespace qaib {
 
-    std::vector<float> NeuralNetwork::execute(std::vector<float> inputData) {
+    NeuralNetwork::~NeuralNetwork() {}
+
+    std::vector<float> PlainNeuralNetwork::execute(std::vector<float> inputData) {
 
         std::map<Neuron, float> powers;
 
