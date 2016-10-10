@@ -69,15 +69,15 @@ namespace qaib {
 
         if (aPawn && bPawn) {
 
-            auto fitnessFunc = [](float score, float health, int neuronsCount) {
+            auto fitnessFunc = [](float score, float health, int linksCount) {
                 if (score < 0.1f) {
                     score = 0.1f;
                 }
-                return score + health / 10.0f - powf(neuronsCount, 2) / 10000.0f;
+                return score + health / 10.0f - powf(linksCount, 2) / 10000.0f;
             };
 
-            fitness[aID] += (fitnessFunc(aPawn->getScore(), aPawn->getHealth(), population->getGenomes()[aID].getNeuronsCount()));
-            fitness[bID] += (fitnessFunc(bPawn->getScore(), bPawn->getHealth(), population->getGenomes()[bID].getNeuronsCount()));
+            fitness[aID] += (fitnessFunc(aPawn->getScore(), aPawn->getHealth(), population->getGenomes()[aID].getEnabledGenesCount()));
+            fitness[bID] += (fitnessFunc(bPawn->getScore(), bPawn->getHealth(), population->getGenomes()[bID].getEnabledGenesCount()));
 
             aPawn = nullptr;
             bPawn = nullptr;

@@ -68,6 +68,16 @@ namespace qaib {
         inline int getNeuronsCount() const {
             return (int)neurons.size();
         }
+        inline int getEnabledGenesCount() const {
+            int ctr = 0;
+            for (auto& gene : genes) {
+                if (gene.enabled) {
+                    ctr += 1;
+                }
+            }
+            return ctr;
+        }
+
 
         std::string renderGraph() const;
     };

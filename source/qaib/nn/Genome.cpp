@@ -67,10 +67,29 @@ namespace qaib {
     }
 
     void Genome::insertRandomConnection(InnovationGenerator& g) {
-        Neuron n1 = getRandomNeuron();
+        Neuron n1;
+        while (true) {
+            n1 = getRandomNeuron();
+            bool isOutput = false;
+            for (auto output: outputs) {
+                if (output == n1) {
+                    isOutput = true;
+                }
+            }
+            if (!isOutput) {
+                break;
+            }
+        }
         Neuron n2;
         while (true) {
             n2 = getRandomNeuron();
+            n1 = getRandomNeuron();
+            bool isInput = false;
+            for (auto input: inputs) {
+                if (input == n1) {
+                    isInput = true;
+                }
+            }
             bool connectionExists = false;
             for (auto& gene : genes) {
                 if (!gene.enabled) continue;
@@ -79,7 +98,7 @@ namespace qaib {
                     break;
                 }
             }
-            if (n1 != n2 && !connectionExists) break;
+            if (n1 != n2 && !connectionExists && !isInput) break;
         }
         addConnection(g, n1, n2, Random::getFloat(-2, 2));
     }
