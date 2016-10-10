@@ -87,7 +87,7 @@ namespace qaib {
 
     Population::Population(sf::Packet& packet) : innovationGenerator(packet) {
         uint64_t size;
-        packet >> size;
+        packet >> (sf::Uint64&)size;
 
         for (uint64_t i = 0; i < size; ++i) {
             genomes.push_back(Genome(packet));
@@ -97,7 +97,7 @@ namespace qaib {
     void Population::writeTo(sf::Packet& packet) const {
         innovationGenerator.writeTo(packet);
 
-        packet << (uint64_t)genomes.size();
+        packet << (sf::Uint64)genomes.size();
 
         for (auto& genome : genomes) {
             genome.writeTo(packet);

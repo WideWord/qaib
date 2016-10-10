@@ -210,7 +210,7 @@ namespace qaib {
 
     Genome::Genome(sf::Packet& packet) {
         uint64_t size;
-        packet >> size;
+        packet >> (sf::Uint64&)size;
         for (uint64_t i = 0; i < size; ++i) {
             genes.push_back(Gene(packet));
         }
@@ -218,39 +218,39 @@ namespace qaib {
         uint64_t inputsCount;
         uint64_t outputsCount;
 
-        packet >> inputsCount;
+        packet >> (sf::Uint64&)inputsCount;
         for (uint64_t i = 0; i < inputsCount; ++i) {
             Neuron input;
-            packet >> input;
+            packet >> (sf::Uint64&)input;
             inputs.push_back(input);
         }
 
-        packet >> outputsCount;
+        packet >> (sf::Uint64&)outputsCount;
         for (uint64_t i = 0; i < outputsCount; ++i) {
             Neuron output;
-            packet >> output;
+            packet >> (sf::Uint64&)output;
             outputs.push_back(output);
         }
     }
 
     void Genome::writeTo(sf::Packet& packet) const {
         uint64_t size = genes.size();
-        packet << size;
+        packet << (sf::Uint64)size;
 
         for (auto& gene : genes) {
             gene.writeTo(packet);
         }
 
-        packet << (uint64_t)inputs.size();
+        packet << (sf::Uint64)inputs.size();
 
         for (auto i : inputs) {
-            packet << i;
+            packet << (sf::Uint64)i;
         }
 
-        packet << (uint64_t)outputs.size();
+        packet << (sf::Uint64)outputs.size();
 
         for (auto i : outputs) {
-            packet << i;
+            packet << (sf::Uint64)i;
         }
     }
 

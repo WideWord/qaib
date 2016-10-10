@@ -31,11 +31,11 @@ namespace qaib {
             }
 
             inline Gene(sf::Packet& packet) {
-                packet >> innovation >> from >> to >> enabled >> weight;
+                packet >> (sf::Uint64&)innovation >> (sf::Uint64&)from >> (sf::Uint64&)to >> enabled >> weight;
             }
 
             inline void writeTo(sf::Packet& packet) const {
-                packet << innovation << from << to << enabled << weight;
+                packet << (sf::Uint64&)innovation << (sf::Uint64&)from << (sf::Uint64&)to << enabled << weight;
             }
         };
 
