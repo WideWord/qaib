@@ -29,8 +29,10 @@ namespace qaib {
 
         float roundFrames;
         int generationCount;
+        int generationRoundsCount;
 
         static const int populationSize = 30;
+        static const int generationRoundsNum = 10;
         bool gui;
     protected:
         virtual void init() override;

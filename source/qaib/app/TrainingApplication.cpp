@@ -30,12 +30,14 @@ namespace qaib {
     void TrainingApplication::init() {
         aID = populationSize;
         bID = populationSize;
+        generationRoundsCount = generationRoundsNum;
         nextTest();
     }
 
     void TrainingApplication::newGeneration() {
 
         generationCount += 1;
+
 
         if (fitness.size() > 0) {
             population->makeSelection(populationSize, fitness);
@@ -58,6 +60,7 @@ namespace qaib {
 
         aID = 0;
         bID = 0;
+        generationRoundsCount = 0;
 
     }
 
@@ -88,7 +91,10 @@ namespace qaib {
             bID += 1;
             if (bID >= populationSize) {
                 bID = 0;
-                newGeneration();
+                generationRoundsCount += 1;
+                if (generationRoundsCount >= generationRoundsNum) {
+                    newGeneration();
+                }
             }
         }
 
