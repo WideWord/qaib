@@ -65,9 +65,15 @@ namespace qaib {
                 }
 
                 for (auto& genome : population->getGenomes()) {
-                    auto jitnet = Ref<JITNeuralNetwork>(new JITNeuralNetwork(genome.buildNeuralNetwork()));
-                    for (int th = 0; th < config.threads; ++th) {
-                        nets[th].push_back(Ref<JITNeuralNetworkWithField>(new JITNeuralNetworkWithField(jitnet)));
+                    if (config.useJIT) {
+                        auto jitnet = Ref<JITNeuralNetwork>(new JITNeuralNetwork(genome.buildNeuralNetwork()));
+                        for (int th = 0; th < config.threads; ++th) {
+                            nets[th].push_back(Ref<JITNeuralNetworkWithField>(new JITNeuralNetworkWithField(jitnet)));
+                        }
+                    } else {
+                        for (int th = 0; th < config.threads; ++th) {
+                            nets[th].push_back(genome.buildNeuralNetwork());
+                        }
                     }
                 }
 
