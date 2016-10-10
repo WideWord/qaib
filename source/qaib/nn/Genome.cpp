@@ -83,7 +83,6 @@ namespace qaib {
         Neuron n2;
         while (true) {
             n2 = getRandomNeuron();
-            n1 = getRandomNeuron();
             bool isInput = false;
             for (auto input: inputs) {
                 if (input == n1) {
