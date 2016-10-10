@@ -3,7 +3,7 @@
 #include <qaib/game/Movable.hpp>
 #include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
-
+#include <random>
 
 namespace qaib {
 
@@ -15,7 +15,7 @@ namespace qaib {
         sf::Vertex points[3];
     protected:
         friend class ObstructionGenerator;
-        explicit Obstruction(b2Body* body);
+        explicit Obstruction(std::mt19937& generator, b2Body* body);
     public:
         inline b2Body* getPhysicsBody() {
             return physicsBody;

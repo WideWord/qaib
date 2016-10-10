@@ -5,11 +5,9 @@
 
 namespace qaib {
 
-    Obstruction::Obstruction(b2Body *body) {
+    Obstruction::Obstruction(std::mt19937& mt, b2Body *body) {
         physicsBody = body;
 
-        std::random_device rd;
-        std::mt19937 mt(rd());
         std::uniform_real_distribution<float> dist(-2.0, 2.0);
         std::uniform_real_distribution<float> rdist(M_PI_4, M_PI_2);
 

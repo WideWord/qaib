@@ -17,7 +17,7 @@ namespace qaib {
         buildFieldEdges();
 
         ObstructionGenerator generator(physicsWorld, obstructions);
-        generator.generate(obstructionCount, size);
+        generator.generate(19245, obstructionCount, size);
 	}
 
     void GameWorld::buildFieldEdges() {

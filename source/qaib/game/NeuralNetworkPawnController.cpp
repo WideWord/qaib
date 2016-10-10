@@ -75,6 +75,9 @@ namespace qaib {
 
         inputs.push_back(me->getHealth() / me->getInitialHealth());
 
+        inputs.push_back(me->getPosition().x / 10.0f);
+        inputs.push_back(me->getPosition().y / 10.0f);
+
 //        for (int i = 0; i < 12; ++i) {
 //            float angle = (float)M_PI / 6.0f * ((float)i) + me->getRotation();
 //            vec2 dir = rotate(vec2(1, 0), angle);

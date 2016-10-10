@@ -10,12 +10,11 @@ namespace qaib {
             std::list<Ref<Obstruction>>& obstructionStorage
     ) : physicsWorld(physicsWorld), obstructionStorage(obstructionStorage) { }
 
-    void ObstructionGenerator::generate(int count, float fieldSize) {
+    void ObstructionGenerator::generate(unsigned seed, int count, float fieldSize) {
 
         auto radius = fieldSize * 0.5f;
 
-        std::random_device rd;
-        std::mt19937 mt(rd());
+        std::mt19937 mt(seed);
         std::uniform_real_distribution<float> randomDistance(2, radius);
         std::uniform_real_distribution<float> randomAngle(0, (float)M_PI * 2.0f);
 
@@ -26,7 +25,7 @@ namespace qaib {
             auto body = physicsWorld.CreateBody(&bodyDef);
 
 
-            auto obstruction = Ref<Obstruction>(new Obstruction(body));
+            auto obstruction = Ref<Obstruction>(new Obstruction(mt, body));
 
             auto distance = randomDistance(mt);
             auto angle = randomAngle(mt);

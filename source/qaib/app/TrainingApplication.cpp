@@ -98,7 +98,7 @@ namespace qaib {
         auto aNet = aGenome.buildNeuralNetwork();
         auto bNet = bGenome.buildNeuralNetwork();
 
-        gameWorld = Ref<GameWorld>(new GameWorld(20, 0));
+        gameWorld = Ref<GameWorld>(new GameWorld(20, 15));
 
         if (gui) {
             gameRenderer->setGameWorld(gameWorld.get());
@@ -110,9 +110,9 @@ namespace qaib {
         aPawn->useController<NeuralNetworkPawnController>(aNet, bPawn);
         bPawn->useController<NeuralNetworkPawnController>(bNet, aPawn);
 
-        aPawn->setPosition(glm::vec2(Random::getFloat(-5, -4), Random::getFloat(-5, 5)));
+        aPawn->setPosition(glm::vec2(Random::getFloat(-5, 5), Random::getFloat(-5, 5)));
         aPawn->setRotation(Random::getFloat(-M_PI, M_PI));
-        bPawn->setPosition(glm::vec2(Random::getFloat(4, 5), Random::getFloat(-5, 5)));
+        bPawn->setPosition(glm::vec2(Random::getFloat(-5, 5), Random::getFloat(-5, 5)));
         bPawn->setRotation(Random::getFloat(-M_PI, M_PI));
 
 

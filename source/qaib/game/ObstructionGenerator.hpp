@@ -15,7 +15,7 @@ namespace qaib {
     public:
         ObstructionGenerator(b2World& physicsWorld, std::list<Ref<Obstruction>>& obstructionStorage);
 
-        void generate(int count, float fieldSize);
+        void generate(unsigned seed, int count, float fieldSize);
     };
 
 }
