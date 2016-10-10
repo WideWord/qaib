@@ -2,7 +2,7 @@
 #include <qaib/util/Random.hpp>
 #include <qaib/nn/NeuralNetwork.hpp>
 #include <deque>
-#include <algorithm>
+#include <sstream>
 
 namespace qaib {
 
@@ -267,6 +267,33 @@ namespace qaib {
         for (auto& neuron : outputs) {
             neurons.insert(neuron);
         }
+    }
+
+    std::string Genome::renderGraph() const {
+        std::stringstream ss;
+        ss << "\ndigraph G {\nrankdir=LR;\n";
+
+        ss << "subgraph cluster_inputs {\n node [style=solid,color=blue4, shape=circle];\n";
+        for (auto& input : inputs) {
+            ss << input << ";\n";
+        }
+        ss << "}\n";
+
+        ss << "subgraph cluster_outputs {\n  node [style=solid,color=red2, shape=circle];\n";
+        for (auto& output : outputs) {
+            ss << output << ";\n";
+        }
+        ss << "}\n";
+
+
+        for (auto& gene : genes) {
+            if (!gene.enabled) continue;
+            ss << gene.from << " -> " << gene.to << " [label=\"" << gene.weight << "\"];\n";
+        }
+
+        ss << "}\n";
+
+        return ss.str();
     }
 
 }

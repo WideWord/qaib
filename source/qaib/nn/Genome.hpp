@@ -68,6 +68,8 @@ namespace qaib {
         inline int getNeuronsCount() const {
             return (int)neurons.size();
         }
+
+        std::string renderGraph() const;
     };
 
 }

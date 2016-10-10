@@ -36,8 +36,19 @@ int main(int argc, char** argv) {
 			std::string aiFilename(argv[2]);
 			return PlayingGameApplication(aiFilename).exec();
 		}
-	} else {
-		std::cout << "Usage:\n\tqaib train [continue from generation]\n\tqaib play [population file]";
+	} else if (strcmp(argv[1], "graph") == 0) {
+        if (argc < 3) {
+            std::cout << "Usage: qaib graph [population file]\n";
+            return -1;
+        } else {
+            std::string aiFilename(argv[2]);
+            auto population = Population::load(aiFilename);
+			std::cout << population->getGenomes().front().renderGraph();
+			return 0;
+        }
+    } else {
+		std::cout << "Usage:\n\tqaib train [continue from generation]\n\tqaib play [population file]\n";
+        std::cout << "\tqaib graph [population file]\n";
 		return -1;
 	}
 }
