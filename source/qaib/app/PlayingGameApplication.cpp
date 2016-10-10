@@ -7,7 +7,7 @@
 
 namespace qaib {
 
-	PlayingGameApplication::PlayingGameApplication(const std::string& aiFilename) : gameWorld(20, 5) {
+	PlayingGameApplication::PlayingGameApplication(const std::string& aiFilename) : gameWorld(20, 15) {
 		ai = Population::load(aiFilename);
 	}
 

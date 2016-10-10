@@ -271,15 +271,15 @@ namespace qaib {
 
     std::string Genome::renderGraph() const {
         std::stringstream ss;
-        ss << "\ndigraph G {\nrankdir=LR;\n";
+        ss << "\ndigraph G {\nnode [shape=circle,color=green1];\n";
 
-        ss << "subgraph cluster_inputs {\n node [style=solid,color=blue4, shape=circle];\n";
+        ss << "subgraph inputs {\n node [style=solid,color=blue4, shape=circle];\n";
         for (auto& input : inputs) {
             ss << input << ";\n";
         }
         ss << "}\n";
 
-        ss << "subgraph cluster_outputs {\n  node [style=solid,color=red2, shape=circle];\n";
+        ss << "subgraph outputs {\n  node [style=solid,color=red2, shape=circle];\n";
         for (auto& output : outputs) {
             ss << output << ";\n";
         }
