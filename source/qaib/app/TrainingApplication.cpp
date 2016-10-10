@@ -52,9 +52,6 @@ namespace qaib {
         sf::Packet packet;
         population->writeTo(packet);
 
-        std::stringstream ss;
-        ss << "populations/" << generationCount << ".pop";
-
         std::ofstream out(MakeString() << "populations/" << generationCount << ".pop");
         out.write((const char*)packet.getData(), packet.getDataSize());
 

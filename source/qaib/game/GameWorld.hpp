@@ -42,7 +42,7 @@ namespace qaib {
 		Ref<Pawn> currentShootBy;
 
 	public:
-		GameWorld(float size, int obstructionCount);
+		GameWorld(float size = 10, int obstructionCount = 15);
 
         Ref<Pawn> createPawn();
 		inline const std::list<Ref<Pawn>>& getPawns() { return pawns; }
