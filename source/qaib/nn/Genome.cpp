@@ -100,7 +100,7 @@ namespace qaib {
             if (n1 != n2 && !connectionExists && !isInput) break;
         }
         if (ctr != 0) {
-            addConnection(g, n1, n2, Random::getFloat(-2, 2));
+            addConnection(g, n1, n2, Random::getFloat(-5, 5));
         }
     }
 
@@ -144,20 +144,15 @@ namespace qaib {
         if (!maybeGene) return;
         Gene& gene = *maybeGene;
         gene.weight = gene.weight + Random::getFloat(-0.2, 0.2);
-        if (gene.weight < -2) {
-            gene.weight = -2;
-        } else if (gene.weight > 2) {
-            gene.weight = 2;
-        }
     }
 
     void Genome::mutate(InnovationGenerator& g) {
         int r = Random::getInt(0, 100);
-        if (r < 15) {
+        if (r < 5) {
             insertRandomNode(g);
-        } else if (r < 30) {
+        } else if (r < 25) {
             insertRandomConnection(g);
-        } else if (r < 35) {
+        } else if (r < 40) {
             removeRandomConnection();
         } else {
             mutateRandomWeight();

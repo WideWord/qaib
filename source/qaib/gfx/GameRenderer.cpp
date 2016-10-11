@@ -86,8 +86,8 @@ namespace qaib {
 		}
 
 		{
-			sf::RectangleShape shape(sf::Vector2f(0.3, 0.02));
-			shape.setFillColor(sf::Color::Yellow);
+			sf::CircleShape shape(0.05, 12);
+			shape.setFillColor(sf::Color::Black);
 
 			auto &bullets = gameWorld->getBullets();
 			for (auto bullet : bullets) {
