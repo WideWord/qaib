@@ -20,6 +20,10 @@ namespace qaib {
             return genomes;
         }
 
+        inline int getSize() const {
+            return genomes.size();
+        }
+
         void makeSelection(int newSize, std::vector<float> fitness);
 
         void writeTo(sf::Packet &packet) const;

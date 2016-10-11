@@ -112,10 +112,10 @@ namespace qaib {
                         break;
                     }
 
-                    if (aCtr >= config.populationSize) {
+                    if (aCtr >= population->getSize()) {
                         aCtr = 0;
                         bCtr += 1;
-                        if (bCtr >= config.populationSize) {
+                        if (bCtr >= population->getSize()) {
                             bCtr = 0;
                             bigRoundCtr += 1;
                             if (bigRoundCtr >= config.bigRoundsNum) {
