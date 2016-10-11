@@ -12,7 +12,7 @@ namespace qaib {
 
 	class PlayingGameApplication: public Application {
 	private:
-		GameWorld gameWorld;
+		Ref<GameWorld> gameWorld;
 		GameRenderer gameRenderer;
 		Ref<Pawn> playerPawn;
 		Ref<Population> ai;

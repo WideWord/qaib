@@ -9,18 +9,19 @@
 
 namespace qaib {
 
-	PlayingGameApplication::PlayingGameApplication(const Config& cfg) : gameWorld(cfg.world) {
+	PlayingGameApplication::PlayingGameApplication(const Config& cfg) {
 		config = cfg;
 		if (config.useAI) {
 			ai = Population::load(cfg.aiFilename);
 			config.world = ai->getWorldConfig();
 		}
+		gameWorld = Ref<GameWorld>(new GameWorld(config.world));
 	}
 
 	void PlayingGameApplication::init() {
-		gameRenderer.setGameWorld(&gameWorld);
+		gameRenderer.setGameWorld(gameWorld.get());
 
-		playerPawn = gameWorld.createPawn();
+		playerPawn = gameWorld->createPawn();
 
 		playerPawn->useController<PlayerPawnController>(gameRenderer, getMainTarget());
 
@@ -29,7 +30,7 @@ namespace qaib {
 			for (auto &genome : ai->getGenomes()) {
 				aiPawnMax -= 1;
 				if (aiPawnMax == -1) break;
-				auto pawn = gameWorld.createPawn();
+				auto pawn = gameWorld->createPawn();
 				Ref<NeuralNetwork> net;
 				if (config.useJIT) {
 					auto jitnet = Ref<JITNeuralNetwork>(new JITNeuralNetwork(genome.buildNeuralNetwork()));
@@ -45,7 +46,7 @@ namespace qaib {
 	}
 
 	void PlayingGameApplication::doFrame(float deltaTime) {
-		gameWorld.doTick(deltaTime);
+		gameWorld->doTick(deltaTime);
 
 
 		if (playerPawn->isDead()) {

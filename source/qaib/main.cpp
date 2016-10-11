@@ -25,8 +25,8 @@ int main(int argc, char** argv) {
 		}
 		PlayingGameApplication::Config cfg;
 		cfg.useAI = true;
-		cfg.useJIT = parseIntArg(argv[1]) > 0;
-		cfg.aiFilename = std::string(argv[2]);
+		cfg.useJIT = parseIntArg(argv[2]) > 0;
+		cfg.aiFilename = std::string(argv[3]);
 		return PlayingGameApplication(cfg).exec();
 	} else if (strcmp(argv[1], "world") == 0) {
 		if (argc < 5) {
