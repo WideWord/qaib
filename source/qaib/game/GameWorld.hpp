@@ -42,7 +42,15 @@ namespace qaib {
 		Ref<Pawn> currentShootBy;
 
 	public:
-		GameWorld(float size = 20, int obstructionCount = 15);
+		struct Config {
+			float size = 20;
+			int obstructionCount = 15;
+			unsigned seed = 19454;
+
+			Config() {}
+		};
+
+		GameWorld(const Config& cfg = Config());
 
         Ref<Pawn> createPawn();
 		inline const std::list<Ref<Pawn>>& getPawns() { return pawns; }

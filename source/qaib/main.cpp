@@ -15,7 +15,7 @@ int parseIntArg(const char* arg) {
 
 int main(int argc, char** argv) {
 	if (argc < 2) {
-        std::cout << "Usage: qaib [train, train-gui, play, play-jit, graph]\n";
+        std::cout << "Usage: qaib [train, train-gui, play, graph]\n";
 		return -1;
 	}
 
@@ -29,20 +29,18 @@ int main(int argc, char** argv) {
 			return TrainingApplication(generation).exec();
 		}
 	} else if (strcmp(argv[1], "play") == 0) {
-		if (argc < 3) {
-			return PlayingGameApplication("data/default_ai.pop").exec();
-		} else {
-			std::string aiFilename(argv[2]);
-			return PlayingGameApplication(aiFilename).exec();
+		if (argc < 7) {
+			std::cout << "Usage: qaib play [world size] [obstructions] [seed] [use jit] [ai population]\n";
+			return -1;
 		}
-	} else if (strcmp(argv[1], "play-jit") == 0) {
-        if (argc < 3) {
-            return PlayingGameApplication("data/default_ai.pop").exec();
-        } else {
-            std::string aiFilename(argv[2]);
-            return PlayingGameApplication(aiFilename, true).exec();
-        }
-    } else if (strcmp(argv[1], "graph") == 0) {
+		PlayingGameApplication::Config cfg;
+		cfg.world.size = parseIntArg(argv[2]);
+		cfg.world.obstructionCount = parseIntArg(argv[3]);
+		cfg.world.seed = (unsigned)parseIntArg(argv[4]);
+		cfg.useJIT = parseIntArg(argv[5]) > 0;
+		cfg.aiFilename = std::string(argv[6]);
+		return PlayingGameApplication(cfg).exec();
+	} else if (strcmp(argv[1], "graph") == 0) {
         if (argc < 3) {
             std::cout << "Usage: qaib graph [population file]\n";
             return -1;
@@ -53,15 +51,19 @@ int main(int argc, char** argv) {
 			return 0;
         }
     } else if (strcmp(argv[1], "train") == 0) {
-		if (argc < 7) {
-			std::cout << "Usage qaib train [threads] [use jit (0 or 1)] [population size] [rounds] [start from generation]\n";
+		if (argc < 10) {
+			std::cout << "Usage qaib train [world size] [obstructions] [seed] [threads] [use jit (0 or 1)] [population size] [rounds] [start from generation]\n";
+			return -1;
 		}
 		MultithreadedTrainer::Config cfg;
-		cfg.threads = parseIntArg(argv[2]);
-        cfg.useJIT = parseIntArg(argv[3]) > 0;
-		cfg.populationSize = parseIntArg(argv[4]);
-		cfg.bigRoundsNum = parseIntArg(argv[5]);
-		cfg.startFromGeneration = parseIntArg(argv[6]);
+		cfg.world.size = parseIntArg(argv[2]);
+		cfg.world.obstructionCount = parseIntArg(argv[3]);
+		cfg.world.seed = (unsigned)parseIntArg(argv[4]);
+		cfg.threads = parseIntArg(argv[5]);
+        cfg.useJIT = parseIntArg(argv[6]) > 0;
+		cfg.populationSize = parseIntArg(argv[7]);
+		cfg.bigRoundsNum = parseIntArg(argv[8]);
+		cfg.startFromGeneration = parseIntArg(argv[9]);
 		MultithreadedTrainer trainer;
 		trainer.run(cfg);
 		return 0;

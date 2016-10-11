@@ -9,9 +9,9 @@
 
 namespace qaib {
 
-	PlayingGameApplication::PlayingGameApplication(const std::string& aiFilename, bool useJIT) {
-		ai = Population::load(aiFilename);
-		this->useJIT = useJIT;
+	PlayingGameApplication::PlayingGameApplication(const Config& cfg) : gameWorld(cfg.world) {
+		config = cfg;
+		ai = Population::load(cfg.aiFilename);
 	}
 
 	void PlayingGameApplication::init() {
@@ -27,7 +27,7 @@ namespace qaib {
             if (aiPawnMax == -1) break;
             auto pawn = gameWorld.createPawn();
 			Ref<NeuralNetwork> net;
-			if (useJIT) {
+			if (config.useJIT) {
 				auto jitnet = Ref<JITNeuralNetwork>(new JITNeuralNetwork(genome.buildNeuralNetwork()));
 				net = Ref<JITNeuralNetworkWithField>(new JITNeuralNetworkWithField(jitnet));
 			} else {

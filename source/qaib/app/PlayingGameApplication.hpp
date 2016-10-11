@@ -16,12 +16,20 @@ namespace qaib {
 		GameRenderer gameRenderer;
 		Ref<Pawn> playerPawn;
 		Ref<Population> ai;
-		bool useJIT;
 	protected:
 		virtual void init() override;
 		virtual void doFrame(float deltaTime) override;
 	public:
-		PlayingGameApplication(const std::string& aiFilename, bool useJIT = false);
+		struct Config {
+			GameWorld::Config world;
+			bool useJIT = false;
+			std::string aiFilename;
+		};
+
+		PlayingGameApplication(const Config& cfg);
+
+	private:
+		Config config;
 	};
 
 }

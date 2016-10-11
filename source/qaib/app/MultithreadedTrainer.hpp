@@ -4,6 +4,7 @@
 #include <map>
 #include <qaib/util/Typedef.hpp>
 #include <condition_variable>
+#include <qaib/game/GameWorld.hpp>
 
 namespace qaib {
 
@@ -13,6 +14,7 @@ namespace qaib {
     class MultithreadedTrainer {
     public:
         struct Config {
+            GameWorld::Config world;
             int threads;
             int bigRoundsNum;
             int populationSize;

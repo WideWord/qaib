@@ -102,7 +102,7 @@ namespace qaib {
         auto aNet = RefCast<NeuralNetwork>(aGenome.buildNeuralNetwork());
         auto bNet = RefCast<NeuralNetwork>(bGenome.buildNeuralNetwork());
 
-        gameWorld = Ref<GameWorld>(new GameWorld(20, 15));
+        gameWorld = Ref<GameWorld>(new GameWorld());
 
         if (gui) {
             gameRenderer->setGameWorld(gameWorld.get());

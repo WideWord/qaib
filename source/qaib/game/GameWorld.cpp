@@ -7,17 +7,17 @@
 
 namespace qaib {
 
-	GameWorld::GameWorld(float size, int obstructionCount) : physicsWorld(b2Vec2_zero) {
+	GameWorld::GameWorld(const Config& cfg) : physicsWorld(b2Vec2_zero) {
 		physicsWorld.SetContactListener(this);
         physicsWorld.SetContactFilter(this);
 
 
-        worldSize = size;
+        worldSize = cfg.size;
 
         buildFieldEdges();
 
         ObstructionGenerator generator(physicsWorld, obstructions);
-        generator.generate(19245, obstructionCount, size);
+        generator.generate(cfg.seed, cfg.obstructionCount, cfg.size);
 	}
 
     void GameWorld::buildFieldEdges() {
