@@ -192,7 +192,7 @@ namespace qaib {
         if (score < 0.1f) {
             score = 0.1f;
         }
-        return score + health / 10.0f - powf(linksCount, 2) / 10000.0f;
+        return score * 2.0f + health - powf(linksCount, 2) / 100000.0f;
     }
 
 

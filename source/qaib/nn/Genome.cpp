@@ -92,7 +92,6 @@ namespace qaib {
             }
             bool connectionExists = false;
             for (auto& gene : genes) {
-                if (!gene.enabled) continue;
                 if ((gene.from == n1 && gene.to == n2) || (gene.from == n2 && gene.to == n1)) {
                     connectionExists = true;
                     break;
@@ -309,7 +308,8 @@ namespace qaib {
 
         for (auto& gene : genes) {
             if (!gene.enabled) continue;
-            ss << gene.from << " -> " << gene.to << " [label=\"" << gene.weight << "\"];\n";
+            ss << "edge [color=\"" << (gene.weight * 0.12f + (1.0f - 0.25f)) << " 1.000 1.000\"];\n";
+            ss << gene.from << " -> " << gene.to << ";\n";
         }
 
         ss << "}\n";
