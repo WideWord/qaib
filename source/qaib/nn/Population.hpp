@@ -4,6 +4,7 @@
 #include <qaib/nn/Genome.hpp>
 #include <SFML/Network/Packet.hpp>
 #include <qaib/util/Typedef.hpp>
+#include <qaib/game/GameWorld.hpp>
 
 namespace qaib {
 
@@ -13,8 +14,14 @@ namespace qaib {
         std::vector<Genome> genomes;
 
         void deleteOldGenes();
+
+        GameWorld::Config worldConfig;
     public:
-        Population(int size, int inputsCount, int outputsCount);
+        Population(int size, int inputsCount, int outputsCount, const GameWorld::Config& worldConfig);
+
+        inline GameWorld::Config getWorldConfig() {
+            return worldConfig;
+        }
 
         inline const std::vector<Genome>& getGenomes() const {
             return genomes;

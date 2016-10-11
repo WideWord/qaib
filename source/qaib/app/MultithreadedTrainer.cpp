@@ -15,17 +15,18 @@
 
 namespace qaib {
 
-    void MultithreadedTrainer::run(const Config& config) {
+    void MultithreadedTrainer::run(const Config& _config) {
 
+        this->config = _config;
         generation = config.startFromGeneration;
-        this->config = config;
 
         if (generation <= 0) {
             generation = 1;
 
             population = Ref<Population>(new Population(config.populationSize,
                                                         NeuralNetworkPawnController::inputsCount,
-                                                        NeuralNetworkPawnController::outputsCount));
+                                                        NeuralNetworkPawnController::outputsCount,
+                                                        config.world));
 
             sf::Packet packet;
             population->writeTo(packet);
@@ -35,6 +36,7 @@ namespace qaib {
 
         } else {
             population = Population::load(MakeString() << "pop/" << generation << ".pop");
+            this->config.world = population->getWorldConfig();
         }
 
         generationDone.resize(config.threads);

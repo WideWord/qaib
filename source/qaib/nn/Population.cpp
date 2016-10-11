@@ -4,7 +4,7 @@
 
 namespace qaib {
 
-    Population::Population(int size, int inputsCount, int outputsCount) {
+    Population::Population(int size, int inputsCount, int outputsCount, const GameWorld::Config& worldConfig) {
         Genome initialGenome(innovationGenerator, inputsCount, outputsCount);
         for (int i = 0; i < size; ++i) {
             auto genome = initialGenome;
@@ -13,6 +13,7 @@ namespace qaib {
             }
             genomes.push_back(genome);
         }
+        this->worldConfig = worldConfig;
     }
 
     void Population::makeSelection(int newSize, std::vector<float> fitness) {
@@ -73,6 +74,10 @@ namespace qaib {
     }
 
     Population::Population(sf::Packet& packet) : innovationGenerator(packet) {
+        packet >> worldConfig.size;
+        packet >> (sf::Int32&)worldConfig.obstructionCount;
+        packet >> (sf::Uint32&)worldConfig.seed;
+
         uint64_t size;
         packet >> (sf::Uint64&)size;
 
@@ -83,6 +88,8 @@ namespace qaib {
 
     void Population::writeTo(sf::Packet& packet) const {
         innovationGenerator.writeTo(packet);
+
+        packet << worldConfig.size << (sf::Int32&)worldConfig.obstructionCount << (sf::Uint32&)worldConfig.seed;
 
         packet << (sf::Uint64)genomes.size();
 

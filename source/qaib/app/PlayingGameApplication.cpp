@@ -11,7 +11,10 @@ namespace qaib {
 
 	PlayingGameApplication::PlayingGameApplication(const Config& cfg) : gameWorld(cfg.world) {
 		config = cfg;
-		ai = Population::load(cfg.aiFilename);
+		if (config.useAI) {
+			ai = Population::load(cfg.aiFilename);
+			config.world = ai->getWorldConfig();
+		}
 	}
 
 	void PlayingGameApplication::init() {
@@ -21,22 +24,24 @@ namespace qaib {
 
 		playerPawn->useController<PlayerPawnController>(gameRenderer, getMainTarget());
 
-        int aiPawnMax = 2;
-        for (auto& genome : ai->getGenomes()) {
-            aiPawnMax -= 1;
-            if (aiPawnMax == -1) break;
-            auto pawn = gameWorld.createPawn();
-			Ref<NeuralNetwork> net;
-			if (config.useJIT) {
-				auto jitnet = Ref<JITNeuralNetwork>(new JITNeuralNetwork(genome.buildNeuralNetwork()));
-				net = Ref<JITNeuralNetworkWithField>(new JITNeuralNetworkWithField(jitnet));
-			} else {
-				net = genome.buildNeuralNetwork();
+		if (ai) {
+			int aiPawnMax = 2;
+			for (auto &genome : ai->getGenomes()) {
+				aiPawnMax -= 1;
+				if (aiPawnMax == -1) break;
+				auto pawn = gameWorld.createPawn();
+				Ref<NeuralNetwork> net;
+				if (config.useJIT) {
+					auto jitnet = Ref<JITNeuralNetwork>(new JITNeuralNetwork(genome.buildNeuralNetwork()));
+					net = Ref<JITNeuralNetworkWithField>(new JITNeuralNetworkWithField(jitnet));
+				} else {
+					net = genome.buildNeuralNetwork();
+				}
+				pawn->useController<NeuralNetworkPawnController>(net, playerPawn);
+				pawn->setPosition(glm::vec2(Random::getFloat(-5, 5), Random::getFloat(-5, 5)));
+				pawn->setRotation(Random::getFloat(-M_PI, M_PI));
 			}
-            pawn->useController<NeuralNetworkPawnController>(net, playerPawn);
-            pawn->setPosition(glm::vec2(Random::getFloat(-5, 5), Random::getFloat(-5, 5)));
-            pawn->setRotation(Random::getFloat(-M_PI, M_PI));
-        }
+		}
 	}
 
 	void PlayingGameApplication::doFrame(float deltaTime) {

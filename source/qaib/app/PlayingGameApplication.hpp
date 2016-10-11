@@ -23,6 +23,7 @@ namespace qaib {
 		struct Config {
 			GameWorld::Config world;
 			bool useJIT = false;
+			bool useAI = false;
 			std::string aiFilename;
 		};
 
