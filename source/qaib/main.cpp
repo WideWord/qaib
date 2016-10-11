@@ -50,33 +50,33 @@ int main(int argc, char** argv) {
 			return 0;
         }
     } else if (strcmp(argv[1], "train-new") == 0) {
-		if (argc < 8) {
+		if (argc < 9) {
 			std::cout << "Usage qaib train-new [threads] [use jit (0 or 1)] [population size] [rounds] [world size] [obstructions] [seed]\n";
 			return -1;
 		}
 		MultithreadedTrainer::Config cfg;
-		cfg.threads = parseIntArg(argv[1]);
-        cfg.useJIT = parseIntArg(argv[2]) > 0;
-		cfg.populationSize = parseIntArg(argv[3]);
-		cfg.bigRoundsNum = parseIntArg(argv[4]);
-		cfg.world.size = parseIntArg(argv[5]);
-		cfg.world.obstructionCount = parseIntArg(argv[6]);
-		cfg.world.seed = (unsigned)parseIntArg(argv[7]);
+		cfg.threads = parseIntArg(argv[2]);
+        cfg.useJIT = parseIntArg(argv[3]) > 0;
+		cfg.populationSize = parseIntArg(argv[4]);
+		cfg.bigRoundsNum = parseIntArg(argv[5]);
+		cfg.world.size = parseIntArg(argv[6]);
+		cfg.world.obstructionCount = parseIntArg(argv[7]);
+		cfg.world.seed = (unsigned)parseIntArg(argv[8]);
 		cfg.startFromGeneration = 0;
 		MultithreadedTrainer trainer;
 		trainer.run(cfg);
 		return 0;
 	} else if (strcmp(argv[1], "train-continue") == 0) {
-		if (argc < 6) {
+		if (argc < 7) {
 			std::cout << "Usage qaib train-continue [threads] [use jit (0 or 1)] [population size] [rounds] [population number]\n";
 			return -1;
 		}
 		MultithreadedTrainer::Config cfg;
-		cfg.threads = parseIntArg(argv[1]);
-		cfg.useJIT = parseIntArg(argv[2]) > 0;
-		cfg.populationSize = parseIntArg(argv[3]);
-		cfg.bigRoundsNum = parseIntArg(argv[4]);
-		cfg.startFromGeneration = parseIntArg(argv[5]);
+		cfg.threads = parseIntArg(argv[2]);
+		cfg.useJIT = parseIntArg(argv[3]) > 0;
+		cfg.populationSize = parseIntArg(argv[4]);
+		cfg.bigRoundsNum = parseIntArg(argv[5]);
+		cfg.startFromGeneration = parseIntArg(argv[6]);
 		MultithreadedTrainer trainer;
 		trainer.run(cfg);
 		return 0;
