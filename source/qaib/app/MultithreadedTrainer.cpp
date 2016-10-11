@@ -80,11 +80,13 @@ namespace qaib {
                 }
 
                 netLinksCount.clear();
+                netNeuronsCount.clear();
                 fitness.clear();
 
                 for (auto& g : population->getGenomes()) {
                     fitness.push_back(0);
                     netLinksCount.push_back(g.getEnabledGenesCount());
+                    netNeuronsCount.push_back(g.getNeuronsCount());
                 }
             }
 
@@ -153,10 +155,12 @@ namespace qaib {
                     std::unique_lock<std::mutex> lock(fitnessMutex);
                     fitness[aGenome] += calcFitness(aPawn->getScore(),
                                                     aPawn->getHealth() / aPawn->getInitialHealth(),
-                                                    netLinksCount[aGenome]);
+                                                    netLinksCount[aGenome],
+                                                    netNeuronsCount[aGenome]);
                     fitness[bGenome] += calcFitness(bPawn->getScore(),
                                                     bPawn->getHealth() / bPawn->getInitialHealth(),
-                                                    netLinksCount[bGenome]);
+                                                    netLinksCount[bGenome],
+                                                    netNeuronsCount[bGenome]);
                 }
             }
 
@@ -190,11 +194,11 @@ namespace qaib {
 
     }
 
-    float MultithreadedTrainer::calcFitness(float score, float health, int linksCount) {
+    float MultithreadedTrainer::calcFitness(float score, float health, int linksCount, int neuronsCount) {
         if (score < 0.1f) {
             score = 0.1f;
         }
-        return score * 2.0f + health - powf(linksCount, 2) / 100000.0f;
+        return score * 2.0f + health - powf(neuronsCount, 2) / (200.0f * 200.0f);
     }
 
 

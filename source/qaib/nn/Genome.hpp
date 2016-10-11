@@ -60,6 +60,7 @@ namespace qaib {
         void insertRandomConnection(InnovationGenerator& g);
         void removeRandomConnection();
         void insertRandomNode(InnovationGenerator& g);
+        void removeRandomNode();
         void mutateRandomWeight();
         void mutate(InnovationGenerator& g);
 

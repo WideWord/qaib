@@ -42,9 +42,10 @@ namespace qaib {
         std::mutex fitnessMutex;
         std::vector<std::vector<Ref<NeuralNetwork>>> nets;
         std::vector<int> netLinksCount;
+        std::vector<int> netNeuronsCount;
 
         void worker(int thread);
-        float calcFitness(float score, float health, int linksCount);
+        float calcFitness(float score, float health, int linksCount, int neuronsCount);
     };
 
 }

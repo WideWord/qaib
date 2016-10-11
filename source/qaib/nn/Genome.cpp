@@ -146,14 +146,46 @@ namespace qaib {
         gene.weight = gene.weight + Random::getFloat(-0.2, 0.2);
     }
 
+    void Genome::removeRandomNode() {
+        Neuron n1;
+        int ctr = 20;
+        while (ctr--) {
+            n1 = getRandomNeuron();
+            bool isRemovable = true;
+            for (auto output: outputs) {
+                if (output == n1) {
+                    isRemovable = false;
+                }
+            }
+            for (auto input: inputs) {
+                if (input == n1) {
+                    isRemovable = false;
+                }
+            }
+            if (!isRemovable) {
+                break;
+            }
+        }
+        if (ctr != 0) {
+            for (auto& gene : genes) {
+                if (gene.from == n1 || gene.to == n1) {
+                    gene.enabled = false;
+                }
+            }
+            neurons.erase(n1);
+        }
+    }
+
     void Genome::mutate(InnovationGenerator& g) {
         int r = Random::getInt(0, 100);
         if (r < 10) {
             insertRandomNode(g);
         } else if (r < 30) {
             insertRandomConnection(g);
-        } else if (r < 50) {
+        } else if (r < 40) {
             removeRandomConnection();
+        } else if (r < 50) {
+            removeRandomNode();
         } else {
             mutateRandomWeight();
         }
