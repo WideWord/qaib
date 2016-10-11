@@ -44,9 +44,14 @@ find_package(Box2D)
 include_directories(${BOX2D_INCLUDE_DIR})
 set(QAIB_LIBS ${QAIB_LIBS} ${BOX2D_LIBRARIES})
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+set(QAIB_LIBS ${QAIB_LIBS} Threads::Threads)
+
 add_executable(qaib ${QAIB_SOURCE})
 target_compile_features(qaib PRIVATE cxx_range_for)
 
 if(QAIB_LIBS)
 	target_link_libraries(qaib ${QAIB_LIBS})
 endif()
+

@@ -1,6 +1,7 @@
 #include <qaib/nn/JITNeuralNetwork.hpp>
 #include <qaib/util/JIT.hpp>
 #include <unordered_map>
+#include <cmath>
 
 namespace qaib {
 
