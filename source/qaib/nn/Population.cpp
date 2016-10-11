@@ -1,6 +1,8 @@
 #include <SFML/System.hpp>
 #include <qaib/nn/Population.hpp>
 #include <qaib/util/Random.hpp>
+#include <unordered_map>
+#include <unordered_set>
 
 namespace qaib {
 
@@ -116,31 +118,34 @@ namespace qaib {
     }
 
     void Population::deleteOldGenes() {
-        while (true) {
-            if (genomes.front().genes.empty()) break;
-            Genome::Gene& original = genomes.front().genes.front();
-            bool removeGene = true;
-            for (auto& genome : genomes) {
-                if (genome.genes.empty()) {
-                    removeGene = false;
-                    break;
+        std::unordered_map<Innovation, int> disabledGenesCount;
+
+
+        for (auto& genome : genomes) {
+            for (auto& gene : genome.genes) {
+                if (!gene.enabled) {
+                    auto it = disabledGenesCount.find(gene.innovation);
+                    if (it == disabledGenesCount.end()) {
+                        disabledGenesCount[gene.innovation] = 1;
+                    } else {
+                        it->second += 1;
+                    }
                 }
-                Genome::Gene& gene = genome.genes.front();
-                if (
-                        gene.enabled ||
-                        gene.innovation != original.innovation ||
-                        gene.from != original.from ||
-                        gene.to != original.to) {
-                    removeGene = false;
-                    break;
-                }
+
             }
-            if (removeGene) {
-                for (auto& genome : genomes) {
-                    genome.genes.erase(genome.genes.begin());
+        }
+
+        for (auto it = disabledGenesCount.begin(); it != disabledGenesCount.end(); ++it) {
+            if (it->second < getSize()) {
+                continue;
+            }
+            for (auto& genome : genomes) {
+                for (auto geneIt = genome.genes.begin(); geneIt != genome.genes.end(); ++geneIt) {
+                    if (geneIt->innovation == it->first) {
+                        genome.genes.erase(geneIt);
+                        break;
+                    }
                 }
-            } else {
-                break;
             }
         }
     }
