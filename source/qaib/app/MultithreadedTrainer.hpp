@@ -22,6 +22,7 @@ namespace qaib {
             int startFromGeneration;
             bool useJIT;
             std::string matchWith;
+            int mutationRate;
         };
 
         void run(const Config& config);

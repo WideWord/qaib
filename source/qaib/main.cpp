@@ -63,6 +63,7 @@ int main(int argc, char** argv) {
         a.add<unsigned>("world-seed", 's', "world seed", false, 0);
         a.add<int>("continue", 'c', "continue from population", false, 0);
         a.add<std::string>("match-with", 0, "matches with other poplation", false);
+        a.add<int>("mutation-rate", 'm', "mutation rate", false, 10, cmdline::range(1, 100));
 
         a.parse_check(argc, argv);
 
@@ -76,6 +77,7 @@ int main(int argc, char** argv) {
 		cfg.world.seed = a.get<unsigned>("world-seed");
 		cfg.startFromGeneration = a.get<int>("continue");
         cfg.matchWith = a.get<std::string>("match-with");
+        cfg.mutationRate = a.get<int>("mutation-rate");
 		MultithreadedTrainer trainer;
 		trainer.run(cfg);
 		return 0;

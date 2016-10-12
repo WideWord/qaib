@@ -18,7 +18,7 @@ namespace qaib {
         this->worldConfig = worldConfig;
     }
 
-    void Population::makeSelection(int newSize, std::vector<float> fitness) {
+    void Population::makeSelection(int newSize, std::vector<float> fitness, int mutationRate) {
 
         float fitnessSum = 0;
         for (auto s : fitness) {
@@ -64,7 +64,7 @@ namespace qaib {
             }
 
             Genome result(*a, *b);
-            if (Random::getInt(0, 100) > 90) {
+            if (Random::getInt(0, 100) < mutationRate) {
                 result.mutate(innovationGenerator);
             }
             newGenomes.push_back(result);

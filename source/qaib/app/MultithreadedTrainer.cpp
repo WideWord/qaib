@@ -220,7 +220,7 @@ namespace qaib {
             }
 
             if (thread == 0) {
-                population->makeSelection(config.populationSize, fitness);
+                population->makeSelection(config.populationSize, fitness, config.mutationRate);
                 generation += 1;
 
                 sf::Packet packet;
