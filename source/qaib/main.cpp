@@ -15,7 +15,7 @@ int parseIntArg(const char* arg) {
 
 int main(int argc, char** argv) {
 	if (argc < 2) {
-        std::cout << "Usage: qaib [train-new, train-continue, play, world, graph]\n";
+        std::cout << "Usage: qaib [train, play, world, graph]\n";
 		return -1;
 	}
 
@@ -79,22 +79,8 @@ int main(int argc, char** argv) {
 		MultithreadedTrainer trainer;
 		trainer.run(cfg);
 		return 0;
-	} else if (strcmp(argv[1], "train-continue") == 0) {
-		if (argc < 7) {
-			std::cout << "Usage qaib train-continue [threads] [use jit (0 or 1)] [population size] [rounds] [population number]\n";
-			return -1;
-		}
-		MultithreadedTrainer::Config cfg;
-		cfg.threads = parseIntArg(argv[2]);
-		cfg.useJIT = parseIntArg(argv[3]) > 0;
-		cfg.populationSize = parseIntArg(argv[4]);
-		cfg.bigRoundsNum = parseIntArg(argv[5]);
-		cfg.startFromGeneration = parseIntArg(argv[6]);
-		MultithreadedTrainer trainer;
-		trainer.run(cfg);
-		return 0;
 	} else {
-		std::cout << "Usage: qaib [train-new, train-continue, play, world, graph]\n";
+		std::cout << "Usage: qaib [train, play, world, graph]\n";
 		return -1;
 	}
 }
