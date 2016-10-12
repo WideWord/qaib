@@ -60,7 +60,7 @@ namespace qaib {
 
 		if (controller->shouldAttack() && shootAllowed) {
 			gameWorld.doShot(getPosition(), forward);
-			addScore(-0.1f);
+			addScore(-0.001f);
 			lastShootTimer = 0;
 			shootAllowed = false;
 		}

@@ -182,10 +182,6 @@ namespace qaib {
             insertRandomNode(g);
         } else if (r < 30) {
             insertRandomConnection(g);
-        } else if (r < 40) {
-            removeRandomConnection();
-        } else if (r < 50) {
-            removeRandomNode();
         } else {
             mutateRandomWeight();
         }
