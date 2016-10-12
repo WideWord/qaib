@@ -13,6 +13,7 @@
 #include <qaib/util/MakeString.hpp>
 #include <fstream>
 #include <string>
+#include <iostream>
 
 namespace qaib {
 
@@ -234,10 +235,12 @@ namespace qaib {
     }
 
     float MultithreadedTrainer::calcFitness(float score, float health, int linksCount, int neuronsCount) {
-        if (score < 0.1f) {
-            score = 0.1f;
+        if (score < 0) {
+            score = 0;
         }
-        return score * 2.0f + health - powf(neuronsCount, 2) / (200.0f * 200.0f);
+        score += 1;
+        float fitness = score * score * health * health + 0.1f;
+        return fitness;
     }
 
 
