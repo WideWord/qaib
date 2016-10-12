@@ -10,7 +10,7 @@ namespace qaib {
         Genome initialGenome(innovationGenerator, inputsCount, outputsCount);
         for (int i = 0; i < size; ++i) {
             auto genome = initialGenome;
-            for (int j = 0; j < 100; ++j) {
+            for (int j = 0; j < 10; ++j) {
                 genome.mutate(innovationGenerator);
             }
             genomes.push_back(genome);
@@ -64,7 +64,7 @@ namespace qaib {
             }
 
             Genome result(*a, *b);
-            if (Random::getInt(0, 100) > 60) {
+            if (Random::getInt(0, 100) > 90) {
                 result.mutate(innovationGenerator);
             }
             newGenomes.push_back(result);
