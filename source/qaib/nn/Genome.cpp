@@ -99,7 +99,7 @@ namespace qaib {
             }
             if (n1 != n2 && !connectionExists && !isInput) break;
         }
-        if (ctr != 0) {
+        if (ctr > 0) {
             addConnection(g, n1, n2, Random::getFloat(-5, 5));
         }
     }
