@@ -2,6 +2,7 @@
 #include <mutex>
 #include <vector>
 #include <map>
+#include <string>
 #include <qaib/util/Typedef.hpp>
 #include <condition_variable>
 #include <qaib/game/GameWorld.hpp>
@@ -20,6 +21,7 @@ namespace qaib {
             int populationSize;
             int startFromGeneration;
             bool useJIT;
+            std::string matchWith;
         };
 
         void run(const Config& config);
@@ -32,6 +34,7 @@ namespace qaib {
         Config config;
 
         Ref<Population> population;
+        Ref<Population> matchWithPopulation;
         int generation;
 
         std::vector<bool> generationDone;
@@ -41,6 +44,7 @@ namespace qaib {
         std::vector<float> fitness;
         std::mutex fitnessMutex;
         std::vector<std::vector<Ref<NeuralNetwork>>> nets;
+        std::vector<std::vector<Ref<NeuralNetwork>>> matchWithNets;
         std::vector<int> netLinksCount;
         std::vector<int> netNeuronsCount;
 

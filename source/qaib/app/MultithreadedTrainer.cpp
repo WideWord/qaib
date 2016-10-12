@@ -12,6 +12,7 @@
 #include <glm/glm.hpp>
 #include <qaib/util/MakeString.hpp>
 #include <fstream>
+#include <string>
 
 namespace qaib {
 
@@ -39,8 +40,30 @@ namespace qaib {
             this->config.world = population->getWorldConfig();
         }
 
+        if (config.matchWith.length() > 0) {
+            matchWithPopulation = Population::load(config.matchWith);
+        }
+
         generationDone.resize(config.threads);
         nets.resize(config.threads);
+
+        if (matchWithPopulation != nullptr) {
+            matchWithNets.resize(config.threads);
+            for (auto& v : matchWithNets) {
+                for (auto& genome : matchWithPopulation->getGenomes()) {
+                    if (config.useJIT) {
+                        auto jitnet = Ref<JITNeuralNetwork>(new JITNeuralNetwork(genome.buildNeuralNetwork()));
+                        for (int th = 0; th < config.threads; ++th) {
+                            v.push_back(Ref<JITNeuralNetworkWithField>(new JITNeuralNetworkWithField(jitnet)));
+                        }
+                    } else {
+                        for (int th = 0; th < config.threads; ++th) {
+                            v.push_back(genome.buildNeuralNetwork());
+                        }
+                    }
+                }
+            }
+        }
 
         for (int i = 1; i < config.threads; ++i) {
             generationDone[i] = true;
@@ -116,11 +139,21 @@ namespace qaib {
                         break;
                     }
 
-                    if (aCtr >= population->getSize()) {
-                        aCtr = 0;
-                        bCtr += 1;
-                        if (bCtr >= population->getSize()) {
-                            bCtr = 0;
+                    if (matchWithPopulation == nullptr) {
+                        if (aCtr >= population->getSize()) {
+                            aCtr = 0;
+                            bCtr += 1;
+                            if (bCtr >= population->getSize()) {
+                                bCtr = 0;
+                                bigRoundCtr += 1;
+                                if (bigRoundCtr >= config.bigRoundsNum) {
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        if (aCtr >= population->getSize()) {
+                            aCtr = 0;
                             bigRoundCtr += 1;
                             if (bigRoundCtr >= config.bigRoundsNum) {
                                 break;
@@ -140,7 +173,11 @@ namespace qaib {
                 auto bPawn = gw->createPawn();
 
                 aPawn->useController<NeuralNetworkPawnController>(nets[thread][aGenome], bPawn);
-                bPawn->useController<NeuralNetworkPawnController>(nets[thread][bGenome], aPawn);
+
+                if (matchWithPopulation != nullptr) {
+                    auto net = matchWithNets[thread][Random::getInt(0, matchWithNets[thread].size() - 1)];
+                    bPawn->useController<NeuralNetworkPawnController>(net, aPawn);
+                }
 
                 aPawn->setPosition(glm::vec2(Random::getFloat(-5, 5), Random::getFloat(-5, 5)));
                 aPawn->setRotation(Random::getFloat(-M_PI, M_PI));
@@ -157,10 +194,12 @@ namespace qaib {
                                                     aPawn->getHealth() / aPawn->getInitialHealth(),
                                                     netLinksCount[aGenome],
                                                     netNeuronsCount[aGenome]);
-                    fitness[bGenome] += calcFitness(bPawn->getScore(),
-                                                    bPawn->getHealth() / bPawn->getInitialHealth(),
-                                                    netLinksCount[bGenome],
-                                                    netNeuronsCount[bGenome]);
+                    if (matchWithPopulation == nullptr) {
+                        fitness[bGenome] += calcFitness(bPawn->getScore(),
+                                                        bPawn->getHealth() / bPawn->getInitialHealth(),
+                                                        netLinksCount[bGenome],
+                                                        netNeuronsCount[bGenome]);
+                    }
                 }
             }
 
