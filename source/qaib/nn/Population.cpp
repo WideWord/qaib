@@ -10,15 +10,12 @@ namespace qaib {
         Genome initialGenome(innovationGenerator, inputsCount, outputsCount);
         for (int i = 0; i < size; ++i) {
             auto genome = initialGenome;
-            for (int j = 0; j < 100; ++j) {
-                genome.mutate(innovationGenerator);
-            }
             genomes.push_back(genome);
         }
         this->worldConfig = worldConfig;
     }
 
-    void Population::makeSelection(int newSize, std::vector<float> fitness) {
+    void Population::makeSelection(int newSize, std::vector<float> fitness, int mutationRate) {
 
         float fitnessSum = 0;
         for (auto s : fitness) {
@@ -64,7 +61,7 @@ namespace qaib {
             }
 
             Genome result(*a, *b);
-            if (Random::getInt(0, 100) > 60) {
+            if (Random::getInt(0, 100) < mutationRate) {
                 result.mutate(innovationGenerator);
             }
             newGenomes.push_back(result);

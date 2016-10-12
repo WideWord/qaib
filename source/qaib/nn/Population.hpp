@@ -31,7 +31,7 @@ namespace qaib {
             return genomes.size();
         }
 
-        void makeSelection(int newSize, std::vector<float> fitness);
+        void makeSelection(int newSize, std::vector<float> fitness, int mutationRate);
 
         void writeTo(sf::Packet &packet) const;
 
