@@ -2,5 +2,4 @@ build
 .DS_Store
 .idea
 populations/*
-pop/*
 graph/*
