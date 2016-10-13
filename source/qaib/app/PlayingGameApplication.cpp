@@ -66,7 +66,7 @@ namespace qaib {
                 net = genome.buildNeuralNetwork();
             }
             pawn->useController<NeuralNetworkPawnController>(net, playerPawn);
-            pawn->setPosition(glm::vec2(Random::getFloat(-5, 5), Random::getFloat(-5, 5)));
+            pawn->setPosition(glm::vec2(Random::getFloat(-15, 15), Random::getFloat(-15, 15)));
             pawn->setRotation(Random::getFloat(-M_PI, M_PI));
 
             aiPawn = pawn;
