@@ -6,7 +6,7 @@ namespace qaib {
 
 	Application::Application(bool gui) : gui(gui) {
 		if (gui) {
-			window = Ref<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(800, 600), "Window"));
+			window = Ref<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(1200, 1200), "qaib"));
 		}
 	}
 

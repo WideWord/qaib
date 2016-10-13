@@ -32,12 +32,9 @@ namespace qaib {
             if (orientedAngle(forward, dir) < 0) angle = -angle;
             inputs.push_back(angle);
 
-            float hit = dot(enemy->getForward(), -dir);
-            inputs.push_back(hit);
         } else {
             inputs.push_back(1.0f);
             inputs.push_back(0);
-            inputs.push_back(-1);
         }
 
         float distToBullet = INFINITY;
@@ -74,6 +71,7 @@ namespace qaib {
         }
 
         inputs.push_back(me->getHealth() / me->getInitialHealth());
+        inputs.push_back(enemy->getHealth() / enemy->getInitialHealth());
 
         inputs.push_back(me->getPosition().x / 10.0f);
         inputs.push_back(me->getPosition().y / 10.0f);

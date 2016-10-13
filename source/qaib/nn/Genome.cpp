@@ -3,6 +3,7 @@
 #include <qaib/nn/NeuralNetwork.hpp>
 #include <deque>
 #include <sstream>
+#include <cmath>
 
 namespace qaib {
 
@@ -63,7 +64,8 @@ namespace qaib {
     }
 
     void Genome::addConnection(InnovationGenerator& g, Neuron from, Neuron to, float weight) {
-        genes.push_back(Gene(g, from, to, weight));
+        Gene gene(g, from, to, weight);
+        genes.push_back(gene);
     }
 
     void Genome::insertRandomConnection(InnovationGenerator& g) {
@@ -143,7 +145,9 @@ namespace qaib {
         Gene* maybeGene = getRandomEnabledGene();
         if (!maybeGene) return;
         Gene& gene = *maybeGene;
-        gene.weight = gene.weight + Random::getFloat(-0.2, 0.2);
+        float d = fabs(gene.weight) * 0.5f;
+        if (d < 0.2f) d = 0.2f;
+        gene.weight = gene.weight + Random::getFloat(-d, d);
     }
 
     void Genome::removeRandomNode() {
@@ -178,10 +182,14 @@ namespace qaib {
 
     void Genome::mutate(InnovationGenerator& g) {
         int r = Random::getInt(0, 100);
-        if (r < 5) {
+        if (r < 20) {
             insertRandomNode(g);
-        } else if (r < 10) {
+        } else if (r < 25) {
             insertRandomConnection(g);
+        } else if (r < 30) {
+            removeRandomConnection();
+        } else if (r < 32) {
+            removeRandomNode();
         } else {
             mutateRandomWeight();
         }
@@ -316,15 +324,39 @@ namespace qaib {
         std::stringstream ss;
         ss << "\ndigraph G {\nrankdir=LR;\nnode [shape=circle,color=green1];\n";
 
-        ss << "subgraph inputs {\n node [style=solid,color=blue4, shape=circle];\n";
+
+        std::list<std::string> inputNames = {
+                "Dist to enemy",
+                "Angle to enemy",
+                "Dist to bullet",
+                "Agnle to bullet",
+                "Bullet angle to me",
+                "My health",
+                "Enemy health",
+                "Pos X",
+                "Pos Y"
+        };
+
+        std::list<std::string> outputNames = {
+                "Move forward/backward",
+                "Move left/right",
+                "Turn",
+                "Shoot"
+        };
+
+
+
+        ss << "subgraph inputs {\n node [style=solid,color=blue4, shape=box];\n";
         for (auto& input : inputs) {
-            ss << input << ";\n";
+            ss << input << " [label=\"" << inputNames.front() << "\"];\n";
+            inputNames.pop_front();
         }
         ss << "}\n";
 
-        ss << "subgraph outputs {\n  node [style=solid,color=red2, shape=circle];\n";
+        ss << "subgraph outputs {\n  node [style=solid,color=red2, shape=box];\n";
         for (auto& output : outputs) {
-            ss << output << ";\n";
+            ss << output << " [label=\"" << outputNames.front() << "\"];\n";
+            outputNames.pop_front();
         }
         ss << "}\n";
 

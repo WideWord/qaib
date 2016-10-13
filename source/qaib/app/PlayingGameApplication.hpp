@@ -15,6 +15,7 @@ namespace qaib {
 		Ref<GameWorld> gameWorld;
 		GameRenderer gameRenderer;
 		Ref<Pawn> playerPawn;
+		Ref<Pawn> aiPawn;
 		Ref<Population> ai;
 	protected:
 		virtual void init() override;

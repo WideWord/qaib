@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+mkdir graph
+rm graph/*
+build/bin/qaib graph -p pop/$1.pop -d graph
+dot -Tsvg graph/*.dot -O
+rm graph/*.dot
+

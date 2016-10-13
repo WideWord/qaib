@@ -10,6 +10,12 @@ namespace qaib {
         Genome initialGenome(innovationGenerator, inputsCount, outputsCount);
         for (int i = 0; i < size; ++i) {
             auto genome = initialGenome;
+            for (int j = 0; j < 4; ++j) {
+                genome.insertRandomConnection(innovationGenerator);
+            }
+            for (int j = 0; j < 10; ++j) {
+                genome.mutate(innovationGenerator);
+            }
             genomes.push_back(genome);
         }
         this->worldConfig = worldConfig;

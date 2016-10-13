@@ -3,6 +3,8 @@
 #include <iostream>
 #include <sstream>
 #include <third-party/cmdline.hpp>
+#include <qaib/util/MakeString.hpp>
+#include <fstream>
 
 using namespace qaib;
 
@@ -43,15 +45,24 @@ int main(int argc, char** argv) {
 		cfg.world.seed = (unsigned)parseIntArg(argv[4]);
 		return PlayingGameApplication(cfg).exec();
 	} else if (strcmp(argv[1], "graph") == 0) {
-        if (argc < 3) {
-            std::cout << "Usage: qaib graph [population file]\n";
-            return -1;
-        } else {
-            std::string aiFilename(argv[2]);
-            auto population = Population::load(aiFilename);
+		cmdline::parser a;
+		a.add<std::string>("pop", 'p', "population file", true);
+		a.add<std::string>("dir", 'd', "build for all population in dir", false);
+
+		a.parse_check(argc, argv);
+
+		auto population = Population::load(a.get<std::string>("pop"));
+		auto dir = a.get<std::string>("dir");
+		if (dir.length()) {
+			auto genomes = population->getGenomes();
+			for (int i = 0; i < genomes.size(); ++i) {
+				std::ofstream out(MakeString() << dir << "/" << i << ".dot");
+				out << genomes[i].renderGraph();
+			}
+		} else {
 			std::cout << population->getGenomes().front().renderGraph();
-			return 0;
-        }
+		}
+		return 0;
     } else if (strcmp(argv[1], "train") == 0) {
 		cmdline::parser a;
         a.add<int>("threads", 't', "num of threads", false, 1, cmdline::range(1, 128));
