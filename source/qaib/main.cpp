@@ -71,11 +71,9 @@ int main(int argc, char** argv) {
         a.add<int>("pop-size", 'p', "population size", true, 0, cmdline::range(1, 10000000));
         a.add<int>("rounds", 'r', "num of rounds", true, 0, cmdline::range(1, 10000000));
         a.add<int>("world-size", 0, "world size", false, 20);
-        a.add<int>("world-obstructions", 0, "number of obstructions", false, 15);
+        a.add<int>("world-obstructions", 'o', "number of obstructions", false, 15);
         a.add<unsigned>("world-seed", 's', "world seed", false, 0);
         a.add<int>("continue", 'c', "continue from population", false, 0);
-        a.add<std::string>("match-with", 0, "matches with other poplation", false);
-        a.add<int>("mutation-rate", 'm', "mutation rate", false, 10, cmdline::range(1, 100));
 
         a.parse_check(argc, argv);
 
@@ -88,8 +86,8 @@ int main(int argc, char** argv) {
 		cfg.world.obstructionCount = a.get<int>("world-obstructions");
 		cfg.world.seed = a.get<unsigned>("world-seed");
 		cfg.startFromGeneration = a.get<int>("continue");
-        cfg.matchWith = a.get<std::string>("match-with");
-        cfg.mutationRate = a.get<int>("mutation-rate");
+        cfg.matchWith = "";
+        cfg.mutationRate = 100;
 		MultithreadedTrainer trainer;
 		trainer.run(cfg);
 		return 0;
