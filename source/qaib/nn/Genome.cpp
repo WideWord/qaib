@@ -64,8 +64,22 @@ namespace qaib {
     }
 
     void Genome::addConnection(InnovationGenerator& g, Neuron from, Neuron to, float weight) {
-        Gene gene(g, from, to, weight);
-        genes.push_back(gene);
+        auto innov = g.cachedLinkBetween(from, to);
+        if (innov == 0) {
+            innov = g.generate();
+            g.addCachedLink(from, to, innov);
+            genes.push_back(Gene(innov, from, to, weight));
+        } else {
+            for (auto it = genes.begin(), itend = genes.end(); it != itend; ++it) {
+                if (it->innovation == innov) {
+                    it->weight = weight;
+                    return;
+                } else if (it->innovation < innov) {
+                    genes.insert(++it, Gene(innov, from, to, weight));
+                    return;
+                }
+            }
+        }
     }
 
     void Genome::insertRandomConnection(InnovationGenerator& g) {
@@ -115,8 +129,8 @@ namespace qaib {
         float newWeight = sqrtf(fabsf(gene.weight));
 
         Neuron newNeuron = g.generate();
-        genes.push_back(Gene(g, gene.from, newNeuron, newWeight));
-        genes.push_back(Gene(g, newNeuron, gene.to, (gene.weight < 0) ? -newWeight : newWeight));
+        genes.push_back(Gene(g.generate(), gene.from, newNeuron, newWeight));
+        genes.push_back(Gene(g.generate(), newNeuron, gene.to, (gene.weight < 0) ? -newWeight : newWeight));
         neurons.insert(newNeuron);
     }
 

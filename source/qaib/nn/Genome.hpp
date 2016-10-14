@@ -22,8 +22,8 @@ namespace qaib {
             bool enabled;
             float weight;
 
-            inline Gene(InnovationGenerator& g, Neuron from, Neuron to, float weight) {
-                innovation = g.generate();
+            inline Gene(Innovation innov, Neuron from, Neuron to, float weight) {
+                innovation = innov;
                 this->from = from;
                 this->to = to;
                 this->weight = weight;

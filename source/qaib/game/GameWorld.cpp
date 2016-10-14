@@ -4,6 +4,7 @@
 #include <qaib/game/Bullet.hpp>
 #include <glm/gtx/vector_angle.hpp>
 #include <qaib/game/ObstructionGenerator.hpp>
+#include <qaib/util/Random.hpp>
 
 namespace qaib {
 
@@ -53,6 +54,8 @@ namespace qaib {
 
 	Ref<Pawn> GameWorld::createPawn() {
 
+        using namespace glm;
+
 		b2BodyDef pawnBodyDef;
 		pawnBodyDef.type = b2_dynamicBody;
 
@@ -60,6 +63,12 @@ namespace qaib {
 
 		auto pawn = Ref<Pawn>(new Pawn(body));
 		pawns.push_back(pawn);
+
+        float angle = Random::getFloat(-M_PI, M_PI);
+        float dist = Random::getFloat(0, worldSize - 0.5f);
+
+        pawn->setPosition(rotate(vec2(0, 1), angle) * dist);
+
 		return pawn;
 	}
 

@@ -16,12 +16,12 @@ namespace qaib {
             nextInnovation = 1;
         }
         inline Innovation cachedLinkBetween(Innovation a, Innovation b) {
-            auto it = cache.find(a + b >> 32);
+            auto it = cache.find(a + (b >> 32));
             if (it == cache.end()) return 0;
             else return it->second;
         }
         inline void addCachedLink(Innovation a, Innovation b, Innovation link) {
-            cache[a + b >> 32] = link;
+            cache[a + (b >> 32)] = link;
         }
         inline InnovationGenerator(sf::Packet& packet) {
             using namespace sf;

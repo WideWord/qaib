@@ -180,11 +180,6 @@ namespace qaib {
                     bPawn->useController<NeuralNetworkPawnController>(net, aPawn);
                 }
 
-                aPawn->setPosition(glm::vec2(Random::getFloat(-15, 15), Random::getFloat(-15, 15)));
-                aPawn->setRotation(Random::getFloat(-M_PI, M_PI));
-                bPawn->setPosition(glm::vec2(Random::getFloat(-15, 15), Random::getFloat(-15, 15)));
-                bPawn->setRotation(Random::getFloat(-M_PI, M_PI));
-
                 for (int i = 0; i < 30 * 8; ++i) {
                     gw->doTick(1 / 30.0f);
                 }
