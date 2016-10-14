@@ -56,3 +56,5 @@ if(QAIB_LIBS)
 	target_link_libraries(qaib ${QAIB_LIBS})
 endif()
 
+install(TARGETS qaib RUNTIME DESTINATION bin)
+
