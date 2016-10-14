@@ -44,7 +44,7 @@ namespace qaib {
 
             //sand.setFillColor(sf::Color::Yellow);
             sand.setTexture(&sandTexture);
-            sand.setTextureRect(sf::IntRect(0, 0, 256 * 50, 256 * 50));
+            sand.setTextureRect(sf::IntRect(0, 0, 256 * (int)radius, 256 * (int)radius));
 
             target.draw(sand);
         }
