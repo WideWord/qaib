@@ -145,7 +145,7 @@ namespace qaib {
 
                     if (aGenome == -1) break;
 
-                    bGenome = randoms[thread].getInt(0, population->getSize());
+                    bGenome = Random::getInt(0, population->getSize() - 1);
 
                     if (roundsCtr[bGenome] < config.roundsNum) {
                         roundsCtr[bGenome] += 1;
