@@ -53,6 +53,14 @@ namespace qaib {
 
 		auto movementDirection = controller->movementDirection() * moveSpeed;
 
+		speedFrames.push(movementDirection);
+		speed += movementDirection;
+
+		if (speedFrames.size() > 20) {
+			speed -= speedFrames.front();
+			speedFrames.pop();
+		}
+
 		vec2 forward = controller->turningTo();
 		float rotation = glm::orientedAngle(vec2(1, 0), normalize(forward));
 

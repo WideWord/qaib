@@ -32,7 +32,13 @@ namespace qaib {
             if (orientedAngle(forward, dir) < 0) angle = -angle;
             inputs.push_back(angle);
 
+
+            auto speed = rotate(enemy->getSpeed(), me->getRotation());
+            inputs.push_back(speed.x);
+            inputs.push_back(speed.y);
         } else {
+            inputs.push_back(0);
+            inputs.push_back(0);
             inputs.push_back(1.0f);
             inputs.push_back(0);
         }

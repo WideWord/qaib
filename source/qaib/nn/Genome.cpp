@@ -182,9 +182,9 @@ namespace qaib {
 
     void Genome::mutate(InnovationGenerator& g) {
         int r = Random::getInt(0, 100);
-        if (r < 10) {
+        if (r < 5) {
             insertRandomNode(g);
-        } else if (r < 20) {
+        } else if (r < 10) {
             insertRandomConnection(g);
         } else {
             mutateRandomWeight();
@@ -324,6 +324,8 @@ namespace qaib {
         std::list<std::string> inputNames = {
                 "Dist to enemy",
                 "Angle to enemy",
+                "Enemy side speed",
+                "Enemy speed",
                 "Dist to bullet",
                 "Agnle to bullet",
                 "Bullet angle to me",

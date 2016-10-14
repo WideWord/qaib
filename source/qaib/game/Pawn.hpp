@@ -6,6 +6,7 @@
 #include <qaib/util/Typedef.hpp>
 
 #include <memory>
+#include <queue>
 #include <Box2D/Dynamics/b2Body.h>
 
 namespace qaib {
@@ -29,10 +30,17 @@ namespace qaib {
 		float rotation;
 
 		float score;
+
+		glm::vec2 speed;
+		std::queue<glm::vec2> speedFrames;
 	protected:
 		friend class GameWorld;
 		explicit Pawn(b2Body* physicsBody);
 	public:
+
+		inline glm::vec2 getSpeed() {
+			return speed;
+		}
 
 		b2Body* getPhysicsBody() {
 			return physicsBody;
