@@ -65,7 +65,7 @@ namespace qaib {
 		pawns.push_back(pawn);
 
         float angle = Random::getFloat(-M_PI, M_PI);
-        float dist = Random::getFloat(0, worldSize - 0.5f);
+        float dist = Random::getFloat(0, worldSize * 0.5f - 0.5f);
 
         pawn->setPosition(rotate(vec2(0, 1), angle) * dist);
 
