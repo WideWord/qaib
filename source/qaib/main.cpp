@@ -26,13 +26,16 @@ int main(int argc, char** argv) {
         cmdline::parser a;
         a.add<bool>("nojit", 0, "disable jit", false, false);
         a.add<std::string>("pop", 'p', "population file", true, "data/default_ai.pop");
+        a.add<std::string>("vs", 'v', "ai vs ai", false, "");
 
         a.parse_check(argc, argv);
 
 		PlayingGameApplication::Config cfg;
 		cfg.useAI = true;
-		cfg.useJIT = !a.get<bool>("nojit");;
+		cfg.useJIT = !a.get<bool>("nojit");
 		cfg.aiFilename = a.get<std::string>("pop");
+        cfg.aiFilenameVS = a.get<std::string>("vs");
+        cfg.vsAI = cfg.aiFilenameVS.length() > 0;
 		return PlayingGameApplication(cfg).exec();
 	} else if (strcmp(argv[1], "world") == 0) {
 		if (argc < 5) {

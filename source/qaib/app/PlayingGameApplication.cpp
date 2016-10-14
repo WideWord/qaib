@@ -14,20 +14,45 @@ namespace qaib {
 		if (config.useAI) {
 			ai = Population::load(cfg.aiFilename);
 			config.world = ai->getWorldConfig();
-		}
-		gameWorld = Ref<GameWorld>(new GameWorld(config.world));
+
+            if (config.vsAI) {
+                aiSecond = Population::load(config.aiFilenameVS);
+            }
+        }
+
 	}
 
 	void PlayingGameApplication::init() {
-		gameRenderer.setGameWorld(gameWorld.get());
+        newPlayers();
+	}
 
-		playerPawn = gameWorld->createPawn();
+    void PlayingGameApplication::newPlayers() {
 
-		playerPawn->useController<PlayerPawnController>(gameRenderer, getMainTarget());
+        gameWorld = Ref<GameWorld>(new GameWorld(config.world));
 
-		if (ai) {
-			auto genomes = ai->getGenomes();
-			auto &genome = genomes[Random::getInt(0, genomes.size())];
+        gameRenderer.setGameWorld(gameWorld.get());
+
+        playerPawn = gameWorld->createPawn();
+
+        if (aiSecond) {
+            auto genomes = aiSecond->getGenomes();
+            auto &genome = genomes[Random::getInt(0, genomes.size() - 1)];
+
+            Ref<NeuralNetwork> net;
+            if (config.useJIT) {
+                auto jitnet = Ref<JITNeuralNetwork>(new JITNeuralNetwork(genome.buildNeuralNetwork()));
+                net = Ref<JITNeuralNetworkWithField>(new JITNeuralNetworkWithField(jitnet));
+            } else {
+                net = genome.buildNeuralNetwork();
+            }
+            playerPawn->useController<NeuralNetworkPawnController>(net, playerPawn);
+        } else {
+            playerPawn->useController<PlayerPawnController>(gameRenderer, getMainTarget());
+        }
+
+        if (ai) {
+            auto genomes = ai->getGenomes();
+            auto &genome = genomes[Random::getInt(0, genomes.size() - 1)];
 
             auto pawn = gameWorld->createPawn();
             Ref<NeuralNetwork> net;
@@ -40,38 +65,23 @@ namespace qaib {
             pawn->useController<NeuralNetworkPawnController>(net, playerPawn);
 
             aiPawn = pawn;
-		}
-	}
+        }
+    }
 
 	void PlayingGameApplication::doFrame(float deltaTime) {
 		gameWorld->doTick(deltaTime);
 
+        gameRenderer.setCameraTarget(playerPawn->getPosition());
 
-		if (playerPawn->isDead()) {
+        gameRenderer.drawFrame(getMainTarget());
+
+		if (!config.vsAI && playerPawn->isDead()) {
 			quit();
 		}
 
-        if (ai && aiPawn->isDead()) {
-            auto genomes = ai->getGenomes();
-            auto &genome = genomes[Random::getInt(0, genomes.size())];
-
-            auto pawn = gameWorld->createPawn();
-            Ref<NeuralNetwork> net;
-            if (config.useJIT) {
-                auto jitnet = Ref<JITNeuralNetwork>(new JITNeuralNetwork(genome.buildNeuralNetwork()));
-                net = Ref<JITNeuralNetworkWithField>(new JITNeuralNetworkWithField(jitnet));
-            } else {
-                net = genome.buildNeuralNetwork();
-            }
-            pawn->useController<NeuralNetworkPawnController>(net, playerPawn);
-            pawn->setPosition(glm::vec2(Random::getFloat(-15, 15), Random::getFloat(-15, 15)));
-            pawn->setRotation(Random::getFloat(-M_PI, M_PI));
-
-            aiPawn = pawn;
+        if ((ai && aiPawn->isDead()) || (config.vsAI && playerPawn->isDead())) {
+            newPlayers();
         }
 
-		gameRenderer.setCameraTarget(playerPawn->getPosition());
-
-		gameRenderer.drawFrame(getMainTarget());
 	}
 }
