@@ -100,14 +100,14 @@ namespace qaib {
 		if (ba && db) {
             if (ba->isActive) {
                 db->applyDamage(20);
-                if (ba->shootBy) {
+                if (ba->shootBy && ba->shootBy.get() != db) {
                     ba->shootBy->addScore(1);
                 }
             }
 		} else if (bb && da) {
             if (bb->isActive) {
                 da->applyDamage(20);
-                if (bb->shootBy) {
+                if (bb->shootBy && bb->shootBy.get() != da) {
                     bb->shootBy->addScore(1);
                 }
             }
