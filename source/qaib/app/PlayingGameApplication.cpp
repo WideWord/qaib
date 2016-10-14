@@ -33,6 +33,9 @@ namespace qaib {
         gameRenderer.setGameWorld(gameWorld.get());
 
         playerPawn = gameWorld->createPawn();
+        if (ai) {
+            aiPawn = gameWorld->createPawn();
+        }
 
         if (aiSecond) {
             auto genomes = aiSecond->getGenomes();
@@ -45,7 +48,7 @@ namespace qaib {
             } else {
                 net = genome.buildNeuralNetwork();
             }
-            playerPawn->useController<NeuralNetworkPawnController>(net, playerPawn);
+            playerPawn->useController<NeuralNetworkPawnController>(net, aiPawn);
         } else {
             playerPawn->useController<PlayerPawnController>(gameRenderer, getMainTarget());
         }
@@ -54,7 +57,7 @@ namespace qaib {
             auto genomes = ai->getGenomes();
             auto &genome = genomes[Random::getInt(0, genomes.size() - 1)];
 
-            auto pawn = gameWorld->createPawn();
+            auto pawn = aiPawn;
             Ref<NeuralNetwork> net;
             if (config.useJIT) {
                 auto jitnet = Ref<JITNeuralNetwork>(new JITNeuralNetwork(genome.buildNeuralNetwork()));
@@ -63,8 +66,6 @@ namespace qaib {
                 net = genome.buildNeuralNetwork();
             }
             pawn->useController<NeuralNetworkPawnController>(net, playerPawn);
-
-            aiPawn = pawn;
         }
     }
 

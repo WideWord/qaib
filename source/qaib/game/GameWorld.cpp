@@ -128,6 +128,10 @@ namespace qaib {
         Bullet* ba = dynamic_cast<Bullet*>(a);
         Bullet* bb = dynamic_cast<Bullet*>(b);
 
+        if (ba && bb) {
+            return false;
+        }
+
         if (ba) {
             if (!ba->isActive) {
                 return false;
