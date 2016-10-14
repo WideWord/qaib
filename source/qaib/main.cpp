@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
 			auto genomes = population->getGenomes();
 			for (int i = 0; i < genomes.size(); ++i) {
 				std::ofstream out(MakeString() << dir << "/" << i << ".dot");
-				out << genomes[i].buildNeuralNetwork()->renderGraph();
+				out << genomes[i].renderGraph();
 			}
 		} else {
 			std::cout << population->getGenomes().front().buildNeuralNetwork()->renderGraph();
