@@ -1,5 +1,6 @@
 #include <qaib/nn/NeuralNetwork.hpp>
 #include <cmath>
+#include <sstream>
 
 namespace qaib {
 
@@ -28,6 +29,60 @@ namespace qaib {
         }
 
         return std::move(res);
+    }
+
+    std::string PlainNeuralNetwork::renderGraph() const {
+        std::stringstream ss;
+        ss << "\ndigraph G {\nrankdir=LR;\nnode [shape=circle,color=green1];\n";
+
+
+        std::list<std::string> inputNames = {
+                "Dist to enemy",
+                "Angle to enemy",
+                "Dist to bullet",
+                "Agnle to bullet",
+                "Bullet angle to me",
+                "My health",
+                "Enemy health",
+                "Pos X",
+                "Pos Y"
+        };
+
+        std::list<std::string> outputNames = {
+                "Move forward/backward",
+                "Move left/right",
+                "Turn",
+                "Shoot"
+        };
+
+
+        ss << "subgraph inputs {\n node [style=solid,color=blue4, shape=box];\n";
+        for (auto& input : inputs) {
+            ss << input << " [label=\"" << inputNames.front() << "\"];\n";
+            inputNames.pop_front();
+        }
+        ss << "}\n";
+
+        ss << "subgraph outputs {\n  node [style=solid,color=red2, shape=box];\n";
+        for (auto& output : outputs) {
+            ss << output << " [label=\"" << outputNames.front() << "\"];\n";
+            outputNames.pop_front();
+        }
+        ss << "}\n";
+
+        int ctr = 1;
+
+        for (auto& rule : executionRules) {
+            ctr++;
+            for (auto& link : rule.inputs) {
+                ss << "edge [color=\"" << (link.weight * 0.12f + (1.0f - 0.25f)) << " 1.000 1.000\", label=\"" << ctr << "\"];\n";
+                ss << link.from << " -> " << rule.neuron << ";\n";
+            }
+        }
+
+        ss << "}\n";
+
+        return ss.str();
     }
 
 

@@ -38,7 +38,7 @@ namespace qaib {
         std::vector<Neuron> outputs;
     public:
         virtual std::vector<float> execute(std::vector<float> inputs) override;
-
+        std::string renderGraph() const;
     };
 
 }

@@ -25,7 +25,7 @@ namespace qaib {
         glm::vec2 turningTo() override;
         bool shouldAttack() override;
 
-        static const int inputsCount = 11;
+        static const int inputsCount = 9;
         static const int outputsCount = 4;
     };
 

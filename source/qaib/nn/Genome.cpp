@@ -324,8 +324,6 @@ namespace qaib {
         std::list<std::string> inputNames = {
                 "Dist to enemy",
                 "Angle to enemy",
-                "Enemy side speed",
-                "Enemy speed",
                 "Dist to bullet",
                 "Agnle to bullet",
                 "Bullet angle to me",

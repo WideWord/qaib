@@ -4,6 +4,7 @@
 #include <sstream>
 #include <third-party/cmdline.hpp>
 #include <qaib/util/MakeString.hpp>
+#include <qaib/nn/NeuralNetwork.hpp>
 #include <fstream>
 
 using namespace qaib;
@@ -57,10 +58,10 @@ int main(int argc, char** argv) {
 			auto genomes = population->getGenomes();
 			for (int i = 0; i < genomes.size(); ++i) {
 				std::ofstream out(MakeString() << dir << "/" << i << ".dot");
-				out << genomes[i].renderGraph();
+				out << genomes[i].buildNeuralNetwork()->renderGraph();
 			}
 		} else {
-			std::cout << population->getGenomes().front().renderGraph();
+			std::cout << population->getGenomes().front().buildNeuralNetwork()->renderGraph();
 		}
 		return 0;
     } else if (strcmp(argv[1], "train") == 0) {
