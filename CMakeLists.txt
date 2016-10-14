@@ -18,7 +18,8 @@ file(GLOB QAIB_SOURCE
 		source/**/**/**/*.hpp
 		source/**/*.h
 		source/**/**/*.h
-		source/**/**/**/*.h)
+		source/**/**/**/*.h
+		data/*.cpp)
 
 
 include_directories(source)

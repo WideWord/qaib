@@ -6,17 +6,24 @@
 #include <qaib/game/Obstruction.hpp>
 #include <qaib/util/VectorConversion.hpp>
 
+
+#include "resources.hpp"
+
+
 namespace qaib {
-	
+
 	GameRenderer::GameRenderer() {
-		pawnTexture.loadFromFile("data/kek.png");
+
+
+
+		pawnTexture.loadFromMemory(playerTextureData, playerTextureSize);
 		pawnSprite.setTexture(pawnTexture);
 		pawnSprite.setOrigin(103.5f, 103.5f);
 
-		sandTexture.loadFromFile("data/art/terrain/sand.jpg");
+        sandTexture.loadFromMemory(sandTextureData, sandTextureSize);
 		sandTexture.setRepeated(true);
 
-        rockTexture.loadFromFile("data/art/terrain/rock.jpg");
+        rockTexture.loadFromMemory(rockTextureData, rockTextureSize);
         rockTexture.setRepeated(true);
 
         rockSprite.setTexture(rockTexture);

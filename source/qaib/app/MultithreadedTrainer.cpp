@@ -33,11 +33,11 @@ namespace qaib {
             sf::Packet packet;
             population->writeTo(packet);
 
-            std::ofstream out(MakeString() << "pop/" << generation << ".pop");
+            std::ofstream out(MakeString() << generation << ".pop");
             out.write((const char*)packet.getData(), packet.getDataSize());
 
         } else {
-            population = Population::load(MakeString() << "pop/" << generation << ".pop");
+            population = Population::load(MakeString() << generation << ".pop");
             this->config.world = population->getWorldConfig();
         }
 
@@ -204,7 +204,7 @@ namespace qaib {
                 sf::Packet packet;
                 population->writeTo(packet);
 
-                std::ofstream out(MakeString() << "pop/" << generation << ".pop");
+                std::ofstream out(MakeString() << generation << ".pop");
                 out.write((const char*)packet.getData(), packet.getDataSize());
             }
 
