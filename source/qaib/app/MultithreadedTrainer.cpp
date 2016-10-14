@@ -216,8 +216,7 @@ namespace qaib {
         if (score < 0) {
             score = 0;
         }
-        score += 1;
-        float fitness = score * score + 0.1f;
+        float fitness = score + 0.1f;
         return fitness;
     }
 
