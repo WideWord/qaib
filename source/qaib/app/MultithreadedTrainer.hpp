@@ -6,6 +6,7 @@
 #include <qaib/util/Typedef.hpp>
 #include <condition_variable>
 #include <qaib/game/GameWorld.hpp>
+#include <qaib/util/Random.hpp>
 
 namespace qaib {
 
@@ -17,7 +18,7 @@ namespace qaib {
         struct Config {
             GameWorld::Config world;
             int threads;
-            int bigRoundsNum;
+            int roundsNum;
             int populationSize;
             int startFromGeneration;
             bool useJIT;
@@ -27,11 +28,6 @@ namespace qaib {
 
         void run(const Config& config);
     private:
-        int aCtr;
-        int bCtr;
-        int bigRoundCtr;
-        std::mutex roundCtrsMutex;
-
         Config config;
 
         Ref<Population> population;
@@ -42,8 +38,12 @@ namespace qaib {
         std::mutex generationDoneMutex;
         std::condition_variable generationDoneCond;
 
+        std::vector<int> roundsCtr;
         std::vector<float> fitness;
         std::mutex fitnessMutex;
+
+        std::vector<RandomEngine> randoms;
+
         std::vector<std::vector<Ref<NeuralNetwork>>> nets;
         std::vector<std::vector<Ref<NeuralNetwork>>> matchWithNets;
         std::vector<int> netLinksCount;

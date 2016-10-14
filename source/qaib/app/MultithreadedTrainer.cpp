@@ -47,6 +47,7 @@ namespace qaib {
 
         generationDone.resize(config.threads);
         nets.resize(config.threads);
+        randoms.reserve(config.threads);
 
         if (matchWithPopulation != nullptr) {
             matchWithNets.resize(config.threads);
@@ -80,11 +81,6 @@ namespace qaib {
         while (true) {
 
             if (thread == 0) {
-                aCtr = 0;
-                bCtr = 0;
-                bigRoundCtr = 0;
-
-
 
                 for (int th = 0; th < config.threads; ++th) {
                     nets[th].clear();
@@ -106,11 +102,13 @@ namespace qaib {
                 netLinksCount.clear();
                 netNeuronsCount.clear();
                 fitness.clear();
+                roundsCtr.clear();
 
                 for (auto& g : population->getGenomes()) {
                     fitness.push_back(0);
                     netLinksCount.push_back(g.getEnabledGenesCount());
                     netNeuronsCount.push_back(g.getNeuronsCount());
+                    roundsCtr.push_back(0);
                 }
             }
 
@@ -132,41 +130,29 @@ namespace qaib {
             // paralel
 
             while (true) {
-                int aGenome, bGenome;
+                int aGenome = -1, bGenome = -1;
+                bool addFitnessToB = false;
 
                 {
-                    std::unique_lock<std::mutex> lock(roundCtrsMutex);
-                    if (bigRoundCtr >= config.bigRoundsNum) {
-                        break;
-                    }
-
-                    if (matchWithPopulation == nullptr) {
-                        if (aCtr >= population->getSize()) {
-                            aCtr = 0;
-                            bCtr += 1;
-                            if (bCtr >= population->getSize()) {
-                                bCtr = 0;
-                                bigRoundCtr += 1;
-                                if (bigRoundCtr >= config.bigRoundsNum) {
-                                    break;
-                                }
-                            }
-                        }
-                    } else {
-                        if (aCtr >= population->getSize()) {
-                            aCtr = 0;
-                            bigRoundCtr += 1;
-                            if (bigRoundCtr >= config.bigRoundsNum) {
-                                break;
-                            }
+                    std::unique_lock<std::mutex> lock(fitnessMutex);
+                    for (int i = 0, iend = population->getSize(); i < iend; ++i) {
+                        if (roundsCtr[i] < config.roundsNum) {
+                            roundsCtr[i] += 1;
+                            aGenome = i;
+                            break;
                         }
                     }
 
-                    aGenome = aCtr;
-                    bGenome = bCtr;
+                    if (aGenome == -1) break;
 
-                    aCtr += 1;
+                    bGenome = randoms[thread].getInt(0, population->getSize());
+
+                    if (roundsCtr[bGenome] < config.roundsNum) {
+                        roundsCtr[bGenome] += 1;
+                        addFitnessToB = true;
+                    }
                 }
+
 
                 auto gw = Ref<GameWorld>(new GameWorld());
 
@@ -174,11 +160,7 @@ namespace qaib {
                 auto bPawn = gw->createPawn();
 
                 aPawn->useController<NeuralNetworkPawnController>(nets[thread][aGenome], bPawn);
-
-                if (matchWithPopulation != nullptr) {
-                    auto net = matchWithNets[thread][Random::getInt(0, matchWithNets[thread].size() - 1)];
-                    bPawn->useController<NeuralNetworkPawnController>(net, aPawn);
-                }
+                bPawn->useController<NeuralNetworkPawnController>(nets[thread][bGenome], aPawn);
 
                 for (int i = 0; i < 30 * 8; ++i) {
                     gw->doTick(1 / 30.0f);
@@ -190,12 +172,13 @@ namespace qaib {
                                                     aPawn->getHealth() / aPawn->getInitialHealth(),
                                                     netLinksCount[aGenome],
                                                     netNeuronsCount[aGenome]);
-                    if (matchWithPopulation == nullptr) {
+                    if (addFitnessToB) {
                         fitness[bGenome] += calcFitness(bPawn->getScore(),
                                                         bPawn->getHealth() / bPawn->getInitialHealth(),
                                                         netLinksCount[bGenome],
                                                         netNeuronsCount[bGenome]);
                     }
+
                 }
             }
 

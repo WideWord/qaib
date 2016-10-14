@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
 		cfg.threads = a.get<int>("threads");
         cfg.useJIT = !a.get<bool>("nojit");
 		cfg.populationSize = a.get<int>("pop-size");
-		cfg.bigRoundsNum = a.get<int>("rounds");
+		cfg.roundsNum = a.get<int>("rounds");
 		cfg.world.size = a.get<int>("world-size");
 		cfg.world.obstructionCount = a.get<int>("world-obstructions");
 		cfg.world.seed = a.get<unsigned>("world-seed");
