@@ -182,9 +182,9 @@ namespace qaib {
 
     void Genome::mutate(InnovationGenerator& g) {
         int r = Random::getInt(0, 100);
-        if (r < 20) {
+        if (r < 10) {
             insertRandomNode(g);
-        } else if (r < 25) {
+        } else if (r < 20) {
             insertRandomConnection(g);
         } else {
             mutateRandomWeight();

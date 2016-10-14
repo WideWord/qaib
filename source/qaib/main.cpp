@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
 	if (strcmp(argv[1], "play") == 0) {
         cmdline::parser a;
         a.add<bool>("nojit", 0, "disable jit", false, false);
-        a.add<std::string>("pop", 'p', "population file", false, "data/default_ai.pop");
+        a.add<std::string>("pop", 'p', "population file", true, "data/default_ai.pop");
 
         a.parse_check(argc, argv);
 
