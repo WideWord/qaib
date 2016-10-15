@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
 				out << genomes[i].renderGraph();
 			}
 		} else {
-			std::cout << population->getGenomes().front().buildNeuralNetwork()->renderGraph();
+			std::cout << population->getGenomes().front().renderGraph();
 		}
 		return 0;
     } else if (strcmp(argv[1], "train") == 0) {
